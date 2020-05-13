@@ -10,7 +10,9 @@ import * as path from 'path';
  */
 export function setSwagger(app: Application, route: string, filePath: string, options: SwaggerOptions = {}): void {
   // tslint:disable-next-line: max-line-length
-  console.warn('This function has become deprecated. Please use no-hassle to autogenerate Swagger documentation (https://www.npmjs.com/package/no-hassle)')
+  console.warn(
+    'This function has become deprecated. Please use no-hassle to autogenerate Swagger documentation (https://www.npmjs.com/package/no-hassle)',
+  );
   try {
     const stats = fs.lstatSync(filePath);
     let swaggerDocument: any;
@@ -18,7 +20,9 @@ export function setSwagger(app: Application, route: string, filePath: string, op
     if (options.concatenate) {
       // Throw error if concatenate = true and filepath = file
       if (stats.isFile()) {
-        throw new Error('Boolean concatenate cannot be true when you specify a file. When you want to concatenate, specify a folder');
+        throw new Error(
+          'Boolean concatenate cannot be true when you specify a file. When you want to concatenate, specify a folder',
+        );
       }
       if (stats.isDirectory()) {
         const swaggerContent = buildSwaggerDocumentFromFiles(filePath);
@@ -30,7 +34,9 @@ export function setSwagger(app: Application, route: string, filePath: string, op
         swaggerDocument = yaml.safeLoad(fs.readFileSync(filePath, 'utf8'));
       }
       if (stats.isDirectory()) {
-        throw new Error('To concatenate a folder of swagger YMLS, you need to explicitly set the boolean concatenate on true for the swaggerOptions');
+        throw new Error(
+          'To concatenate a folder of swagger YMLS, you need to explicitly set the boolean concatenate on true for the swaggerOptions',
+        );
       }
     }
 
@@ -51,7 +57,9 @@ function buildSwaggerDocumentFromFiles(filePath: string) {
     swaggerDocument += fs.readFileSync(path.join(filePath, 'index.yml'), 'utf8');
     swaggerDocument += 'paths: \n';
   } catch (error) {
-    throw new Error(`Could not read index.yml make sure the file is named: index.yml and in the correct folder ${error}`);
+    throw new Error(
+      `Could not read index.yml make sure the file is named: index.yml and in the correct folder ${error}`,
+    );
   }
 
   try {
@@ -76,7 +84,7 @@ export interface SwaggerOptions {
   basePath?: string;
   schemes?: string[];
   swaggerOptions?: {
-    validatorUrl?: string | null,
+    validatorUrl?: string | null;
   };
   concatenate?: boolean;
 }
