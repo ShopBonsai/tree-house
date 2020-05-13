@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Sanitize & test project
+    name: Sanitize & Tests
     runs-on: ubuntu-latest
 
     strategy:
