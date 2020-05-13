@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/serializer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Json de/serialization made for consistency",
   "main": "build/index.js",
   "types": "build/index.d.ts",
