@@ -1,0 +1,59 @@
+{
+  "name": "@tree-house/logger",
+  "version": "0.0.0",
+  "description": "Simple and fast JSON logging library for node.js services.",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "clean": "rimraf ./build",
+    "build": "npm run clean && tsc",
+    "lint": "tslint 'src/**/*.ts'",
+    "test:coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "pretest": "npm run build",
+    "prepare": "npm run build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint && npm run build"
+    }
+  },
+  "dependencies": {
+    "debug": "4.1.1",
+    "winston": "3.2.1"
+  },
+  "devDependencies": {
+    "@types/jest": "25.1.3",
+    "@types/debug": "0.0.30",
+    "husky": "4.2.5",
+    "jest": "25.1.0",
+    "rimraf": "3.0.2",
+    "ts-jest": "25.5.1",
+    "tslint": "6.1.2",
+    "tslint-config-airbnb": "~5.11.2",
+    "typescript": "3.8.3"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knor-el-snor/tree-house.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Treehouse",
+    "API",
+    "Secure",
+    "Customisable"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/knor-el-snor/tree-house/issues"
+  },
+  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme"
+}
