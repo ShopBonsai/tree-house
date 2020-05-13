@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 /** @format */
 
 import '@hapi/joi';
 
 /**
- * Helpers
+ * Helpers.
  */
 type Map<T> = { [P in keyof T]: T[P] };
 
 declare module '@hapi/joi' {
   /**
-   * Field requirements interface
+   * Field requirements interface.
    */
   interface Box<T, R extends boolean> {
     /** Type the schema holds */
@@ -24,7 +25,7 @@ declare module '@hapi/joi' {
   type BoxReq<B, nR extends boolean> = B extends Box<infer oT, infer oR> ? Box<oT, nR> : B;
 
   /**
-   * Every Schema that implements the Box to allow the extraction
+   * Every Schema that implements the Box to allow the extraction.
    */
   type BoxedPrimitive<T extends Box<any, any> = any> =
     | StringSchema<T>
@@ -47,7 +48,7 @@ declare module '@hapi/joi' {
   export type extendsGuard<T, S> = S extends T ? S : T;
 
   /**
-   * Validation: extraction decorated methods
+   * Validation: extraction decorated methods.
    */
   export function validate<T, S extends mappedSchemaMap>(
     value: T,
@@ -81,9 +82,9 @@ declare module '@hapi/joi' {
   // TODO: see if .default union makes sense;
 
   /**
-   * String: extraction decorated schema
+   * String: extraction decorated schema.
    */
-  export interface StringSchema<N extends Box<string, boolean> = any> {
+  export interface StringSchema<N extends Box<string | null, boolean> = any> {
     default<T extends string>(value: T, description?: string): StringSchema<Box<N['T'] | T, true>>;
     default(value: any, description?: string): this;
     default(): this;
@@ -92,6 +93,11 @@ declare module '@hapi/joi' {
     valid<T extends string>(values: T[]): StringSchema<BoxType<N, typeof values[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
+
+    allow<T extends string | null>(values: T[]): StringSchema<BoxType<N, string | typeof values[number]>>;
+    allow<T extends string | null>(...values: T[]): StringSchema<BoxType<N, string | typeof values[number]>>;
+    allow(...values: any[]): this;
+    allow(values: any[]): this;
 
     required(): StringSchema<BoxReq<N, true>>;
     required(): this;
@@ -104,9 +110,9 @@ declare module '@hapi/joi' {
   export function string<T extends string>(): StringSchema<{ T: extractType<T>; R: false }>;
 
   /**
-   * Number: extraction decorated schema
+   * Number: extraction decorated schema.
    */
-  export interface NumberSchema<N extends Box<number, boolean> = any> {
+  export interface NumberSchema<N extends Box<number | null, boolean> = any> {
     default<T extends number>(value: T, description?: string): NumberSchema<Box<N['T'] | T, true>>;
     default(value: any, description?: string): this;
     default(): this;
@@ -115,6 +121,11 @@ declare module '@hapi/joi' {
     valid<T extends number>(values: T[]): NumberSchema<BoxType<N, typeof values[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
+
+    allow<T extends number | null>(values: T[]): NumberSchema<BoxType<N, number | typeof values[number]>>;
+    allow<T extends number | null>(...values: T[]): NumberSchema<BoxType<N, number | typeof values[number]>>;
+    allow(...values: any[]): this;
+    allow(values: any[]): this;
 
     required(): NumberSchema<BoxReq<N, true>>;
     required(): this;
@@ -127,9 +138,9 @@ declare module '@hapi/joi' {
   export function number<T extends number>(): NumberSchema<Box<extractType<T>, false>>;
 
   /**
-   * Boolean: extraction decorated schema
+   * Boolean: extraction decorated schema.
    */
-  export interface BooleanSchema<N extends Box<boolean, boolean> = any> {
+  export interface BooleanSchema<N extends Box<boolean | null, boolean> = any> {
     default<T extends boolean>(value: T, description?: string): BooleanSchema<Box<N['T'] | T, true>>;
     default(value: any, description?: string): this;
     default(): this;
@@ -138,6 +149,11 @@ declare module '@hapi/joi' {
     valid<T extends boolean>(values: T[]): BooleanSchema<BoxType<N, typeof values[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
+
+    allow<T extends boolean | null>(values: T[]): BooleanSchema<BoxType<N, boolean | typeof values[number]>>;
+    allow<T extends boolean | null>(...values: T[]): BooleanSchema<BoxType<N, boolean | typeof values[number]>>;
+    allow(...values: any[]): this;
+    allow(values: any[]): this;
 
     required(): BooleanSchema<BoxReq<N, true>>;
     required(): this;
@@ -150,9 +166,9 @@ declare module '@hapi/joi' {
   export function boolean<T extends boolean>(): BooleanSchema<Box<T, false>>;
 
   /**
-   * Date: extraction decorated schema
+   * Date: extraction decorated schema.
    */
-  export interface DateSchema<N extends Box<Date, boolean> = any> {
+  export interface DateSchema<N extends Box<Date | null, boolean> = any> {
     default<T extends Date>(value: T, description?: string): DateSchema<Box<N['T'] | T, true>>;
     default(value: any, description?: string): this;
     default(): this;
@@ -161,6 +177,11 @@ declare module '@hapi/joi' {
     valid<T extends Date>(values: T[]): DateSchema<BoxType<N, typeof values[number]>>;
     valid(...values: any[]): this;
     valid(values: any[]): this;
+
+    allow<T extends Date | null>(values: T[]): DateSchema<BoxType<N, Date | typeof values[number]>>;
+    allow<T extends Date | null>(...values: T[]): DateSchema<BoxType<N, Date | typeof values[number]>>;
+    allow(...values: any[]): this;
+    allow(values: any[]): this;
 
     required(): DateSchema<BoxReq<N, true>>;
     required(): this;
@@ -177,7 +198,7 @@ declare module '@hapi/joi' {
   // T extends FunctionSchema
 
   /**
-   * Function: extraction decorated schema
+   * Function: extraction decorated schema.
    */
   export interface FunctionSchema<N extends Box<Function, boolean> = any> {
     required(): FunctionSchema<BoxReq<N, true>>;
@@ -193,7 +214,7 @@ declare module '@hapi/joi' {
   type ArrayType<T> = T extends (infer U)[] ? U : never;
 
   /**
-   * Array: extraction decorated schema
+   * Array: extraction decorated schema.
    */
   export interface ArraySchema<N = null> {
     default<T extends any[]>(
@@ -222,7 +243,7 @@ declare module '@hapi/joi' {
   export function array(): ArraySchema<Box<never, false>>;
 
   /**
-   * Object: extraction decorated schema
+   * Object: extraction decorated schema.
    */
   export interface ObjectSchema<N = null> extends AnySchema {
     default<T extends any>(value: T, description?: string): ObjectSchema<BoxReq<BoxUnion<N, extractType<T>>, true>>;
@@ -284,7 +305,7 @@ declare module '@hapi/joi' {
   export function object<T extends mappedSchemaMap>(schema: T): ObjectSchema<Box<extractMap<T>, false>>;
 
   /**
-   * Alternatives: extraction decorated schema
+   * Alternatives: extraction decorated schema.
    */
   export interface AlternativesSchema<N = any> extends AnySchema {
     try<T extends mappedSchema[]>(
@@ -386,10 +407,10 @@ declare module '@hapi/joi' {
     /**
      * Hack to support [Schema1, Schema2, ...N] alternatives notation
      * Can't use extractType directly here because of cycles:
-     * ```
-     * T extends Array<infer O> ? extractType<O> :
+     * ```.
+     * T extends Array<infer O> ? ExtractType<O> :
      *                            ^ cycle
-     * ```
+     * ```.
      */
     T extends Array<infer O> ? (
         O extends mappedSchema ? extractOne<O> : O
@@ -403,12 +424,12 @@ declare module '@hapi/joi' {
     T extends mappedSchemaMap ? extractMap<T> :
 
     /**
-     * This is the base case for every schema implemented
+     * This is the base case for every schema implemented.
      */
     T extends mappedSchema ? extractOne<T> :
 
     /**
-     * Default case to handle primitives and schemas
+     * Default case to handle primitives and schemas.
      */
     extractOne<T>;
 }
