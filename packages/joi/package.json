@@ -12,6 +12,7 @@
     "test": "tsc --build ./tsconfig.json"
   },
   "devDependencies": {
+    "rimraf": "~3.0.2",
     "typescript": "3.8.3"
   },
   "peerDependencies": {
