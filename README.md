@@ -9,11 +9,43 @@ Monorepository containing multiple Tree House packages. These packages provide u
 
 ### Core
 
+Providing core utilies.
+
+```typescript
+import { ... } from '@tree-house/core'
+```
+
+[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/core)
+
 ### Authentication
+
+Providing authentication utilities.
+
+```typescript
+import { ... } from '@tree-house/authentication'
+```
+
+[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/authentication)
 
 ### Errors
 
+Providing error utilities.
+
+```typescript
+import { ... } from '@tree-house/errors'
+```
+
+[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/errors)
+
 ### Serializer
+
+Providing serialization utilities.
+
+```typescript
+import { ... } from '@tree-house/serializer'
+```
+
+[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/serializer)
 
 ## Bugs
 
