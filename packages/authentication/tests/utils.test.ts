@@ -39,7 +39,7 @@ describe('utils/cipher', () => {
     };
 
     it('Should hash and dehash the password', () => {
-      const password = 'icapps';
+      const password = 'thisIsMyPassword';
       const hashed = hashPassword(password, hashOptions);
       expect(typeof hashed).toEqual('string');
       expect(hashed).not.toEqual(password);

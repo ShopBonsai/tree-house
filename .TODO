@@ -1,0 +1,3 @@
+- Create shared eslint package
+- Create @tree-house/translations package
+- Deprecate tree-house-translations in @tree-house/errors

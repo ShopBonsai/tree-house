@@ -131,7 +131,7 @@ RESOURCE_NOT_FOUND:     { code: 'RESOURCE_NOT_FOUND', i18n: 'resource_not_found'
 Example
 
 ```javascript
-import { errorConfig as errors } from '@icapps/tree-house-errors'
+import { errorConfig as errors } from '@tree-house/errors'
 throw new ApiError(400, errors.BAD_REQUEST);
 ```
 
