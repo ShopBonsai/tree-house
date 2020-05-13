@@ -1,3 +1,4 @@
 - Create shared eslint package
+- Replace tslint with eslint in packages
 - Create @tree-house/translations package
 - Deprecate tree-house-translations in @tree-house/errors
