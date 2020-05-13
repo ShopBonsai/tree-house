@@ -1,0 +1,70 @@
+{
+  "name": "@tree-house/errors",
+  "version": "0.0.0",
+  "description": "NodeJS default error definitions with an error parser utility function",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "clean": "rimraf ./build",
+    "build": "npm run clean && tsc",
+    "lint": "tslint 'src/**/*.ts'",
+    "test:coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "pretest": "npm run build",
+    "prepare": "npm run build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint && npm run build"
+    }
+  },
+  "dependencies": {
+    "http-status": "~1.4.2",
+    "i18n": "0.9.1",
+    "joi": "~14.3.1",
+    "safe-json-stringify": "~1.2.0",
+    "tree-house-translations": "~1.2.2",
+    "uuid": "8.0.0"
+  },
+  "devDependencies": {
+    "@types/http-status": "~1.1.2",
+    "@types/i18n": "~0.8.6",
+    "@types/jest": "25.2.1",
+    "@types/uuid": "7.0.3",
+    "coveralls": "3.1.0",
+    "jest": "~25.1.0",
+    "husky": "4.2.5",
+    "rimraf": "~3.0.2",
+    "supertest": "~4.0.2",
+    "ts-jest": "25.5.0",
+    "tslint": "6.1.2",
+    "tslint-config-airbnb": "~5.11.2",
+    "typescript": "3.8.3"
+  },
+  "peerDependencies": {
+    "express": "4.x"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knor-el-snor/tree-house.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Treehouse",
+    "API",
+    "Secure",
+    "Customisable"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/knor-el-snor/tree-house/issues"
+  },
+  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme"
+}

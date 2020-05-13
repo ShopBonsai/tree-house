@@ -1,0 +1,32 @@
+{
+  "name": "tree-house",
+  "version": "1.0.0",
+  "author": "Brent Van Geertruy <brentvangeertruy@outlook.com>",
+  "private": true,
+  "scripts": {
+    "git:clean": "git branch --merged | egrep -v \"(^\\*|master|staging|develop)\" | xargs git branch -d",
+    "git:clean-remote": "git remote prune origin"
+  },
+  "devDependencies": {
+    "lerna": "3.20.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knor-el-snor/tree-house.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Treehouse",
+    "API",
+    "Secure",
+    "Customisable"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/knor-el-snor/tree-house/issues"
+  },
+  "homepage": "https://github.com/knor-el-snor/tree-house#readme"
+}
