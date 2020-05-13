@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/serializer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Json de/serialization made for consistency",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -26,9 +26,9 @@
     "@types/jest": "25.2.1",
     "@types/lodash": "^4.14.149",
     "coveralls": "3.1.0",
+    "husky": "4.2.5",
     "jest": "25.5.3",
     "rimraf": "~3.0.2",
-    "husky": "4.2.5",
     "ts-jest": "^25.1.0",
     "tslint": "6.1.2",
     "tslint-config-airbnb": "~5.11.2",
