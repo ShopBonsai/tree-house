@@ -52,12 +52,14 @@
     "supertest": "^4.0.2",
     "ts-jest": "25.5.1",
     "tslint": "6.1.2",
-    "tslint-config-airbnb": "5.11.2"
+    "tslint-config-airbnb": "5.11.2",
+    "typescript": "3.9.2"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "directories": {
     "test": "tests"
-  }
+  },
+  "gitHead": "903bf1acc6c37c12d419ecf25738c407954647fb"
 }
