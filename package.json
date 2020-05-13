@@ -4,15 +4,26 @@
   "author": "Brent Van Geertruy <brentvangeertruy@outlook.com>",
   "private": true,
   "scripts": {
+    "clear": "find . -name node_modules | xargs rm -rf",
     "git:clean": "git branch --merged | egrep -v \"(^\\*|master|staging|develop)\" | xargs git branch -d",
     "git:clean-remote": "git remote prune origin"
   },
   "devDependencies": {
     "lerna": "3.20.2"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/ts-jest",
+      "**/ts-jest/**",
+      "**/jest",
+      "**/jest/**",
+      "**/@types/jest",
+      "**/@types/jest/**"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/knor-el-snor/tree-house.git"

@@ -15,7 +15,7 @@ describe('Responder', () => {
       const fn = (_req, _res) => {
         throw new Error('Something went wrong! 💩');
       };
-      app.get('/hello', responder.handleAsyncFn(fn));
+      app.get('/hello', responder.tryCatchRoute(fn));
     });
 
     it('should catch an error', async () => {
@@ -33,7 +33,7 @@ describe('Responder', () => {
         }, 2000));
       };
 
-      app.get('/helloAsync', responder.handleAsyncFn(fn));
+      app.get('/helloAsync', responder.tryCatchRoute(fn));
     });
 
     it('should catch an async error', async () => {
