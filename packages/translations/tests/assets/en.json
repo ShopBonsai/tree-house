@@ -1,0 +1,10 @@
+{
+  "authentication_failed": "An error occurred trying to authenticate your request.",
+  "bad_request": "Bad request",
+  "forbidden": "You do not have access for this request",
+  "internal_error": "An unkown error occurred",
+  "invalid_input": "Invalid input provided",
+  "missing_headers": "Some required headers are missing",
+  "resource_not_found": "The requested resource was not found",
+  "unauthorized": "You are unauthorized to make this call"
+}

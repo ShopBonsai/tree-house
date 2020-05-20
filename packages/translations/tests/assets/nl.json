@@ -1,0 +1,10 @@
+{
+  "authentication_failed": "Authenticatie mislukt",
+  "bad_request": "",
+  "forbidden": "",
+  "internal_error": "",
+  "invalid_input": "",
+  "missing_headers": "",
+  "resource_not_found": "",
+  "unauthorized": ""
+}
