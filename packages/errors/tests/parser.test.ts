@@ -1,8 +1,16 @@
 import * as httpStatus from 'http-status';
 
-import * as translator from '../src/lib/translator';
+import * as translator from '@tree-house/translations';
 import {
-  ApiError, errors, parseErrors, parseJsonErrors, isJsonApiError, InternalServerError, BadRequestError, isApiError, UnauthorizedError,
+  ApiError,
+  errors,
+  parseErrors,
+  parseJsonErrors,
+  isJsonApiError,
+  InternalServerError,
+  BadRequestError,
+  isApiError,
+  UnauthorizedError,
   ForbiddenError,
 } from '../src';
 import { errorDefaults } from '../src/config/defaults.config';
@@ -12,7 +20,7 @@ describe('errorParser', () => {
   let translateMock;
 
   beforeEach(() => {
-    translateMock = jest.fn(() => { });
+    translateMock = jest.fn(() => {});
     jest.spyOn(translator, 'getTranslator').mockImplementation(() => ({ translate: translateMock }));
   });
 
@@ -130,9 +138,14 @@ describe('errorParser', () => {
     });
 
     it('Should use default message when translator throws an error', () => {
-      translateMock.mockImplementation(() => { throw new Error('Error finding file'); });
+      translateMock.mockImplementation(() => {
+        throw new Error('Error finding file');
+      });
 
-      const parsedError = parseErrors(new ApiError(httpStatus.BAD_REQUEST, errors.INVALID_INPUT), { path: '', language: 'du' });
+      const parsedError = parseErrors(new ApiError(httpStatus.BAD_REQUEST, errors.INVALID_INPUT), {
+        path: '',
+        language: 'du',
+      });
       expect(parsedError).toMatchObject({
         id: expect.any(String),
         status: httpStatus.BAD_REQUEST,
@@ -199,7 +212,9 @@ describe('errorParser', () => {
       expect(isJsonApiError()).toEqual(false);
       expect(isJsonApiError({})).toEqual(false);
       expect(isJsonApiError({ status: httpStatus.NOT_ACCEPTABLE, code: '120', title: 'any Title' })).toEqual(false);
-      expect(isJsonApiError({ status: httpStatus.INTERNAL_SERVER_ERROR, code: '120', detail: 'any Title' })).toEqual(false);
+      expect(isJsonApiError({ status: httpStatus.INTERNAL_SERVER_ERROR, code: '120', detail: 'any Title' })).toEqual(
+        false,
+      );
       expect(isJsonApiError({ code: '120', detail: 'any Title' })).toEqual(false);
       expect(isJsonApiError({ status: httpStatus.BAD_REQUEST, detail: 'any Title' })).toEqual(false);
     });
@@ -236,16 +251,18 @@ describe('errorParser', () => {
   describe('parseJsonErrors', () => {
     it('Should succesfully return parsed errors', () => {
       const result = parseJsonErrors({
-        errors: [{
-          status: httpStatus.BAD_REQUEST,
-          code: 'MY_CODE',
-          title: 'This is an error!',
-          detail: { key: 'Value Mister' },
-          meta: {
-            stack: 'Something wrong',
+        errors: [
+          {
+            status: httpStatus.BAD_REQUEST,
+            code: 'MY_CODE',
+            title: 'This is an error!',
+            detail: { key: 'Value Mister' },
+            meta: {
+              stack: 'Something wrong',
+            },
           },
-        },
-        {}], // Should be filtered out
+          {},
+        ], // Should be filtered out
       });
 
       expect(result).toBeInstanceOf(Array);
@@ -264,13 +281,15 @@ describe('errorParser', () => {
 
     it('Should succesfully return parsed errors with empty meta', () => {
       const result = parseJsonErrors({
-        errors: [{
-          status: httpStatus.BAD_REQUEST,
-          code: 'MY_CODE',
-          title: 'This is an error!',
-          detail: { key: 'Value Mister' },
-          meta: null,
-        }],
+        errors: [
+          {
+            status: httpStatus.BAD_REQUEST,
+            code: 'MY_CODE',
+            title: 'This is an error!',
+            detail: { key: 'Value Mister' },
+            meta: null,
+          },
+        ],
       });
 
       expect(result).toBeInstanceOf(Array);
@@ -289,12 +308,14 @@ describe('errorParser', () => {
 
     it('Should succesfully return parsed errors without meta', () => {
       const result = parseJsonErrors({
-        errors: [{
-          status: httpStatus.BAD_REQUEST,
-          code: 'MY_CODE',
-          title: 'This is an error!',
-          detail: { key: 'Value Mister' },
-        }],
+        errors: [
+          {
+            status: httpStatus.BAD_REQUEST,
+            code: 'MY_CODE',
+            title: 'This is an error!',
+            detail: { key: 'Value Mister' },
+          },
+        ],
       });
 
       expect(result).toBeInstanceOf(Array);
@@ -319,13 +340,15 @@ describe('errorParser', () => {
 
     it('Should return empty error when not all properties were found', () => {
       const result = parseJsonErrors({
-        errors: [{
-          status: httpStatus.BAD_REQUEST,
-          detail: { key: 'Value Mister' },
-          meta: {
-            stack: 'Something wrong',
+        errors: [
+          {
+            status: httpStatus.BAD_REQUEST,
+            detail: { key: 'Value Mister' },
+            meta: {
+              stack: 'Something wrong',
+            },
           },
-        }],
+        ],
       });
 
       expect(result).toBeInstanceOf(Array);
