@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple and fast JSON logging library for node.js services.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -24,8 +24,8 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "@types/jest": "25.1.3",
     "@types/debug": "0.0.30",
+    "@types/jest": "25.1.3",
     "husky": "4.2.5",
     "jest": "25.1.0",
     "rimraf": "3.0.2",

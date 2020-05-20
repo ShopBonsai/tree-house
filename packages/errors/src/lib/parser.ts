@@ -4,24 +4,21 @@ import * as safeJsonStringify from 'safe-json-stringify';
 import { ApiError, ValidationError, InternalServerError, ErrorType } from './errors';
 import { errors } from '../config/errors.config';
 import { errorDefaults } from '../config/defaults.config';
-import { getTranslator } from './translator';
+import { getTranslator } from '@tree-house/translations';
 
 /**
  * Check if object has all required properties to be an ApiError
  * @param {Object} obj
  */
 export const isJsonApiError = (obj: ParsedError | any = {}): obj is ParsedError =>
-  _.has(obj, 'status')
-  && _.has(obj, 'code')
-  && _.has(obj, 'title')
-  && _.has(obj, 'detail');
+  _.has(obj, 'status') && _.has(obj, 'code') && _.has(obj, 'title') && _.has(obj, 'detail');
 
-  /**
-   * Check if object is an ApiError instance
-   * Optionally check whether it matches a specific error
-   * @param err
-   * @param type
-   */
+/**
+ * Check if object is an ApiError instance
+ * Optionally check whether it matches a specific error
+ * @param err
+ * @param type
+ */
 export const isApiError = (err: ApiError | any, type?: ErrorType): err is ApiError => {
   const isError = (err || {}).hasOwnProperty('isApiError') && err.isApiError === true;
 
@@ -46,7 +43,8 @@ export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptio
   if (error instanceof Error) {
     Object.assign(metaData, { stack: safeJsonStringify(error.stack) });
 
-    if (error.hasOwnProperty('schema') && error.hasOwnProperty('detail')) { // knex.js specific errors
+    if (error.hasOwnProperty('schema') && error.hasOwnProperty('detail')) {
+      // knex.js specific errors
       const errorData = <any>error;
       Object.assign(metaData, errorData);
     }

@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/errors",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "NodeJS default error definitions with an error parser utility function",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -20,10 +20,10 @@
     }
   },
   "dependencies": {
+    "@tree-house/translations": "^1.0.0",
     "http-status": "~1.4.2",
     "i18n": "0.9.1",
     "safe-json-stringify": "~1.2.0",
-    "tree-house-translations": "~1.2.2",
     "uuid": "8.0.0"
   },
   "devDependencies": {
