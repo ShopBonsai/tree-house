@@ -412,6 +412,7 @@ declare module '@hapi/joi' {
      *                            ^ cycle
      * ```.
      */
+    // tslint:disable-next-line: prefer-array-literal
     T extends Array<infer O> ? (
         O extends mappedSchema ? extractOne<O> : O
     ) :
