@@ -5,6 +5,7 @@ import {
   Secret,
   SignOptions,
   DecodeOptions,
+  VerifyOptions,
 } from 'jsonwebtoken';
 import { DEFAULT_JWT_CONFIG, DEFAULT_JWT_DECODE_OPTIONS } from '../config/jwt.config';
 
@@ -14,15 +15,6 @@ import { DEFAULT_JWT_CONFIG, DEFAULT_JWT_DECODE_OPTIONS } from '../config/jwt.co
 export const createJwt = (payload: Object, options: CustomSignOptions = DEFAULT_JWT_CONFIG): Promise<string> => {
   const { secretOrKey, ...otherOptions } = options;
   return signJwt(payload, secretOrKey, otherOptions);
-};
-
-/**
- * Authenticate whether the provided JWT token is valid
- */
-export const authenticateJwt = (token: string, options: CustomSignOptions = DEFAULT_JWT_CONFIG): Promise<object> => {
-  if (token === '') throw new Error('JWT token is empty.');
-  const { secretOrKey, ...otherOptions } = options;
-  return verifyJwt(token, secretOrKey, otherOptions);
 };
 
 /**
@@ -47,9 +39,14 @@ const signJwt = (payload: Object, secretOrKey: Secret, jwtSettings: SignOptions)
 /**
  * Verify whether the provided jwt token is valid and return decoded information
  */
-export const verifyJwt = (token: string, secretOrKey: string | Buffer, jwtSettings: SignOptions): Promise<object> =>
+export const verifyJwt = (
+  token: string,
+  jwtSettings: VerifyOptions & { secretOrKey: string | Buffer } = DEFAULT_JWT_CONFIG,
+): Promise<object> =>
   new Promise((resolve, reject) => {
-    jwtVerify(token, secretOrKey, jwtSettings, (error, decoded) => {
+    if (token === '') return reject(new Error('JWT token is empty.'));
+    const { secretOrKey, ...otherSettings } = jwtSettings;
+    jwtVerify(token, secretOrKey, otherSettings, (error, decoded) => {
       if (error) reject(`Something went wrong trying to verify the json webtoken. Actual error: ${error}`);
       resolve(decoded);
     });

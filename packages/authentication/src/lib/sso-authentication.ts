@@ -19,12 +19,13 @@ export async function authenticateSso(token: string): Promise<{}> {
 
   const options = {
     issuer: payload.iss,
-    algorithm: header.alg,
+    algorithms: [header.alg],
     aud: payload.aud,
     expiresIn: payload.exp,
+    secretOrKey: secret,
   };
 
-  return verifyJwt(token, secret, options);
+  return verifyJwt(token, options);
 }
 
 /**
@@ -50,21 +51,21 @@ export async function getKey(jwksUri: string, token: string): Promise<string> {
 
 interface ICompleteJWTToken {
   header: {
-    typ: string,
-    kid: string,
-    alg: Algorithm,
+    typ: string;
+    kid: string;
+    alg: Algorithm;
   };
   payload: {
-    sub: string,
-    iss: string,
-    tokenName: string,
-    nonce: string,
-    aud: string,
-    azp: string,
-    auth_time: number,
-    realm: string,
-    exp: number,
-    tokenType: string,
-    iat: number,
+    sub: string;
+    iss: string;
+    tokenName: string;
+    nonce: string;
+    aud: string;
+    azp: string;
+    auth_time: number;
+    realm: string;
+    exp: number;
+    tokenType: string;
+    iat: number;
   };
 }

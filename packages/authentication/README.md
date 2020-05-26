@@ -46,7 +46,7 @@ const jwtSettings = {
 
 Returns a json webtoken with the provided payload and configuration. (**Asynchronous**)
 
-### authenticateJwt(token, jwtSettings)
+### verifyJwt(token, jwtSettings)
 
 Returns a decoded jwt token when the provided token is still valid. (**Asynchronous**)
 

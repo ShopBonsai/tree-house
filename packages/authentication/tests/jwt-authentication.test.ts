@@ -1,5 +1,5 @@
 import { Algorithm } from 'jsonwebtoken';
-import { createJwt, authenticateJwt, decodeJwt } from '../src';
+import { createJwt, verifyJwt, decodeJwt } from '../src';
 
 const validJwtConfiguration = {
   algorithm: 'HS256' as Algorithm,
@@ -49,7 +49,7 @@ describe('#Jwt authentication', () => {
   });
 
   it('Should authenticate a valid JWT token', async () => {
-    const payload = await authenticateJwt(token, validJwtConfiguration);
+    const payload = await verifyJwt(token, validJwtConfiguration);
     expect(payload).not.toBeNull;
     expect(payload).toHaveProperty('iat');
     expect(payload).toHaveProperty('exp');
@@ -58,7 +58,7 @@ describe('#Jwt authentication', () => {
   });
 
   it('Should authenticate a valid JWT token with default configuration', async () => {
-    const payload = await authenticateJwt(token);
+    const payload = await verifyJwt(token);
     expect(payload).not.toBeNull;
     expect(payload).toHaveProperty('iat');
     expect(payload).toHaveProperty('exp');
@@ -69,27 +69,27 @@ describe('#Jwt authentication', () => {
   it('Should throw an error when trying to authenticate an invalid JWT token', async () => {
     expect.assertions(1);
     try {
-      await authenticateJwt('invalidToken');
+      await verifyJwt('invalidToken');
     } catch (e) {
       expect(e).toContain('Something went wrong trying to verify the json webtoken');
     }
   });
 
   it('Should throw an error when trying to validate an invalid JWT token', async () => {
-    await expect(() => authenticateJwt('myInvalidToken', invalidJwtConfiguration)).rejects;
+    await expect(() => verifyJwt('myInvalidToken', invalidJwtConfiguration)).rejects;
   });
 
   it('Should throw an error when trying to validate with an empty JWT token', async () => {
     expect.assertions(1);
     try {
-      await authenticateJwt('', validJwtConfiguration);
+      await verifyJwt('', validJwtConfiguration);
     } catch (e) {
       expect(e).toEqual(new Error('JWT token is empty.'));
     }
   });
 
   it('Should decode a valid JWT token', async () => {
-    const payload = await decodeJwt(token);
+    const payload = decodeJwt(token);
     expect(payload).not.toBeNull;
     expect(payload).toHaveProperty('iat');
     expect(payload).toHaveProperty('exp');
