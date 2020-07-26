@@ -13,7 +13,6 @@
     "git:clean-remote": "git remote prune origin"
   },
   "devDependencies": {
-    "@types/node": "12.12.2",
     "@types/jest": "26.0.7",
     "jest": "26.1.0",
     "lerna": "3.22.1",
