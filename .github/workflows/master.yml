@@ -35,3 +35,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: yarn versions:publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,18 +2,37 @@
   "name": "@tree-house/core",
   "version": "1.1.0",
   "description": "NodeJS utilities and handy helpers extending ExpressJS functionalities",
+  "keywords": [
+    "NodeJS",
+    "Treehouse",
+    "API",
+    "Secure",
+    "Customisable"
+  ],
+  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/knor-el-snor/tree-house/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knor-el-snor/tree-house.git"
+  },
+  "license": "ISC",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "directories": {
+    "test": "tests"
+  },
   "scripts": {
-    "clean": "rm -rf ./build/*",
     "build": "npm run clean && tsc",
-    "start": "npm run build && node build/index.js",
+    "clean": "rm -rf ./build/*",
     "lint": "tslint 'src/**/*.ts'",
+    "prepare": "npm run build",
+    "start": "npm run build && node build/index.js",
+    "pretest": "npm run build",
     "test": "jest --forceExit",
     "test:coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts --forceExit",
-    "test:watch": "jest --watchAll",
-    "pretest": "npm run build",
-    "prepare": "npm run build"
+    "test:watch": "jest --watchAll"
   },
   "husky": {
     "hooks": {
@@ -51,24 +70,8 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "directories": {
-    "test": "tests"
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
-  "gitHead": "d12dfc7aa5b3dbba4693b391bf588202ba3f3a6d",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/knor-el-snor/tree-house.git"
-  },
-  "keywords": [
-    "NodeJS",
-    "Treehouse",
-    "API",
-    "Secure",
-    "Customisable"
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/knor-el-snor/tree-house/issues"
-  },
-  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme"
+  "gitHead": "d12dfc7aa5b3dbba4693b391bf588202ba3f3a6d"
 }

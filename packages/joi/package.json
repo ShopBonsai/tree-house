@@ -2,30 +2,6 @@
   "name": "@tree-house/joi",
   "version": "1.2.2",
   "description": "Provides extra Joi functionality for Typescript",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "scripts": {
-    "clean": "rimraf ./build",
-    "build": "npm run clean && tsc",
-    "lint": "tslint 'src/**/*.ts'",
-    "prepare": "npm run build",
-    "test": "tsc --build ./tsconfig.json"
-  },
-  "devDependencies": {
-    "rimraf": "~3.0.2",
-    "typescript": "3.9.7"
-  },
-  "peerDependencies": {
-    "@hapi/joi": "~15"
-  },
-  "dependencies": {
-    "@hapi/joi": "~15",
-    "@types/hapi__joi": "~15"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/knor-el-snor/tree-house.git"
-  },
   "keywords": [
     "NodeJS",
     "Treehouse",
@@ -34,9 +10,36 @@
     "Types",
     "Extraction"
   ],
-  "license": "ISC",
+  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme",
   "bugs": {
     "url": "https://github.com/knor-el-snor/tree-house/issues"
   },
-  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knor-el-snor/tree-house.git"
+  },
+  "license": "ISC",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rimraf ./build",
+    "lint": "tslint 'src/**/*.ts'",
+    "prepare": "npm run build",
+    "test": "tsc --build ./tsconfig.json"
+  },
+  "dependencies": {
+    "@hapi/joi": "~15",
+    "@types/hapi__joi": "~15"
+  },
+  "devDependencies": {
+    "rimraf": "~3.0.2",
+    "typescript": "3.9.7"
+  },
+  "peerDependencies": {
+    "@hapi/joi": "~15"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
 }

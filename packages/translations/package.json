@@ -2,17 +2,32 @@
   "name": "@tree-house/translations",
   "version": "1.1.0",
   "description": "Import and use translations through json files",
+  "keywords": [
+    "NodeJS",
+    "Treehouse",
+    "Json",
+    "Translations"
+  ],
+  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/knor-el-snor/tree-house/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knor-el-snor/tree-house.git"
+  },
+  "license": "ISC",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "clean": "rm -rf ./build/*",
     "build": "npm run clean && tsc",
+    "clean": "rm -rf ./build/*",
     "lint": "tslint 'src/**/*.ts'",
+    "prepare": "npm run build",
+    "pretest": "npm run build",
     "test": "jest",
     "test:coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts",
-    "test:watch": "jest --watchAll",
-    "pretest": "npm run build",
-    "prepare": "npm run build"
+    "test:watch": "jest --watchAll"
   },
   "husky": {
     "hooks": {
@@ -36,19 +51,7 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/knor-el-snor/tree-house.git"
-  },
-  "keywords": [
-    "NodeJS",
-    "Treehouse",
-    "Json",
-    "Translations"
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/knor-el-snor/tree-house/issues"
-  },
-  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme"
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
 }

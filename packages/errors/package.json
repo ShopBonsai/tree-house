@@ -2,18 +2,37 @@
   "name": "@tree-house/errors",
   "version": "1.2.0",
   "description": "NodeJS default error definitions with an error parser utility function",
+  "keywords": [
+    "NodeJS",
+    "Treehouse",
+    "API",
+    "Secure",
+    "Customisable"
+  ],
+  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/knor-el-snor/tree-house/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knor-el-snor/tree-house.git"
+  },
+  "license": "ISC",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "directories": {
+    "test": "tests"
+  },
   "scripts": {
-    "clean": "rimraf ./build",
     "build": "npm run clean && tsc",
+    "clean": "rimraf ./build",
     "lint": "tslint 'src/**/*.ts'",
-    "test:coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
-    "pretest": "npm run build",
+    "prepare": "npm run build",
     "prepublish": "npm run build",
-    "prepare": "npm run build"
+    "pretest": "npm run build",
+    "test": "jest",
+    "test:coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts",
+    "test:watch": "jest --watchAll"
   },
   "husky": {
     "hooks": {
@@ -45,23 +64,7 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "directories": {
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/knor-el-snor/tree-house.git"
-  },
-  "keywords": [
-    "NodeJS",
-    "Treehouse",
-    "API",
-    "Secure",
-    "Customisable"
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/knor-el-snor/tree-house/issues"
-  },
-  "homepage": "https://github.com/knor-el-snor/tree-house/tree/master/packages/core#readme"
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
 }
