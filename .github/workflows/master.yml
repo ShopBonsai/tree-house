@@ -42,6 +42,6 @@ jobs:
     - name: Install dependencies
       run: yarn
 
-    - run: npx lerna publish from-package --yes --ignore-scripts --dist-tag latest
+    - run: yarn versions:publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
