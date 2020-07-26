@@ -5,8 +5,13 @@
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
+  "command": {
+    "publish": {
+      "registry": "https://npm.pkg.github.com/@tree-house",
+      "access": "public",
+      "ignoreChanges": [
+        "yarn.lock"
+      ]
+    }
   }
 }
