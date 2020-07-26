@@ -131,6 +131,28 @@ treehouse.startServer(app, {
 })
 ```
 
+## Jest
+
+Custom functionality added on top of built-in jest features.
+
+### toMatchObjectInArray
+
+```javascript
+  import { enableCustomMatchers } from '@tree-house/core`;
+
+  describe('Get users', () => {
+    enableCustomMatchers();
+
+    it('Should return list of users', async () => {
+      const users = await getUsers()
+      expect(users).toMatchObjectInArray({
+        id: 12,
+        name: 'John Doe',
+      });
+    });
+  });
+```
+
 ## Swagger
 
 > This has become deprecated in favor of [no-hassle](https://www.npmjs.com/package/no-hassle) package.
