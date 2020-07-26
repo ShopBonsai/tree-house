@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
 import * as safeJsonStringify from 'safe-json-stringify';
+import { getTranslator } from '@tree-house/translations';
 
 import { ApiError, ValidationError, InternalServerError, ErrorType } from './errors';
 import { errors } from '../config/errors.config';
 import { errorDefaults } from '../config/defaults.config';
-import { getTranslator } from '@tree-house/translations';
 
 /**
  * Check if object has all required properties to be an ApiError
