@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/joi",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Provides extra Joi functionality for Typescript",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "rimraf": "~3.0.2",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   },
   "peerDependencies": {
     "@hapi/joi": "~15"

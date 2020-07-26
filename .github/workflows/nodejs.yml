@@ -1,7 +1,12 @@
 name: API Continuous Integration
 
 on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
   push:
+    branches:
+      - master
+  pull_request:
     branches:
       - master
 
@@ -12,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [10.x, 12.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
