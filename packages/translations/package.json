@@ -50,9 +50,5 @@
   },
   "engines": {
     "node": ">=10.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "974ec24102204d8b09695ab28015fdcc638f4f8c"
+  }
 }
