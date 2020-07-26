@@ -40,6 +40,6 @@
     "@hapi/joi": "~15"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/@tree-house"
   }
 }

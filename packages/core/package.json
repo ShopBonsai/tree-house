@@ -71,7 +71,6 @@
     "node": ">=10.0.0"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "gitHead": "d12dfc7aa5b3dbba4693b391bf588202ba3f3a6d"
+    "registry": "https://npm.pkg.github.com/@tree-house"
+  }
 }
