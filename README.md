@@ -9,7 +9,7 @@ Monorepository containing multiple Tree House packages. These packages provide u
 
 ### Core
 
-Providing core utilies.
+Providing core utilities.
 
 ```typescript
 import { ... } from '@tree-house/core'
@@ -46,6 +46,36 @@ import { ... } from '@tree-house/serializer'
 ```
 
 [Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/serializer)
+
+### Logger
+
+Providing logger utilities.
+
+```typescript
+import { ... } from '@tree-house/logger'
+```
+
+[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/logger)
+
+### Joi
+
+Providing Joi utilities.
+
+```typescript
+import { ... } from '@tree-house/joi'
+```
+
+[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/joi)
+
+### Translations
+
+Providing i18n utilities.
+
+```typescript
+import { ... } from '@tree-house/translations'
+```
+
+[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/translations)
 
 ## Bugs
 
