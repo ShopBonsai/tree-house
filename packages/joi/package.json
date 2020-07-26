@@ -38,5 +38,8 @@
   },
   "peerDependencies": {
     "@hapi/joi": "~15"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
