@@ -55,6 +55,9 @@
     "type": "git",
     "url": "https://github.com/knor-el-snor/tree-house.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "keywords": [
     "NodeJS",
     "Treehouse",
