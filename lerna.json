@@ -5,9 +5,8 @@
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "command": {
-    "publish": {
-      "registry": "https://registry.npmjs.com"
-    }
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
   }
 }
