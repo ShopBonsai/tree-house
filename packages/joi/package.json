@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/joi",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Provides extra Joi functionality for Typescript",
   "keywords": [
     "NodeJS",
