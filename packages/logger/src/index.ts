@@ -1,32 +1,42 @@
-import * as debug from 'debug';
-import * as winston from 'winston';
+import debug from 'debug';
+import { format, Logger, createLogger, transports } from 'winston';
+import { TransformableInfo } from 'logform';
+import stringify from 'json-stringify-safe';
+import { EOL } from 'os';
 
 const { LOG_LEVEL = 'debug' } = process.env;
 
-const formatLogLevel = (level: string): string => {
-  // Clean [31m and invisible character used to show colored strings by Winston
-  const cleaned = level.replace(/\[\d{2}m{1}|[^a-zA-Z ]/g, '');
-  switch (cleaned) {
-    case 'info':
-      return `🍺 ${level}`;
-    case 'warn':
-      return `❗️ ${level}`;
-    case 'error':
-      return `🔥 ${level}`;
-    default:
-      return `🤷‍♂️ ${level}`;
-  }
+const LevelEmoji: Record<string, string> = {
+  info: '🍺',
+  warn: '❗️',
+  error: '🔥',
+  default: '🤷‍♂️',
 };
 
-const instance: winston.Logger = winston.createLogger({
+// have to cast to any to access additional params value
+const splatIndex = Symbol.for('splat') as any;
+
+const emojiLevel = format(
+  (info: TransformableInfo): TransformableInfo => {
+    const { level } = info;
+    const emoji = LevelEmoji[level] || LevelEmoji.default;
+    const paramsIn = info[splatIndex];
+    // serialise each param and concatenate to single string
+    const params = (paramsIn instanceof Array ? paramsIn : [paramsIn]).map((v: unknown) => EOL + stringify(v));
+    return { ...info, level: `${emoji} ${level}`, params };
+  },
+);
+
+const instance: Logger = createLogger({
   level: LOG_LEVEL,
-  format: winston.format.combine(
-    winston.format.colorize(),
-    winston.format.timestamp(),
-    winston.format.printf(({ level, message }) => `${formatLogLevel(level)}: ${message}`),
+  format: format.combine(
+    emojiLevel(),
+    format.colorize(),
+    format.timestamp({ alias: 'timestamp' }),
+    format.printf(({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`),
   ),
   transports: [
-    new winston.transports.Console({
+    new transports.Console({
       stderrLevels: ['debug', 'error'],
       consoleWarnLevels: ['warn'],
     }),
