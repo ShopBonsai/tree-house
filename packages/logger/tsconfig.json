@@ -16,7 +16,7 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "esModuleInterop": true,
     "paths": {
       "*": ["node_modules/*", "types/*"]

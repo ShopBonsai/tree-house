@@ -6,31 +6,39 @@ import { EOL } from 'os';
 
 const { LOG_LEVEL = 'debug' } = process.env;
 
-const LevelEmoji: Record<string, string> = {
+const LEVEL_EMOJI: Record<string, string> = {
   info: '🍺',
   warn: '❗️',
   error: '🔥',
   default: '🤷‍♂️',
 };
 
-// have to cast to any to access additional params value
-const splatIndex = Symbol.for('splat') as any;
+const getWinstonParams = (info: TransformableInfo): unknown[] => {
+  // Winston adds all parameters to 'splat' property which is accessible only by Symbol[splat]
+  const paramsIn = info[Symbol.for('splat') as any];
+  return paramsIn instanceof Array ? paramsIn : [paramsIn];
+};
 
-const emojiLevel = format(
+const emojiLevelFormat = format(
   (info: TransformableInfo): TransformableInfo => {
     const { level } = info;
-    const emoji = LevelEmoji[level] || LevelEmoji.default;
-    const paramsIn = info[splatIndex];
-    // serialise each param and concatenate to single string
-    const params = (paramsIn instanceof Array ? paramsIn : [paramsIn]).map((v: unknown) => EOL + stringify(v));
-    return { ...info, level: `${emoji} ${level}`, params };
+    const emoji = LEVEL_EMOJI[level] || LEVEL_EMOJI.default;
+    return { ...info, level: `${emoji} ${level}` };
+  },
+);
+
+const paramsFormat = format(
+  (info: TransformableInfo): TransformableInfo => {
+    const params = getWinstonParams(info).map((v: unknown) => EOL + stringify(v));
+    return { ...info, params };
   },
 );
 
 const instance: Logger = createLogger({
   level: LOG_LEVEL,
   format: format.combine(
-    emojiLevel(),
+    emojiLevelFormat(),
+    paramsFormat(),
     format.colorize(),
     format.timestamp({ alias: 'timestamp' }),
     format.printf(({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`),
