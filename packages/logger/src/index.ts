@@ -1,7 +1,7 @@
 import * as debug from 'debug';
 import * as winston from 'winston';
 
-const { LOG_LEVEL = 'debug' } = process.env;
+const { LOG_LEVEL = 'debug', LOG_SIMPLE = false } = process.env;
 
 const formatLogLevel = (level: string): string => {
   // Clean [31m and invisible character used to show colored strings by Winston
@@ -20,7 +20,7 @@ const formatLogLevel = (level: string): string => {
 
 const instance: winston.Logger = winston.createLogger({
   level: LOG_LEVEL,
-  format: winston.format.combine(
+  format: LOG_SIMPLE ? winston.format.simple() : winston.format.combine(
     winston.format.colorize(),
     winston.format.timestamp(),
     winston.format.printf(({ level, message }) => `${formatLogLevel(level)}: ${message}`),
