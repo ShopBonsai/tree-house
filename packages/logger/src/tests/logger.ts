@@ -17,28 +17,27 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-afterAll(() => {
-  jest.restoreAllMocks();
-});
+describe('Basic logger test', () => {
+  it('Should output formatted info message to console', () => {
+    logger.info('message', { param: 'test' });
+    expect(consoleSpy).toBeCalledTimes(1);
+    expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+      expect.stringContaining('1970-01-01T00:00:00.000Z: message\n{"param":"test"}\n'), // cut off color string
+    );
+  });
 
-it('Should output formatted info message to console', () => {
-  logger.info('message', { param: 'test' });
-  expect(consoleSpy).toBeCalledTimes(1);
-  expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-    expect.stringContaining('1970-01-01T00:00:00.000Z: message\n{"param":"test"}\n'), // cut off color string
-  );
-});
+  it('Should not output anything to console if not in debug environment', () => {
+    logger.debug(message, params[0], params[1]);
+    expect(consoleSpy).not.toBeCalledTimes(1);
+  });
 
-it('Should not output anything to console if not in debug environment', () => {
-  logger.debug(message, params[0], params[1]);
-  expect(consoleSpy).not.toBeCalledTimes(1);
-});
+  it('Should output formatted error message to console', () => {
+    logger.error(message, params[0], params[1]);
+    expect(consoleSpy).toBeCalledTimes(1);
+  });
 
-it('Should output formatted error message to console', () => {
-  logger.error(message, params[0], params[1]);
-  expect(consoleSpy).toBeCalledTimes(1);
-});
-it('Should output formatted warn message to console', () => {
-  logger.warn(message, params[0], params[1]);
-  expect(consoleSpy).toBeCalledTimes(1);
+  it('Should output formatted warn message to console', () => {
+    logger.warn(message, params[0], params[1]);
+    expect(consoleSpy).toBeCalledTimes(1);
+  });
 });
