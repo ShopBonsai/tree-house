@@ -7,25 +7,14 @@ module.exports = {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: 80
-    }
+      statements: 80,
+    },
   },
-  moduleFileExtensions: [
-    "ts",
-    "tsx",
-    "js",
-    "json"
-  ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
   transform: {
-    "\\.(ts|tsx)$": "ts-jest"
+    '\\.(ts|tsx)$': 'ts-jest',
   },
-  testRegex: "/tests/.*\\.(ts|tsx|js)$",
-  testPathIgnorePatterns: [
-    '/node_modules/',
-  ],
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    'src/index.ts',
-    'src/config',
-  ],
+  testRegex: '/tests/.*\\.(ts|tsx|js)$',
+  testPathIgnorePatterns: ['/node_modules/', '/build/'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'src/index.ts', 'src/config'],
 };
