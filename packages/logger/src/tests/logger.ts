@@ -36,8 +36,27 @@ describe('Basic logger test', () => {
     expect(consoleSpy).toBeCalledTimes(1);
   });
 
+  it('Should output only one line', () => {
+    logger.error(message);
+    expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+      expect.stringMatching(new RegExp(`.*${message}\n$`)), // cut off color string
+    );
+  });
+
+  it('Should output multiple line', () => {
+    logger.error(message, undefined);
+    expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+      expect.stringMatching(new RegExp(`.*${message}\nundefined\n$`)), // cut off color string
+    );
+  });
+
   it('Should output formatted warn message to console', () => {
     logger.warn(message, params[0], params[1]);
+    expect(consoleSpy).toBeCalledTimes(1);
+  });
+
+  it('Should output formatted error message to console two', () => {
+    logger.error(message);
     expect(consoleSpy).toBeCalledTimes(1);
   });
 });

@@ -13,12 +13,9 @@ const LEVEL_EMOJI: Record<string, string> = {
   default: '🤷‍♂️',
 };
 
-const getWinstonParams = (info: TransformableInfo): unknown[] => {
-  // Winston adds all parameters to 'splat' property which is accessible only by Symbol[splat]
-  const paramsIn = info[Symbol.for('splat') as any];
-  return paramsIn instanceof Array ? paramsIn : [paramsIn];
-};
-
+/**
+ * Returns emoji format based on level.
+ */
 const emojiLevelFormat = format(
   (info: TransformableInfo): TransformableInfo => {
     const { level } = info;
@@ -27,9 +24,28 @@ const emojiLevelFormat = format(
   },
 );
 
+/**
+ * Extracts parameters from winston.
+ */
+const getWinstonParams = (info: TransformableInfo): any[] | undefined => {
+  // Winston adds all parameters to 'splat' property which is accessible only by Symbol[splat]
+  return info[Symbol.for('splat') as any];
+};
+
+/**
+ * Returns stringified parameters, split by new line.
+ * Returns undefined if parameters are undefined.
+ */
+const stringifyParams = (params: any[] | undefined): string[] | undefined =>
+  params === undefined ? params : params.map((v: any) => `${EOL}${stringify(v)}`);
+
+/**
+ * Formats parameters by splitting them into multiple lines.
+ */
 const paramsFormat = format(
   (info: TransformableInfo): TransformableInfo => {
-    const params = getWinstonParams(info).map((v: unknown) => EOL + stringify(v));
+    const winstonParams = getWinstonParams(info);
+    const params = stringifyParams(winstonParams);
     return { ...info, params };
   },
 );
