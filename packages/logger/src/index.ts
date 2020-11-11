@@ -97,12 +97,19 @@ export const logger: ILogger = {
 };
 
 // tslint:disable-next-line: variable-name
-export const NSlogger = (namespace: string = ''): ILogger => ({
-  info: instance.info.bind(instance),
-  warn: instance.warn.bind(instance),
-  debug: ENV.logLevel === 'debug' ? getDebugger(namespace) : () => {},
-  error: instance.error.bind(instance),
-});
+export const NSlogger = (namespace: string = ''): ILogger => {
+  instance.defaultMeta = {
+    ...instance.defaultMeta,
+    namespace,
+  };
+
+  return {
+    info: instance.info.bind(instance),
+    warn: instance.warn.bind(instance),
+    debug: ENV.logLevel === 'debug' ? getDebugger(namespace) : () => {},
+    error: instance.error.bind(instance),
+  };
+};
 
 export interface ILogger {
   error: (message: string, ...args: any[]) => void;
