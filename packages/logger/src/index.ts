@@ -31,13 +31,20 @@ const getWinstonParams = (info: TransformableInfo): any[] | undefined => {
   return info[Symbol.for('splat') as any];
 };
 
+/**
+ * Convert extra arguments into an object where possible - arguments that are not objects will be skipped.
+ */
 const extraParametersFormat = format((info: TransformableInfo): TransformableInfo => ({
   ...info,
   ...getWinstonParams(info).reduce((acc, param) => ({ ...acc, ...param })),
 }));
 
+/**
+ * Format log entry in a GCP compatible format.
+ */
 const messageFormat = format((info: TransformableInfo): TransformableInfo => {
   if (info.level !== 'error') {
+    // TODO: return object in a compatible GCP Logging format
     return info;
   }
 
@@ -46,11 +53,15 @@ const messageFormat = format((info: TransformableInfo): TransformableInfo => {
     return info;
   }
 
-  const { message, stack, ...rest } = info;
+  const { message, stack, httpRequest, ...rest } = info;
+
+  // GCP Error Reporting compatible format
   return {
     ...rest,
     label: `${message.replace(` ${error.message}`, '')}`,
     message: error.stack,
+    eventTime: rest.timestamp,
+    context: { httpRequest },
   };
 });
 
@@ -58,10 +69,11 @@ const instance: Logger = createLogger({
   level: ENV.logLevel,
   format: format.combine(
     extraParametersFormat(),
+    format.timestamp({ alias: 'timestamp' }),
     messageFormat(),
     emojiLevelFormat(),
-    format.timestamp({ alias: 'timestamp' }),
     format.json(),
+    (isProd ? undefined : format.colorize({ all: true })),
     (isProd ? undefined : format.prettyPrint()),
   ),
   defaultMeta: {
