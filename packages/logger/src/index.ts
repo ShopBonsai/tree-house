@@ -1,10 +1,9 @@
 import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
 import { TransformableInfo } from 'logform';
-import stringify from 'json-stringify-safe';
-import { EOL } from 'os';
+import { ENV } from './constants';
 
-const { LOG_LEVEL = 'debug' } = process.env;
+const isProd = ENV.nodeEnv === 'production';
 
 const LEVEL_EMOJI: Record<string, string> = {
   info: '🍺',
@@ -32,33 +31,45 @@ const getWinstonParams = (info: TransformableInfo): any[] | undefined => {
   return info[Symbol.for('splat') as any];
 };
 
-/**
- * Returns stringified parameters, split by new line.
- * Returns undefined if parameters are undefined.
- */
-const stringifyParams = (params: any[] | undefined): string[] | undefined =>
-  params === undefined ? params : params.map((v: any) => `${EOL}${stringify(v)}`);
+const extraParametersFormat = format((info: TransformableInfo): TransformableInfo => ({
+  ...info,
+  ...getWinstonParams(info).reduce((acc, param) => ({ ...acc, ...param })),
+}));
 
-/**
- * Formats parameters by splitting them into multiple lines.
- */
-const paramsFormat = format(
-  (info: TransformableInfo): TransformableInfo => {
-    const winstonParams = getWinstonParams(info);
-    const params = stringifyParams(winstonParams);
-    return { ...info, params };
-  },
-);
+const messageFormat = format((info: TransformableInfo): TransformableInfo => {
+  if (info.level !== 'error') {
+    return info;
+  }
+
+  const [error] = getWinstonParams(info);
+  if (!(error instanceof Error)) {
+    return info;
+  }
+
+  const { message, stack, ...rest } = info;
+  return {
+    ...rest,
+    label: `${message.replace(` ${error.message}`, '')}`,
+    message: error.stack,
+  };
+});
 
 const instance: Logger = createLogger({
-  level: LOG_LEVEL,
+  level: ENV.logLevel,
   format: format.combine(
+    extraParametersFormat(),
+    messageFormat(),
     emojiLevelFormat(),
-    paramsFormat(),
-    format.colorize(),
     format.timestamp({ alias: 'timestamp' }),
-    format.printf(({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`),
+    format.json(),
+    (isProd ? undefined : format.prettyPrint()),
   ),
+  defaultMeta: {
+    serviceContext: {
+      service: ENV.serviceName,
+      version: `${ENV.serviceVersion}-${ENV.nodeEnv}`,
+    },
+  },
   transports: [
     new transports.Console({
       stderrLevels: ['debug', 'error'],
