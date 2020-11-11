@@ -100,7 +100,7 @@ export const logger: ILogger = {
 export const NSlogger = (namespace: string = ''): ILogger => ({
   info: instance.info.bind(instance),
   warn: instance.warn.bind(instance),
-  debug: LOG_LEVEL === 'debug' ? getDebugger(namespace) : () => {},
+  debug: ENV.logLevel === 'debug' ? getDebugger(namespace) : () => {},
   error: instance.error.bind(instance),
 });
 
