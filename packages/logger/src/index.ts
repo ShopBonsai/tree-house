@@ -1,9 +1,12 @@
 import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
 import { TransformableInfo } from 'logform';
+import stringify from 'json-stringify-safe';
+import { EOL } from 'os';
+
 import { ENV } from './constants';
 
-const isProd = ENV.nodeEnv === 'production';
+const errorParamPos = 0;
 
 const LEVEL_EMOJI: Record<string, string> = {
   info: '🍺',
@@ -32,49 +35,85 @@ const getWinstonParams = (info: TransformableInfo): any[] | undefined => {
 };
 
 /**
- * Convert extra arguments into an object where possible - arguments that are not objects will be skipped.
+ * Returns stringified parameters, omitting Error object since it'll be included as `message`.
+ * Returns undefined if parameters are undefined.
  */
-const extraParametersFormat = format((info: TransformableInfo): TransformableInfo => ({
-  ...info,
-  ...getWinstonParams(info).reduce((acc, param) => ({ ...acc, ...param })),
-}));
+const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'): string[] | undefined => {
+  if (params === undefined) {
+    return params;
+  }
+
+  switch (logFormat) {
+    case 'json':
+      // Remove Error object if it's present where it's expected to be & stringify
+      if (params[errorParamPos] instanceof Error) {
+        return [
+          ...params.slice(0, errorParamPos),
+          ...params.slice(errorParamPos + 1),
+        ].map(p => stringify(p))
+      }
+
+      return params.map(p => stringify(p));
+
+    default:
+      return params.map((v: any) => `${EOL}${stringify(v)}`);
+  }
+}
+
+/**
+ * Formats parameters by splitting them into multiple strings.
+ */
+const paramsFormat = format(
+  (info: TransformableInfo, { logFormat }): TransformableInfo => {
+    const winstonParams = getWinstonParams(info);
+    const stringParams = stringifyParams(winstonParams, logFormat);
+    return { ...info, params: stringParams };
+  },
+);
 
 /**
  * Format log entry in a GCP compatible format.
  */
-const messageFormat = format((info: TransformableInfo): TransformableInfo => {
+const jsonFormat = format((info: TransformableInfo): TransformableInfo => {
   if (info.level !== 'error') {
     // TODO: return object in a compatible GCP Logging format
     return info;
   }
 
-  const [error] = getWinstonParams(info);
-  if (!(error instanceof Error)) {
+  const params = getWinstonParams(info);
+  if (params === undefined || !(params[errorParamPos] instanceof Error)) {
     return info;
   }
 
-  const { message, stack, httpRequest, ...rest } = info;
+  const [error] = params;
+  const { httpRequest } = params.reduce((acc, param) => ({ ...acc, ...param }))
+  const { message, stack, timestamp, ...rest } = info;
 
   // GCP Error Reporting compatible format
   return {
     ...rest,
+    // User provided message & Error message get concatenated. Clean it up
     label: `${message.replace(` ${error.message}`, '')}`,
     message: error.stack,
-    eventTime: rest.timestamp,
+    eventTime: timestamp,
     context: { httpRequest },
   };
 });
 
+const simpleFormat = () => [
+  format.colorize(),
+  format.printf(
+    ({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`,
+  )
+]
+
 const instance: Logger = createLogger({
   level: ENV.logLevel,
   format: format.combine(
-    extraParametersFormat(),
     format.timestamp({ alias: 'timestamp' }),
-    messageFormat(),
+    paramsFormat({ logFormat: ENV.logFormat }),
     emojiLevelFormat(),
-    format.json(),
-    (isProd ? undefined : format.colorize({ all: true })),
-    (isProd ? undefined : format.prettyPrint()),
+    ...(ENV.logFormat === 'json' ? [jsonFormat(), format.json()] : simpleFormat()),
   ),
   defaultMeta: {
     serviceContext: {
