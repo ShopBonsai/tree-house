@@ -21,7 +21,7 @@ describe('Basic logger test', () => {
     const getLogger = () => {
       const { NSlogger } = require('..');
       return NSlogger('test');
-    }
+    };
 
     it('Should output formatted info message to console', () => {
       getLogger().info('message', { param: 'test' });
@@ -71,7 +71,7 @@ describe('Basic logger test', () => {
       process.env.LOG_FORMAT = 'json';
       const { NSlogger } = require('..');
       return NSlogger('test');
-    }
+    };
 
     it('Should output a JSON format', () => {
       getLogger().info(message);
@@ -99,6 +99,6 @@ describe('Basic logger test', () => {
           new RegExp(`^{.*\\"message\\":\\"${error.stack}\\".*}\n$`),
         ),
       );
-    })
+    });
   });
 });

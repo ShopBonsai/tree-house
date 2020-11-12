@@ -49,7 +49,7 @@ const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'
         return [
           ...params.slice(0, errorParamPos),
           ...params.slice(errorParamPos + 1),
-        ].map(p => stringify(p))
+        ].map(p => stringify(p));
       }
 
       return params.map(p => stringify(p));
@@ -57,7 +57,7 @@ const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'
     default:
       return params.map((v: any) => `${EOL}${stringify(v)}`);
   }
-}
+};
 
 /**
  * Format log entry in a GCP compatible format.
@@ -70,13 +70,13 @@ const gcpLogEntryFormat = format((info: TransformableInfo): TransformableInfo =>
 
   const params = getWinstonParams(info);
   const { message, stack, timestamp, ...rest } = info;
-  const { httpRequest } = params.reduce((acc, param) => ({ ...acc, ...param }))
+  const { httpRequest } = params.reduce((acc, param) => ({ ...acc, ...param }));
 
   // GCP Error Reporting compatible format
   const errorReportingFormat = {
     eventTime: timestamp,
     context: { httpRequest },
-  }
+  };
 
   // No Error object provided
   if (params === undefined || !(params[errorParamPos] instanceof Error)) {
@@ -116,8 +116,8 @@ export const simpleFormat = () => [
   format.colorize(),
   format.printf(
     ({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`,
-  )
-]
+  ),
+];
 
 /**
  * Format the log entry in a JSON friendly format.
@@ -126,4 +126,4 @@ export const jsonFormat = () => [
   gcpLogEntryFormat(),
   emojiLevelFormat(),
   format.json(),
-]
+];
