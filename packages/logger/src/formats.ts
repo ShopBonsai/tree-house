@@ -13,6 +13,17 @@ const LEVEL_EMOJI: Record<string, string> = {
 };
 
 /**
+ * Returns emoji format based on level.
+ */
+const emojiLevelFormat = format(
+  (info: TransformableInfo): TransformableInfo => {
+    const { level } = info;
+    const emoji = LEVEL_EMOJI[level] || LEVEL_EMOJI.default;
+    return { ...info, level: `${emoji} ${level}` };
+  },
+);
+
+/**
  * Extracts parameters from winston.
  */
 const getWinstonParams = (info: TransformableInfo): any[] | undefined => {
@@ -87,17 +98,6 @@ const gcpLogEntryFormat = format((info: TransformableInfo): TransformableInfo =>
 });
 
 /**
- * Returns emoji format based on level.
- */
-export const emojiLevelFormat = format(
-  (info: TransformableInfo): TransformableInfo => {
-    const { level } = info;
-    const emoji = LEVEL_EMOJI[level] || LEVEL_EMOJI.default;
-    return { ...info, level: `${emoji} ${level}` };
-  },
-);
-
-/**
  * Formats parameters by splitting them into multiple strings.
  */
 export const paramsFormat = format(
@@ -112,6 +112,7 @@ export const paramsFormat = format(
  * Format the log entry in a developer friendly format.
  */
 export const simpleFormat = () => [
+  emojiLevelFormat(),
   format.colorize(),
   format.printf(
     ({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`,
@@ -123,5 +124,6 @@ export const simpleFormat = () => [
  */
 export const jsonFormat = () => [
   gcpLogEntryFormat(),
+  emojiLevelFormat(),
   format.json(),
 ]

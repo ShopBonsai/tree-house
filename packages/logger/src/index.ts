@@ -2,14 +2,13 @@ import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
 
 import { ENV } from './constants';
-import { emojiLevelFormat, paramsFormat, jsonFormat, simpleFormat } from './formats';
+import { paramsFormat, jsonFormat, simpleFormat } from './formats';
 
 const instance: Logger = createLogger({
   level: ENV.logLevel,
   format: format.combine(
     format.timestamp({ alias: 'timestamp' }),
     paramsFormat({ logFormat: ENV.logFormat }),
-    emojiLevelFormat(),
     ...(ENV.logFormat === 'json' ? jsonFormat() : simpleFormat()),
   ),
   defaultMeta: {
