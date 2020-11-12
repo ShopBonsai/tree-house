@@ -29,7 +29,7 @@
     "lint": "tslint 'src/**/*.ts'",
     "prepare": "npm run build",
     "pretest": "npm run build",
-    "test": "echo 1",
+    "test": "jest",
     "test:coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts",
     "test:watch": "jest --watchAll"
   },
