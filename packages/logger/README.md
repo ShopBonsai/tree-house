@@ -32,6 +32,15 @@ logger.info('tree house logger');
 
 ### Errors
 
+#### LOG_FORMAT = simple
+
+When `LOG_FORMAT` environment variable is not set, it defaults to `simple`. When using simple log format,
+log messages are outputted on one line, while parameters are outputted on the subsequent lines.
+This is ideal for a development environment.
+
+#### LOG_FORMAT = json
+
+When `LOG_FORMAT` environment variable is set to `json`, logs are in JSON format.
 Error log entries are following [GCP Error Reporting format](https://cloud.google.com/error-reporting/docs/formatting-error-messages#json_representation). To use it, you must pass an error object while calling `.error`.
 You can also provide `httpRequest` if you are logging an HTTP error:
 
