@@ -80,6 +80,17 @@ describe('Basic logger test', () => {
       );
     });
 
+    it('Should output an Error stack when only a message is provided', () => {
+      const error = new Error(message);
+      error.stack = lorem.sentence();
+      jest.spyOn(global, 'Error').mockImplementation(() => error);
+
+      getLogger().error(message);
+      expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+        expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${error.stack}\\".*}\n$`)),
+      );
+    });
+
     it('Should output serviceContext', () => {
       getLogger().error(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(

@@ -70,7 +70,7 @@ const gcpLogEntryFormat = format((info: TransformableInfo): TransformableInfo =>
 
   const params = getWinstonParams(info);
   const { message, stack, timestamp, ...rest } = info;
-  const { httpRequest } = params.reduce((acc, param) => ({ ...acc, ...param }));
+  const { httpRequest } = params?.reduce((acc, param) => ({ ...acc, ...param })) || {};
 
   // GCP Error Reporting compatible format
   const errorReportingFormat = {
@@ -83,7 +83,8 @@ const gcpLogEntryFormat = format((info: TransformableInfo): TransformableInfo =>
     return {
       ...rest,
       ...errorReportingFormat,
-      message,
+      // GCP Error Reporting won't catch the error if the message doesn't have an error stack
+      message: new Error(message).stack,
     };
   }
 
@@ -92,7 +93,7 @@ const gcpLogEntryFormat = format((info: TransformableInfo): TransformableInfo =>
     ...rest,
     ...errorReportingFormat,
     // User provided message & Error message get concatenated. Clean it up
-    label: `${message.replace(` ${error.message}`, '')}`,
+    label: `${message.replace(error.message, '')}`,
     message: error.stack,
   };
 });
