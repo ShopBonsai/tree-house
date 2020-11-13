@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/logger",
-  "version": "2.0.0",
+  "version": "1.3.0",
   "description": "Simple and fast JSON logging library for node.js services.",
   "keywords": [
     "NodeJS",
