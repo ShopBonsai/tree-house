@@ -40,12 +40,14 @@
   },
   "dependencies": {
     "debug": "4.1.1",
+    "json-stringify-safe": "5.0.1",
     "winston": "3.3.3"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",
     "@types/faker": "5.1.2",
     "@types/jest": "26.0.7",
+    "@types/json-stringify-safe": "5.0.0",
     "faker": "5.1.0",
     "husky": "4.2.5",
     "jest": "26.1.0",
