@@ -104,7 +104,7 @@ describe('Basic logger test', () => {
       getLogger().error(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(
-          new RegExp(`^{.*\\"namespace\\":\\"test\\".*}\n$`),
+          new RegExp('^{.*\\"namespace\\":\\"test\\".*}\n$'),
         ),
       );
     });
