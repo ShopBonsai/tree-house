@@ -60,7 +60,7 @@ const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'
 };
 
 /**
- * Format log entry in a GCP compatible format.
+ * Formats log entry in a GCP compatible format.
  */
 const gcpLogEntryFormat = format((info: TransformableInfo): TransformableInfo => {
   if (info.level !== 'error') {
@@ -110,7 +110,7 @@ export const paramsFormat = format(
 );
 
 /**
- * Format the log entry in a developer friendly format.
+ * Formats the log entry in a developer friendly format.
  */
 export const simpleFormat = () => [
   emojiLevelFormat(),
@@ -121,7 +121,7 @@ export const simpleFormat = () => [
 ];
 
 /**
- * Format the log entry in a JSON friendly format.
+ * Formats the log entry in a JSON friendly format.
  */
 export const jsonFormat = () => [
   gcpLogEntryFormat(),
