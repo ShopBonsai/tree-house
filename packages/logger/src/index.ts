@@ -2,7 +2,7 @@ import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
 
 import { ENV } from './constants';
-import { paramsFormat, jsonFormat, simpleFormat } from './formats';
+import { paramsFormat, jsonFormat, simpleFormat } from './format';
 
 const instance: Logger = createLogger({
   level: ENV.logLevel,
