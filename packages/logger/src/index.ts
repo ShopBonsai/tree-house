@@ -45,10 +45,10 @@ export const logger: ILogger = {
 
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
-  instance.defaultMeta = {
+  Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
     namespace,
-  };
+  });
 
   return {
     info: instance.info.bind(instance),

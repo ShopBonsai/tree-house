@@ -100,6 +100,15 @@ describe('Basic logger test', () => {
       );
     });
 
+    it('Should output namespace', () => {
+      getLogger().error(message);
+      expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+        expect.stringMatching(
+          new RegExp(`^{.*\\"namespace\\":\\"test\\".*}\n$`),
+        ),
+      );
+    });
+
     it('Should output Error stack as message', () => {
       const error = new Error(message);
       // Set a custom error stack, otherwise using regex to match an error stack is a nightmare
