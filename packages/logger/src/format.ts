@@ -32,6 +32,12 @@ const getWinstonParams = (info: TransformableInfo): any[] | undefined => {
 };
 
 /**
+ * Stringifies an object using `stringify` and a default serializer.
+ * @param obj Any object to be stringified.
+ */
+const stringifyParam = (obj: any) => stringify(obj);
+
+/**
  * Returns stringified parameters.
  * Returns undefined if parameters are undefined.
  * If `logFormat` is `json`, Error object is omitted since it'll be included as `message`.
@@ -49,13 +55,13 @@ const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'
         return [
           ...params.slice(0, errorParamPos),
           ...params.slice(errorParamPos + 1),
-        ].map(p => stringify(p));
+        ].map(stringifyParam);
       }
 
-      return params.map(p => stringify(p));
+      return params.map(stringifyParam);
 
     default:
-      return params.map((v: any) => `${EOL}${stringify(v)}`);
+      return params.map((v: any) => `${EOL}${stringifyParam(v)}`);
   }
 };
 
