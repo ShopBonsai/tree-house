@@ -14,11 +14,9 @@ import '@tree-house/joi'
 
 ### Typescript
 
-The main goal of this package is to provide extensive Typescript types for Joi based on [joi-extract-type](https://github.com/TCMiranda/joi-extract-type). By importing the module when loading your application you'll gain access to these types and be able to use `Joi.extractType`.
+The main goal of this package is to provide extensive Typescript types for Joi based on [joi-extract-type](https://github.com/TCMiranda/joi-extract-type). By installing the module you'll automatically gain access to these types and be able to use `Joi.extractType`.
 
 ```typescript
-import '@tree-house/joi';
-
 export type MySchemaType = Joi.extractType<typeof anyJoiSchema>;
 ```
 
