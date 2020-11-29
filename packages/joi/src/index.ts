@@ -437,3 +437,5 @@ declare module '@hapi/joi' {
      */
     extractOne<T>;
 }
+
+export { validateJoiSchema } from './utils/validator';
