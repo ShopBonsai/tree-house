@@ -1,9 +1,9 @@
 import { Application, RequestHandler } from 'express';
 import { ClientOpts, RedisClient } from 'redis';
-import * as cors from 'cors';
-import * as helmet from 'helmet';
-import * as bodyParser from 'body-parser';
-import * as rateLimit from 'express-rate-limit';
+import cors from 'cors';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import rateLimit from 'express-rate-limit';
 
 import * as defaults from '../config/app.config';
 const redisStore = require('rate-limit-redis');
@@ -11,17 +11,28 @@ const redisStore = require('rate-limit-redis');
 /**
  * Set some basic security measurements
  */
-export function setBasicSecurity(app: Application, route: string, options: SecurityOptions = {}): void {
+export function setBasicSecurity(
+  app: Application,
+  route: string,
+  options: SecurityOptions = {},
+): void {
   app.use(route, helmet(Object.assign({}, defaults.helmetOptions, options.helmet)));
   app.use(route, cors(Object.assign({}, defaults.corsOptions, options.cors)));
   // SAFARI BUGFIX: include credentials
-  app.use((_req, res, next) => { res.set('credentials', 'include'); next(); });
+  app.use((_req, res, next) => {
+    res.set('credentials', 'include');
+    next();
+  });
 }
 
 /**
  * Set a body parser for all specific types at once
  */
-export function setBodyParser(app: Application, route: string, options: BodyParserOptions = {}): void {
+export function setBodyParser(
+  app: Application,
+  route: string,
+  options: BodyParserOptions = {},
+): void {
   const allOptions = Object.assign({}, defaults.bodyParserOptions, options);
 
   if (allOptions.json) app.use(route, bodyParser.json(allOptions.json));
@@ -35,8 +46,8 @@ export function setBodyParser(app: Application, route: string, options: BodyPars
  * Current support for: built-in memory and Redis
  */
 export function getRateLimiter(options: RateLimiterOptions = {}): RequestHandler {
-  let store: rateLimit.Store;
-  const allOptions = Object.assign({}, defaults.rateLimiterOptions, options);
+  let store: rateLimit.Store | undefined;
+  const allOptions: any = Object.assign({}, defaults.rateLimiterOptions, options);
 
   // Automatically assign new redis store instance
   if (allOptions.redis) {
@@ -57,7 +68,7 @@ export interface RateLimiterOptions extends rateLimit.Options {
 
 export interface SecurityOptions {
   cors?: cors.CorsOptions;
-  helmet?: helmet.IHelmetConfiguration;
+  helmet?: Parameters<typeof helmet>[0]; // See https://github.com/helmetjs/helmet/issues/279
 }
 
 export interface BodyParserOptions {

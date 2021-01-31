@@ -1,5 +1,5 @@
-import * as request from 'supertest';
-import * as express from 'express';
+import request from 'supertest';
+import express from 'express';
 import { setSwagger } from '../../src';
 const app = express();
 

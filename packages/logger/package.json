@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/logger",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Simple and fast JSON logging library for node.js services.",
   "keywords": [
     "NodeJS",
@@ -18,14 +18,14 @@
     "url": "https://github.com/knor-el-snor/tree-house.git"
   },
   "license": "ISC",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "clean": "rimraf ./build",
+    "clean": "rimraf ./dist",
     "lint": "tslint 'src/**/*.ts'",
     "prepare": "npm run build",
     "pretest": "npm run build",
@@ -39,21 +39,21 @@
     }
   },
   "dependencies": {
-    "debug": "4.1.1",
+    "debug": "4.3.2",
     "json-stringify-safe": "5.0.1",
     "winston": "3.3.3"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",
-    "@types/faker": "5.1.2",
-    "@types/jest": "26.0.7",
+    "@types/faker": "5.1.6",
+    "@types/jest": "26.0.20",
     "@types/json-stringify-safe": "5.0.0",
-    "faker": "5.1.0",
-    "husky": "4.2.5",
-    "jest": "26.1.0",
+    "faker": "5.2.0",
+    "husky": "4.3.8",
+    "jest": "26.6.3",
     "rimraf": "3.0.2",
-    "ts-jest": "26.1.3",
-    "tslint": "6.1.2",
+    "ts-jest": "26.5.0",
+    "tslint": "6.1.3",
     "tslint-config-airbnb": "~5.11.2",
     "typescript": "3.9.7"
   },

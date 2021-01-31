@@ -1,32 +1,10 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "esnext",
-    "sourceMap": false,
-    "outDir": "./build",
     "rootDir": "./src",
-
-    "moduleResolution": "node",
     "baseUrl": "./",
-    "typeRoots": ["node_modules/@types"],
-    "declaration": true,
-
-    "noImplicitAny": false,
-    "allowSyntheticDefaultImports": false,
-    "removeComments": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    "paths": {
-      "*": [
-        "node_modules/*",
-        "types/*"
-      ]
-    }
+    "outDir": "dist",
   },
-  "exclude": [
-    "node_modules",
-    "tests",
-    "build"
-  ]
+  "exclude": ["dist", "node_modules", "tests"]
 }
+

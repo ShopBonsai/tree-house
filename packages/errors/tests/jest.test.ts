@@ -1,4 +1,4 @@
-import * as httpStatus from 'http-status';
+import httpStatus from 'http-status';
 import { BadRequestError, errors, enableErrorMatchers } from '../src';
 
 describe('Jest', () => {

@@ -1,5 +1,5 @@
-import * as _ from 'lodash';
-import * as safeJsonStringify from 'safe-json-stringify';
+import _ from 'lodash';
+import safeJsonStringify from 'safe-json-stringify';
 import { getTranslator } from '@tree-house/translations';
 
 import { ApiError, ValidationError, InternalServerError, ErrorType } from './errors';
@@ -41,7 +41,7 @@ export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptio
 
   // Other errors
   if (error instanceof Error) {
-    Object.assign(metaData, { stack: safeJsonStringify(error.stack) });
+    Object.assign(metaData, { stack: safeJsonStringify(error.stack as any) });
 
     if (error.hasOwnProperty('schema') && error.hasOwnProperty('detail')) {
       // knex.js specific errors
@@ -64,10 +64,10 @@ export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptio
   if (isApiError(error)) {
     let translatedMessage = error.message;
 
-    if (translatorOptions) {
+    if (translatorOptions && error.i18n) {
       const translator = getTranslator(translatorOptions.path, translatorOptions.defaultLocale);
       try {
-        translatedMessage = translator.translate(error.i18n, translatorOptions.language);
+        translatedMessage = translator.translate(error.i18n, translatorOptions.language) || error.message;
       } catch (_error) {
         // If language file was not found set text to default message
         translatedMessage = error.message;
@@ -103,7 +103,10 @@ export function parseJsonErrors(response: any): ApiError[] {
     return response.errors.reduce((acc: ApiError[], error: any) => {
       if (isJsonApiError(error)) {
         const { status, code, title, detail, meta = {} } = error;
-        return [...acc, new ApiError(status, { code, message: title }, { detail, stack: (meta || {}).stack })];
+        return [
+          ...acc,
+          new ApiError(status, { code, message: title }, { detail, stack: (meta || {}).stack }),
+        ];
       }
 
       return acc;

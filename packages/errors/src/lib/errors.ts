@@ -1,5 +1,5 @@
-import * as uuid from 'uuid';
-import * as httpStatus from 'http-status';
+import { v1 } from 'uuid';
+import httpStatus from 'http-status';
 
 import { errors } from '../config/errors.config';
 
@@ -7,7 +7,7 @@ export class ApiError<T = any> extends Error {
   code: string;
   status: number;
   i18n?: string;
-  id?: string;
+  id: string;
   detail?: T;
   isApiError: boolean;
 
@@ -16,12 +16,14 @@ export class ApiError<T = any> extends Error {
     super(message || error.message);
     this.name = 'ApiError';
     this.isApiError = true;
-    this.id = uuid.v1();
+    this.id = v1();
     this.code = error.code;
     this.i18n = error.i18n;
     this.status = status;
     this.detail = detail;
-    if (stack) this.stack = stack;
+    if (stack) {
+      this.stack = stack;
+    }
   }
 }
 

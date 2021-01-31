@@ -14,7 +14,10 @@ export const getValues = (language: string): string => _.get(translator.values, 
  * @param {String} value
  * @param {Object} dynamicValues
  */
-export function replaceDynamicValues(value: string, dynamicValues: { [key: string]: string }): string {
+export function replaceDynamicValues(
+  value: string,
+  dynamicValues: { [key: string]: string },
+): string {
   return Object.keys(dynamicValues).reduce((prev, current) => {
     return prev.replace(new RegExp(`{{${current}}}`, 'g'), dynamicValues[current]);
   }, value);
@@ -32,13 +35,21 @@ export function getTranslator(path: string, defaultLocale: string = 'en'): ITran
   }
 
   return {
-    translate: (key: string, language?: string, dynamicValues: { [key: string]: string } = {}): string => {
+    translate: (
+      key: string,
+      language?: string,
+      dynamicValues: { [key: string]: string } = {},
+    ): string | null => {
       const values = getValues(language || defaultLocale);
-      if (!values) throw new Error(`Translation file with language ${language} not found`);
+      if (!values) {
+        throw new Error(`Translation file with language ${language} not found`);
+      }
 
       // Find the correct translation key
       const translation = _.get(values, key);
-      if (!translation) return null;
+      if (!translation) {
+        return null;
+      }
 
       // Make sure to replace dynamic values
       return replaceDynamicValues(translation, dynamicValues);
@@ -47,5 +58,9 @@ export function getTranslator(path: string, defaultLocale: string = 'en'): ITran
 }
 
 export interface ITranslator {
-  translate: (key: string, language?: string, dynamicValues?: { [key: string]: string }) => string;
+  translate: (
+    key: string,
+    language?: string,
+    dynamicValues?: { [key: string]: string },
+  ) => string | null;
 }
