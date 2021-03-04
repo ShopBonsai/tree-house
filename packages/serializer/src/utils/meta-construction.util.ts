@@ -2,7 +2,7 @@ import { isNil, omit, isArray } from 'lodash';
 
 import { IMeta } from '../interfaces';
 
-const getTotalCount = (data: any, totalCount: number | null) =>
+const getTotalCount = (data: any, totalCount: number | null | undefined) =>
   isNil(totalCount) ? data.length : totalCount;
 
 export const constructMeta = (data: any, resource: string, config: IMeta = {}): IMeta => {
@@ -12,13 +12,10 @@ export const constructMeta = (data: any, resource: string, config: IMeta = {}): 
   };
 
   if (isArray(data)) {
-    return Object.assign(
-      meta,
-      {
-        count: data.length,
-        totalCount: getTotalCount(data, config.totalCount),
-      },
-    );
+    return Object.assign(meta, {
+      count: data.length,
+      totalCount: getTotalCount(data, config.totalCount),
+    });
   }
 
   return meta;

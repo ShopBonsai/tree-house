@@ -1,18 +1,19 @@
-import * as request from 'supertest';
-import * as express from 'express';
+import request from 'supertest';
+import express, { NextFunction, Request, Response } from 'express';
 import * as responder from '../../src';
+
 const app = express();
 
 describe('Responder', () => {
   beforeEach(() => {
-    app.use((err, _req, res, _next) => {
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       return res.status(500).json(err.message);
     });
   });
 
   describe('#handleFn', () => {
     beforeAll(() => {
-      const fn = (_req, _res) => {
+      const fn = (_req: Request, _res: Response) => {
         throw new Error('Something went wrong! 💩');
       };
       app.get('/hello', responder.tryCatchRoute(fn));
@@ -27,10 +28,12 @@ describe('Responder', () => {
 
   describe('#handleAsyncFn', () => {
     beforeAll(() => {
-      const fn = (_req, _res) => {
-        return new Promise((_resolve, reject) => setTimeout(() => {
-          reject(new Error('Something went wrong! 💩💩'));
-        }, 2000));
+      const fn = (_req: Request, _res: Response) => {
+        return new Promise((_resolve, reject) =>
+          setTimeout(() => {
+            reject(new Error('Something went wrong! 💩💩'));
+          }, 2000),
+        );
       };
 
       app.get('/helloAsync', responder.tryCatchRoute(fn));

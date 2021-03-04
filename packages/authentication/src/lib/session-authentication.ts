@@ -1,4 +1,4 @@
-import * as session from 'express-session';
+import session from 'express-session';
 import { RequestHandler } from 'express';
 import { DEFAULT_SESSION_CONFIG } from '../config/session.config';
 

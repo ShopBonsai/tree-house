@@ -52,10 +52,7 @@ const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'
     case 'json':
       // Remove Error object if it's present where it's expected to be & stringify
       if (params[errorParamPos] instanceof Error) {
-        return [
-          ...params.slice(0, errorParamPos),
-          ...params.slice(errorParamPos + 1),
-        ].map(stringifyParam);
+        return [...params.slice(0, errorParamPos), ...params.slice(errorParamPos + 1)].map(stringifyParam);
       }
 
       return params.map(stringifyParam);
@@ -68,41 +65,43 @@ const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'
 /**
  * Formats log entry in a GCP compatible format.
  */
-const gcpLogEntryFormat = format((info: TransformableInfo): TransformableInfo => {
-  if (info.level !== 'error') {
-    // TODO: return object in a compatible GCP Logging format
-    return info;
-  }
+const gcpLogEntryFormat = format(
+  (info: TransformableInfo): TransformableInfo => {
+    if (info.level !== 'error') {
+      // TODO: return object in a compatible GCP Logging format
+      return info;
+    }
 
-  const params = getWinstonParams(info);
-  const { message, stack, timestamp, ...rest } = info;
-  const { httpRequest } = params?.reduce((acc, param) => ({ ...acc, ...param })) || {};
+    const params = getWinstonParams(info);
+    const { message, stack, timestamp, ...rest } = info;
+    const { httpRequest } = params?.reduce((acc, param) => ({ ...acc, ...param })) || {};
 
-  // GCP Error Reporting compatible format
-  const errorReportingFormat = {
-    eventTime: timestamp,
-    context: { httpRequest },
-  };
+    // GCP Error Reporting compatible format
+    const errorReportingFormat = {
+      eventTime: timestamp,
+      context: { httpRequest },
+    };
 
-  // No Error object provided
-  if (params === undefined || !(params[errorParamPos] instanceof Error)) {
+    // No Error object provided
+    if (params === undefined || !(params[errorParamPos] instanceof Error)) {
+      return {
+        ...rest,
+        ...errorReportingFormat,
+        // GCP Error Reporting won't catch the error if the message doesn't have an error stack
+        message: new Error(message).stack,
+      };
+    }
+
+    const error = params[errorParamPos];
     return {
       ...rest,
       ...errorReportingFormat,
-      // GCP Error Reporting won't catch the error if the message doesn't have an error stack
-      message: new Error(message).stack,
+      // User provided message & Error message get concatenated. Clean it up
+      label: `${message.replace(error.message, '')}`,
+      message: error.stack,
     };
-  }
-
-  const error = params[errorParamPos];
-  return {
-    ...rest,
-    ...errorReportingFormat,
-    // User provided message & Error message get concatenated. Clean it up
-    label: `${message.replace(error.message, '')}`,
-    message: error.stack,
-  };
-});
+  },
+);
 
 /**
  * Formats parameters by splitting them into multiple strings.
@@ -121,16 +120,10 @@ export const paramsFormat = format(
 export const simpleFormat = () => [
   emojiLevelFormat(),
   format.colorize(),
-  format.printf(
-    ({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`,
-  ),
+  format.printf(({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`),
 ];
 
 /**
  * Formats the log entry in a JSON friendly format.
  */
-export const jsonFormat = () => [
-  gcpLogEntryFormat(),
-  emojiLevelFormat(),
-  format.json(),
-];
+export const jsonFormat = () => [gcpLogEntryFormat(), emojiLevelFormat(), format.json()];

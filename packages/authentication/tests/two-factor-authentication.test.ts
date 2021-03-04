@@ -1,6 +1,6 @@
 import { generateQrCode, verifyToken } from '../src/lib/two-factor-authentication';
-import * as speakeasy from 'speakeasy';
-import * as qrcode from 'qrcode';
+import speakeasy from 'speakeasy';
+import qrcode from 'qrcode';
 
 describe('#Two factor authentication', () => {
   it('Should return a valid qr code and user secret', async () => {
@@ -13,7 +13,7 @@ describe('#Two factor authentication', () => {
   });
 
   it('Should throw an error when QR generation fails', async () => {
-    const qrSpy = jest.spyOn(qrcode, 'toDataURL').mockImplementationOnce((_param, { }, callback) => callback(new Error('Something wong!'), null));
+    const qrSpy = jest.spyOn(qrcode, 'toDataURL').mockImplementationOnce((_param, { }, callback) => callback(new Error('Something wong!'), null as any));
     expect.assertions(3);
     try {
       await generateQrCode();

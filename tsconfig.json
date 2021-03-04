@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "esnext",
+      "esnext.asynciterable"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strictNullChecks": true,
+    "target": "ES2019"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests",
+    "**/*.d.ts",
+    "**/*.js",
+    "**/*.test.ts",
+    "**/__tests__/*.ts",
+    "'**/tests/**/*.ts'",
+  ]
+}

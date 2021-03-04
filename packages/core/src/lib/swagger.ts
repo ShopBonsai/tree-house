@@ -1,8 +1,8 @@
 import { Application } from 'express';
-import * as swaggerUi from 'swagger-ui-express';
-import * as yaml from 'js-yaml';
-import * as fs from 'fs';
-import * as path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Serve swagger documentation

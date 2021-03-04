@@ -15,7 +15,7 @@ export async function authenticateSso(token: string): Promise<{}> {
   const { header, payload } = decodeJwt(token, { complete: true }) as ICompleteJWTToken;
   const { metadata } = await Issuer.discover(payload.iss);
 
-  const secret = await getKey(metadata.jwks_uri, header.kid);
+  const secret = await getKey(metadata.jwks_uri as string, header.kid);
 
   const options = {
     issuer: payload.iss,

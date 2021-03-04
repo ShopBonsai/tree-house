@@ -1,4 +1,4 @@
-import { enableCustomMatchers } from '../..';
+import { enableCustomMatchers } from '../../src';
 
 describe('Jest', () => {
   // Must still be imported to make them actually available

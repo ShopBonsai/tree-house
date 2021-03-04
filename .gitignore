@@ -1,5 +1,6 @@
 # Build folder output
 build
+dist
 
 # Logs
 logs
@@ -14,6 +15,7 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+dist/Release
 
 # Dependency directories
 node_modules
@@ -25,7 +27,13 @@ node_modules
 # NPM
 .npm
 
-# Yarn
+# Yarn 2
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
 .yarnclean
 yarn-error.log
 

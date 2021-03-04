@@ -1,5 +1,5 @@
-import * as crypto from 'crypto';
-import * as bcrypt from 'bcryptjs';
+import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 
 /**
  * Get a hashed password using bcrypt

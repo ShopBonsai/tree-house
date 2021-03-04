@@ -16,7 +16,6 @@ beforeEach(() => {
 });
 
 describe('Basic logger test', () => {
-
   describe('LOG_FORMAT = simple', () => {
     const getLogger = () => {
       const { NSlogger } = require('..');
@@ -69,14 +68,16 @@ describe('Basic logger test', () => {
   describe('LOG_FORMAT = json', () => {
     const getLogger = () => {
       process.env.LOG_FORMAT = 'json';
-      const { NSlogger } = require('..');
+      const { NSlogger, setup } = require('..');
+      setup({ name: '@tree-house/logger', version: '1.2.3' });
+
       return NSlogger('test');
     };
 
     it('Should output a JSON format', () => {
       getLogger().info(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${message.replace('.', '\.')}\\".*}\n$`)),
+        expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${message.replace('.', '.')}\\".*}\n$`)),
       );
     });
 
@@ -95,7 +96,9 @@ describe('Basic logger test', () => {
       getLogger().error(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(
-          new RegExp(`^{.*\\"serviceContext\\":{\\"service\\":\\"@tree-house/logger\\",\\"version\\":\\".*-${process.env.NODE_ENV}\\"}.*}\n$`),
+          new RegExp(
+            `^{.*\\"serviceContext\\":{\\"service\\":\\"@tree-house/logger\\",\\"version\\":\\".*-${process.env.NODE_ENV}\\"}.*}\n$`,
+          ),
         ),
       );
     });
@@ -103,9 +106,7 @@ describe('Basic logger test', () => {
     it('Should output namespace', () => {
       getLogger().error(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(
-          new RegExp('^{.*\\"namespace\\":\\"test\\".*}\n$'),
-        ),
+        expect.stringMatching(new RegExp('^{.*\\"namespace\\":\\"test\\".*}\n$')),
       );
     });
 
@@ -115,9 +116,7 @@ describe('Basic logger test', () => {
       error.stack = lorem.sentence();
       getLogger().error(message, error);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(
-          new RegExp(`^{.*\\"message\\":\\"${error.stack}\\".*}\n$`),
-        ),
+        expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${error.stack}\\".*}\n$`)),
       );
     });
   });

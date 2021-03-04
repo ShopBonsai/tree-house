@@ -1,10 +1,12 @@
-import * as speakeasy from 'speakeasy';
-import * as qrcode from 'qrcode';
+import speakeasy from 'speakeasy';
+import qrcode from 'qrcode';
 
 /**
  * Return a two factor secret
  */
-export function generate2FAKey(options?: speakeasy.GenerateSecretOptions): speakeasy.GeneratedSecret {
+export function generate2FAKey(
+  options?: speakeasy.GenerateSecretOptions,
+): speakeasy.GeneratedSecret {
   return speakeasy.generateSecret(options);
 }
 
@@ -14,9 +16,9 @@ export function generate2FAKey(options?: speakeasy.GenerateSecretOptions): speak
 export function generateQrCode(options?: speakeasy.GenerateSecretOptions): Promise<QrCodeResponse> {
   return new Promise((resolve, reject) => {
     const key = generate2FAKey(options);
-    qrcode.toDataURL(key.otpauth_url, {}, (error, imageData) => {
+    qrcode.toDataURL(key.otpauth_url as string, {}, (error, imageData) => {
       if (error) return reject(error);
-      return resolve({ imageData, secret: key.base32, url: key.otpauth_url });
+      return resolve({ imageData, secret: key.base32, url: key.otpauth_url as string });
     });
   });
 }

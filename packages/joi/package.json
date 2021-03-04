@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/joi",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Provides extra Joi functionality for Typescript",
   "keywords": [
     "NodeJS",
@@ -19,11 +19,11 @@
     "url": "https://github.com/knor-el-snor/tree-house.git"
   },
   "license": "ISC",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc",
-    "clean": "rimraf ./build",
+    "clean": "rimraf ./dist",
     "lint": "tslint 'src/**/*.ts'",
     "prepare": "npm run build",
     "test": "tsc --build ./tsconfig.json"
@@ -34,6 +34,8 @@
   },
   "devDependencies": {
     "rimraf": "~3.0.2",
+    "tslint": "6.1.3",
+    "tslint-config-airbnb": "~5.11.2",
     "typescript": "3.9.7"
   },
   "peerDependencies": {

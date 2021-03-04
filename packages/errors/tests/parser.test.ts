@@ -1,4 +1,4 @@
-import * as httpStatus from 'http-status';
+import httpStatus from 'http-status';
 
 import * as translator from '@tree-house/translations';
 import {
@@ -17,11 +17,13 @@ import { errorDefaults } from '../src/config/defaults.config';
 
 describe('errorParser', () => {
   const defaultError = new ApiError(errorDefaults.DEFAULT_HTTP_CODE, errorDefaults.DEFAULT_ERROR);
-  let translateMock;
+  let translateMock: any;
 
   beforeEach(() => {
     translateMock = jest.fn(() => {});
-    jest.spyOn(translator, 'getTranslator').mockImplementation(() => ({ translate: translateMock }));
+    jest
+      .spyOn(translator, 'getTranslator')
+      .mockImplementation(() => ({ translate: translateMock }));
   });
 
   afterEach(() => {
@@ -211,12 +213,20 @@ describe('errorParser', () => {
     it('Should return false when some properties are missing', () => {
       expect(isJsonApiError()).toEqual(false);
       expect(isJsonApiError({})).toEqual(false);
-      expect(isJsonApiError({ status: httpStatus.NOT_ACCEPTABLE, code: '120', title: 'any Title' })).toEqual(false);
-      expect(isJsonApiError({ status: httpStatus.INTERNAL_SERVER_ERROR, code: '120', detail: 'any Title' })).toEqual(
+      expect(
+        isJsonApiError({ status: httpStatus.NOT_ACCEPTABLE, code: '120', title: 'any Title' }),
+      ).toEqual(false);
+      expect(
+        isJsonApiError({
+          status: httpStatus.INTERNAL_SERVER_ERROR,
+          code: '120',
+          detail: 'any Title',
+        }),
+      ).toEqual(false);
+      expect(isJsonApiError({ code: '120', detail: 'any Title' })).toEqual(false);
+      expect(isJsonApiError({ status: httpStatus.BAD_REQUEST, detail: 'any Title' })).toEqual(
         false,
       );
-      expect(isJsonApiError({ code: '120', detail: 'any Title' })).toEqual(false);
-      expect(isJsonApiError({ status: httpStatus.BAD_REQUEST, detail: 'any Title' })).toEqual(false);
     });
   });
 
