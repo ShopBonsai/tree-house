@@ -18,6 +18,26 @@ yarn add @tree-house/logger
 
 ## Usage
 
+### Setup
+
+Service name & version (required for GCP Error Reporting) are determined by:
+
+1. Environment variables `npm_package_name` and `npm_package_version`.
+2. The options passed into the `setup` function.
+
+The options passed into the `setup` function will override the values provided by the envionrment
+variables (if they were populated to begin with).
+
+To use the `setup` function to populate name & version of your service, add the following to your
+startup code before using `NSLogger`:
+
+```typescript
+import { setup } from '@tree-house/logger';
+
+// NOTE: Name & version should ideally be grabbed from `package.json`
+setup({ name: 'my-service', version: '1.2.3' })
+```
+
 ### Namespaces
 
 You can use this logger with or without namespaces - namespaces help during debugging & are logged to
@@ -55,11 +75,6 @@ NSlogger('my-namespace').error(
   },
 )
 ```
-
-### Service name & version
-
-Service name & version (required for GCP Error Reporting) are determined by environment variables
-`npm_package_name` and `npm_package_version`.
 
 ## Bugs
 

@@ -64,3 +64,24 @@ export interface ILogger {
   info: (message: string, ...args: any[]) => void;
   debug: (message: string, ...args: any[]) => void;
 }
+
+export interface ISetupOptions {
+  // Name of the service
+  name: string;
+  // Version of the service
+  version: string;
+}
+
+/**
+ * Assigns service name & version to log entries.
+ * @param param0 - Name & version of the service to associate with log entries.
+ */
+export const setup = ({ name, version }: ISetupOptions) => {
+  Object.assign(instance.defaultMeta, {
+    ...instance.defaultMeta,
+    serviceContext: {
+      service: name,
+      version: `${version}-${ENV.nodeEnv}`,
+    },
+  });
+}
