@@ -68,7 +68,9 @@ describe('Basic logger test', () => {
   describe('LOG_FORMAT = json', () => {
     const getLogger = () => {
       process.env.LOG_FORMAT = 'json';
-      const { NSlogger } = require('..');
+      const { NSlogger, setup } = require('..');
+      setup({ name: '@tree-house/logger', version: '1.2.3' });
+
       return NSlogger('test');
     };
 
