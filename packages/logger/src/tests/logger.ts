@@ -77,9 +77,7 @@ describe('Basic logger test', () => {
     it('Should output a JSON format', () => {
       getLogger().info(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(
-          new RegExp(`^{.*\\"message\\":\\"${message.replace('.', '.')}\\".*}\n$`),
-        ),
+        expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${message.replace('.', '.')}\\".*}\n$`)),
       );
     });
 

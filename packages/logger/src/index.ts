@@ -84,4 +84,4 @@ export const setup = ({ name, version }: ISetupOptions) => {
       version: `${version}-${ENV.nodeEnv}`,
     },
   });
-}
+};
