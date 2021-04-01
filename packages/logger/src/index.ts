@@ -45,6 +45,8 @@ export const logger: ILogger = {
 
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
+  namespace = ENV.serviceName ? `${ENV.serviceName}:${namespace}` : namespace
+
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
     namespace,
