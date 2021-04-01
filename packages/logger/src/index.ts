@@ -45,7 +45,7 @@ export const logger: ILogger = {
 
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
-  var namespaceModified = '';
+  let namespaceModified = '';
 
   if (ENV.serviceName && namespace) namespaceModified = `${ENV.serviceName}:${namespace}`;
   else namespaceModified = ENV.serviceName && !namespace ? `${ENV.serviceName}` : namespace;
