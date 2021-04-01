@@ -6,10 +6,10 @@ import { format } from 'winston';
 const errorParamPos = 0;
 
 const LEVEL_EMOJI: Record<string, string> = {
-  info: '🍺',
-  warn: '❗️',
+  info: '📚',
+  warn: '⚠️',
   error: '🔥',
-  default: '🤷‍♂️',
+  default: '🤷',
 };
 
 /**
