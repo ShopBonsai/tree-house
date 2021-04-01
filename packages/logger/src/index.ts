@@ -45,17 +45,17 @@ export const logger: ILogger = {
 
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
-  namespace = ENV.serviceName ? `${ENV.serviceName}:${namespace}` : namespace
+  const namespacePrefix = ENV.serviceName ? `${ENV.serviceName}:${namespace}` : namespace;
 
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
-    namespace,
+    namespace: namespacePrefix,
   });
 
   return {
     info: instance.info.bind(instance),
     warn: instance.warn.bind(instance),
-    debug: ENV.logLevel === 'debug' ? getDebugger(namespace) : () => {},
+    debug: ENV.logLevel === 'debug' ? getDebugger(namespacePrefix) : () => {},
     error: instance.error.bind(instance),
   };
 };
