@@ -106,7 +106,7 @@ describe('Basic logger test', () => {
     it('Should output namespace', () => {
       getLogger().error(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(new RegExp('^{.*\\"namespace\\":\\"test\\".*}\n$')),
+        expect.stringMatching(new RegExp('^{.*\\"namespace\\":\\"@tree-house/logger:test\\".*}\n$')),
       );
     });
 
