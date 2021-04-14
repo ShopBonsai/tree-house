@@ -43,18 +43,22 @@ export const logger: ILogger = {
   error: instance.error.bind(instance),
 };
 
-// tslint:disable-next-line: variable-name
-export const NSlogger = (namespace: string = ''): ILogger => {
-  let namespaceModified = '';
+const getNamespace = (namespace: string): string => {
   const service = instance.defaultMeta.serviceContext.service;
 
   if (service && namespace) {
-    namespaceModified = `${service}:${namespace}`;
-  } else if (service && !namespace) {
-    namespaceModified = service;
-  } else {
-    namespaceModified = namespace;
+    return `${service}:${namespace}`;
   }
+  if (service && !namespace) {
+    return service;
+  }
+
+  return namespace;
+};
+
+// tslint:disable-next-line: variable-name
+export const NSlogger = (namespace: string = ''): ILogger => {
+  const namespaceModified = getNamespace(namespace);
 
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
