@@ -7,7 +7,7 @@ import { paramsFormat, jsonFormat, simpleFormat } from './format';
 
 const loggingWinston = new LoggingWinston({serviceContext: {
   service: ENV.serviceName,
-  version: `${ENV.serviceVersion}-${ENV.nodeEnv}`
+  version: `${ENV.serviceVersion}-${ENV.nodeEnv}`,
 }});
 
 const instance: Logger = createLogger({
