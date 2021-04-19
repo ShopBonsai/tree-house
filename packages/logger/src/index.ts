@@ -1,8 +1,14 @@
 import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
+import { LoggingWinston } from '@google-cloud/logging-winston';
 
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
+
+const loggingWinston = new LoggingWinston({serviceContext: {
+  service: ENV.serviceName,
+  version: `${ENV.serviceVersion}-${ENV.nodeEnv}`
+}});
 
 const instance: Logger = createLogger({
   level: ENV.logLevel,
@@ -22,6 +28,7 @@ const instance: Logger = createLogger({
       stderrLevels: ['debug', 'error'],
       consoleWarnLevels: ['warn'],
     }),
+    loggingWinston,
   ],
 });
 
