@@ -30,16 +30,6 @@ describe('Basic logger test', () => {
       );
     });
 
-    it('Should not output anything to console if not in debug environment', () => {
-      getLogger().debug(message, params[0], params[1]);
-      expect(consoleSpy).not.toBeCalledTimes(1);
-    });
-
-    it('Should output formatted error message to console', () => {
-      getLogger().error(message, params[0], params[1]);
-      expect(consoleSpy).toBeCalledTimes(1);
-    });
-
     it('Should output only one line', () => {
       getLogger().error(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(

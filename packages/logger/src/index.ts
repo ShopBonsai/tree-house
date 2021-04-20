@@ -68,19 +68,19 @@ export const NSlogger = (namespace: string = ''): ILogger => {
   });
 
   const params = (msg, severity) =>
-    ENV.nodeEnv !== 'development' ? [msg, { severity, component: 'arbitrary-property' }] : [msg];
+    ENV.nodeEnv !== 'development' ? [...msg, { severity, component: 'arbitrary-property' }] : msg;
 
   return {
-    info: (msg) => {
+    info: (...msg) => {
       instance.info.bind(instance)(...params(msg, 'Info'));
     },
-    warn: (msg) => {
+    warn: (...msg) => {
       instance.warn.bind(instance)(...params(msg, 'Warn'));
     },
-    debug: (msg) => {
-      instance.debug.bind(instance)(...params(msg, 'Debug'));
+    debug: (...msg) => {
+      instance.debug.bind(instance)(params(msg, 'Debug'));
     },
-    error: (msg) => {
+    error: (...msg) => {
       instance.error.bind(instance)(...params(msg, 'Error'));
     },
   };
