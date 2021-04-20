@@ -1,14 +1,11 @@
-import debug from 'debug';
+// import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
 import { LoggingWinston } from '@google-cloud/logging-winston';
 
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
 
-const loggingWinston = new LoggingWinston({serviceContext: {
-  service: ENV.serviceName,
-  version: `${ENV.serviceVersion}-${ENV.nodeEnv}`,
-}});
+const loggingWinston = new LoggingWinston();
 
 const instance: Logger = createLogger({
   level: ENV.logLevel,
@@ -32,16 +29,16 @@ const instance: Logger = createLogger({
   ],
 });
 
-const namespaceRegistry = {};
-const getDebugger = (namespace: string = ''): debug.IDebugger => {
-  if (!namespace) {
-    return debug('');
-  }
-  if (!namespaceRegistry[namespace]) {
-    namespaceRegistry[namespace] = debug(namespace);
-  }
-  return namespaceRegistry[namespace];
-};
+// const namespaceRegistry = {};
+// const getDebugger = (namespace: string = ''): debug.IDebugger => {
+//   if (!namespace) {
+//     return debug('');
+//   }
+//   if (!namespaceRegistry[namespace]) {
+//     namespaceRegistry[namespace] = debug(namespace);
+//   }
+//   return namespaceRegistry[namespace];
+// };
 
 export const logger: ILogger = {
   info: instance.info.bind(instance),
@@ -65,18 +62,19 @@ const getNamespace = (namespace: string): string => {
 
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
-  const namespaceModified = getNamespace(namespace);
-
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
-    namespace: namespaceModified,
+    namespace: getNamespace(namespace),
   });
 
+  const params = (msg, severity) =>
+    ENV.nodeEnv !== 'development' ? [msg, { severity, component: 'arbitrary-property' }] : [msg];
+
   return {
-    info: instance.info.bind(instance),
-    warn: instance.warn.bind(instance),
-    debug: ENV.logLevel === 'debug' ? getDebugger(namespaceModified) : () => {},
-    error: instance.error.bind(instance),
+    info: (msg) => instance.info.bind(instance)(...params(msg, 'Info')),
+    warn: (msg) => instance.warn.bind(instance)(...params(msg, 'Warn')),
+    debug: (msg) => instance.debug.bind(instance)(...params(msg, 'Debug')),
+    error: (msg) => instance.error.bind(instance)(...params(msg, 'Error')),
   };
 };
 
