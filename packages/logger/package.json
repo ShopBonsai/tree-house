@@ -39,9 +39,8 @@
     }
   },
   "dependencies": {
-    "@google-cloud/logging-winston": "^4.0.4",
-    "debug": "4.3.2",
     "json-stringify-safe": "5.0.1",
+    "minimatch": "^3.0.4",
     "winston": "3.3.3"
   },
   "devDependencies": {

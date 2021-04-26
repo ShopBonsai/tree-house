@@ -1,5 +1,5 @@
-// import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
+import minimatch from 'minimatch';
 
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
@@ -21,20 +21,9 @@ const instance: Logger = createLogger({
     new transports.Console({
       stderrLevels: ['debug', 'error'],
       consoleWarnLevels: ['warn'],
-    })
+    }),
   ],
 });
-
-// const namespaceRegistry = {};
-// const getDebugger = (namespace: string = ''): debug.IDebugger => {
-//   if (!namespace) {
-//     return debug('');
-//   }
-//   if (!namespaceRegistry[namespace]) {
-//     namespaceRegistry[namespace] = debug(namespace);
-//   }
-//   return namespaceRegistry[namespace];
-// };
 
 export const logger: ILogger = {
   info: instance.info.bind(instance),
@@ -58,15 +47,18 @@ const getNamespace = (namespace: string): string => {
 
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
+  const newNamespace = getNamespace(namespace);
+  const debugCondition = ENV.logLevel === 'debug' && minimatch(newNamespace, ENV.debug);
+
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
-    namespace: getNamespace(namespace),
+    namespace: newNamespace,
   });
 
   return {
     info: instance.info.bind(instance),
     warn: instance.warn.bind(instance),
-    debug: ENV.logLevel === 'debug' ? instance.debug.bind(instance) : () => {},
+    debug: debugCondition ? instance.debug.bind(instance) : () => {},
     error: instance.error.bind(instance),
   };
 };
