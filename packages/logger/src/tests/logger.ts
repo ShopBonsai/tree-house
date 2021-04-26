@@ -30,6 +30,13 @@ describe('Basic logger test', () => {
       );
     });
 
+    it('Should not output anything to console if not in debug environment', () => {
+      process.env.LOG_LEVEL = 'test';
+      getLogger().debug(message, params[0], params[1]);
+      expect(consoleSpy).not.toBeCalledTimes(1);
+      process.env.LOG_LEVEL = 'debug';
+    });
+
     it('Should output formatted error message to console', () => {
       getLogger().error(message, params[0], params[1]);
       expect(consoleSpy).toBeCalledTimes(1);
