@@ -1,11 +1,8 @@
 // import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
-import { LoggingWinston } from '@google-cloud/logging-winston';
 
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
-
-const loggingWinston = new LoggingWinston();
 
 const instance: Logger = createLogger({
   level: ENV.logLevel,
@@ -24,8 +21,7 @@ const instance: Logger = createLogger({
     new transports.Console({
       stderrLevels: ['debug', 'error'],
       consoleWarnLevels: ['warn'],
-    }),
-    loggingWinston,
+    })
   ],
 });
 
@@ -67,22 +63,11 @@ export const NSlogger = (namespace: string = ''): ILogger => {
     namespace: getNamespace(namespace),
   });
 
-  const params = (msg, severity) =>
-    ENV.nodeEnv !== 'development' ? [...msg, { severity, component: 'arbitrary-property' }] : msg;
-
   return {
-    info: (...msg) => {
-      instance.info.bind(instance)(...params(msg, 'Info'));
-    },
-    warn: (...msg) => {
-      instance.warn.bind(instance)(...params(msg, 'Warn'));
-    },
-    debug: (...msg) => {
-      instance.debug.bind(instance)(params(msg, 'Debug'));
-    },
-    error: (...msg) => {
-      instance.error.bind(instance)(...params(msg, 'Error'));
-    },
+    info: instance.info.bind(instance),
+    warn: instance.warn.bind(instance),
+    debug: ENV.logLevel === 'debug' ? instance.debug.bind(instance) : () => {},
+    error: instance.error.bind(instance),
   };
 };
 
