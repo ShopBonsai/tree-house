@@ -45,9 +45,9 @@ const getNamespace = (namespace: string): string => {
   return namespace;
 };
 
-const debugCondition = (namespace):Boolean =>{
+const debugCondition = (namespace):Boolean => {
   return ENV.logLevel === 'debug' && minimatch(namespace, ENV.debug);
-}
+};
 
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
