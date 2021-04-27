@@ -45,10 +45,13 @@ const getNamespace = (namespace: string): string => {
   return namespace;
 };
 
+const debugCondition = (namespace):Boolean =>{
+  return ENV.logLevel === 'debug' && minimatch(namespace, ENV.debug);
+}
+
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
   const newNamespace = getNamespace(namespace);
-  const debugCondition = ENV.logLevel === 'debug' && minimatch(newNamespace, ENV.debug);
 
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
@@ -58,7 +61,7 @@ export const NSlogger = (namespace: string = ''): ILogger => {
   return {
     info: instance.info.bind(instance),
     warn: instance.warn.bind(instance),
-    debug: debugCondition ? instance.debug.bind(instance) : () => {},
+    debug: debugCondition(newNamespace) ? instance.debug.bind(instance) : () => {},
     error: instance.error.bind(instance),
   };
 };

@@ -122,4 +122,29 @@ describe('Basic logger test', () => {
       );
     });
   });
+
+  describe('Testing DEBUG', () => {
+    const getDebugLogger = (debug) => {
+      process.env.LOG_LEVEL = 'debug';
+      process.env.DEBUG = debug;
+      const { NSlogger, setup } = require('..');
+      setup({ name: '@tree-house/logger', version: '1.2.3' });
+      return NSlogger('test');
+    };
+
+    it('Should not output formatted debug message to console', () => {
+      getDebugLogger('fail').debug(message, params[0], params[1]);
+      expect(consoleSpy).not.toBeCalledTimes(1);
+    });
+
+    it('Should output formatted debug message to console', () => {
+      getDebugLogger('@tree-house/logger:test').debug(message, params[0], params[1]);
+      expect(consoleSpy).toBeCalledTimes(1);
+    });
+
+    it('Should output formatted debug message to console', () => {
+      getDebugLogger('@tree-house/*').debug(message, params[0], params[1]);
+      expect(consoleSpy).toBeCalledTimes(1);
+    });
+  });
 });
