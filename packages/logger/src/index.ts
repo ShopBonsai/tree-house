@@ -45,12 +45,11 @@ const getNamespace = (namespace: string): string => {
   return namespace;
 };
 
-
 /**
  * Returns `true` if the namespace matched `process.env.DEBUG` glob.
  * @param namespace Namespace used in debug logs.
  */
-const shouldLogDebug = (namespace):Boolean => {
+const shouldLogDebug = (namespace): Boolean => {
   return minimatch(namespace, ENV.debug);
 };
 
