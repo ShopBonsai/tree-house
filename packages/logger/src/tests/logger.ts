@@ -32,13 +32,13 @@ describe('Basic logger test', () => {
 
     it('Should not output anything to console if not in debug environment', () => {
       process.env.LOG_LEVEL = 'test';
-      getLogger().debug(message, params[0], params[1]);
+      getLogger().debug(message, ...params);
       expect(consoleSpy).not.toBeCalledTimes(1);
       process.env.LOG_LEVEL = 'debug';
     });
 
     it('Should output formatted error message to console', () => {
-      getLogger().error(message, params[0], params[1]);
+      getLogger().error(message, ...params);
       expect(consoleSpy).toBeCalledTimes(1);
     });
 
@@ -57,7 +57,7 @@ describe('Basic logger test', () => {
     });
 
     it('Should output formatted warn message to console', () => {
-      getLogger().warn(message, params[0], params[1]);
+      getLogger().warn(message, ...params);
       expect(consoleSpy).toBeCalledTimes(1);
     });
 
@@ -124,26 +124,31 @@ describe('Basic logger test', () => {
   });
 
   describe('Testing DEBUG', () => {
-    const getDebugLogger = (debug) => {
-      process.env.LOG_LEVEL = 'debug';
-      process.env.DEBUG = debug;
+    const getDebugLogger = (namespace: string, logLevel: string = 'debug') => {
+      process.env.LOG_LEVEL = logLevel;
+      process.env.DEBUG = namespace;
       const { NSlogger, setup } = require('..');
       setup({ name: '@tree-house/logger', version: '1.2.3' });
       return NSlogger('test');
     };
 
-    it('Should not output formatted debug message to console', () => {
-      getDebugLogger('fail').debug(message, params[0], params[1]);
-      expect(consoleSpy).not.toBeCalledTimes(1);
+    it('Should not output debug message to console when log level is `info`', () => {
+      getDebugLogger('@tree-house/logger:test', 'info').debug(message, ...params);
+      expect(consoleSpy).not.toBeCalled();
     });
 
-    it('Should output formatted debug message to console', () => {
-      getDebugLogger('@tree-house/logger:test').debug(message, params[0], params[1]);
+    it('Should not output debug message to console when namespaces don\'t match', () => {
+      getDebugLogger('fail').debug(message, ...params);
+      expect(consoleSpy).not.toBeCalled();
+    });
+
+    it('Should output formatted debug message to console when full namespace matches', () => {
+      getDebugLogger('@tree-house/logger:test').debug(message, ...params);
       expect(consoleSpy).toBeCalledTimes(1);
     });
 
-    it('Should output formatted debug message to console', () => {
-      getDebugLogger('@tree-house/*').debug(message, params[0], params[1]);
+    it('Should output formatted debug message to console when glob namespace matches', () => {
+      getDebugLogger('@tree-house/*').debug(message, ...params);
       expect(consoleSpy).toBeCalledTimes(1);
     });
   });

@@ -15,6 +15,6 @@ module.exports = {
     '\\.(ts|tsx)$': 'ts-jest',
   },
   testRegex: '/tests/.*\\.(ts|tsx|js)$',
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  testPathIgnorePatterns: ['/node_modules/', '/build/'],
   coveragePathIgnorePatterns: ['/node_modules/', 'src/index.ts', 'src/config'],
 };

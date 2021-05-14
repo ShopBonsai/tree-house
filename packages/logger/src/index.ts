@@ -45,8 +45,13 @@ const getNamespace = (namespace: string): string => {
   return namespace;
 };
 
-const debugCondition = (namespace):Boolean => {
-  return ENV.logLevel === 'debug' && minimatch(namespace, ENV.debug);
+
+/**
+ * Returns `true` if the namespace matched `process.env.DEBUG` glob.
+ * @param namespace Namespace used in debug logs.
+ */
+const shouldLogDebug = (namespace):Boolean => {
+  return minimatch(namespace, ENV.debug);
 };
 
 // tslint:disable-next-line: variable-name
@@ -61,7 +66,7 @@ export const NSlogger = (namespace: string = ''): ILogger => {
   return {
     info: instance.info.bind(instance),
     warn: instance.warn.bind(instance),
-    debug: debugCondition(newNamespace) ? instance.debug.bind(instance) : () => {},
+    debug: shouldLogDebug(newNamespace) ? instance.debug.bind(instance) : () => {},
     error: instance.error.bind(instance),
   };
 };
