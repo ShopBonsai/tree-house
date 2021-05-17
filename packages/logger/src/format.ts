@@ -9,6 +9,7 @@ const LEVEL_EMOJI: Record<string, string> = {
   info: '📚',
   warn: '⚠️',
   error: '🔥',
+  debug: '🐛',
   default: '🤷',
 };
 
@@ -43,7 +44,10 @@ const stringifyParam = (obj: any) => stringify(obj);
  * If `logFormat` is `json`, Error object is omitted since it'll be included as `message`.
  * If `logFormat` is `simple`, `EOL` is printed at the start of each string.
  */
-const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'): string[] | undefined => {
+const stringifyParams = (
+  params: any[] | undefined,
+  logFormat: 'simple' | 'json',
+): string[] | undefined => {
   if (params === undefined) {
     return params;
   }
@@ -52,7 +56,9 @@ const stringifyParams = (params: any[] | undefined, logFormat: 'simple' | 'json'
     case 'json':
       // Remove Error object if it's present where it's expected to be & stringify
       if (params[errorParamPos] instanceof Error) {
-        return [...params.slice(0, errorParamPos), ...params.slice(errorParamPos + 1)].map(stringifyParam);
+        return [...params.slice(0, errorParamPos), ...params.slice(errorParamPos + 1)].map(
+          stringifyParam,
+        );
       }
 
       return params.map(stringifyParam);
@@ -69,7 +75,7 @@ const gcpLogEntryFormat = format(
   (info: TransformableInfo): TransformableInfo => {
     if (info.level !== 'error') {
       // TODO: return object in a compatible GCP Logging format
-      return info;
+      return { ...info, severity: info.level };
     }
 
     const params = getWinstonParams(info);
@@ -79,6 +85,7 @@ const gcpLogEntryFormat = format(
     // GCP Error Reporting compatible format
     const errorReportingFormat = {
       eventTime: timestamp,
+      severity: info.level,
       context: { httpRequest },
     };
 
@@ -120,7 +127,9 @@ export const paramsFormat = format(
 export const simpleFormat = () => [
   emojiLevelFormat(),
   format.colorize(),
-  format.printf(({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`),
+  format.printf(
+    ({ level, message, timestamp, params = '' }) => `${level} ${timestamp}: ${message}${params}`,
+  ),
 ];
 
 /**

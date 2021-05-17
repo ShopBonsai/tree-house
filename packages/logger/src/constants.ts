@@ -5,4 +5,5 @@ export const ENV = {
   logLevel: process.env.LOG_LEVEL || 'debug',
   // `LOG_FORMAT` can be either `simple` or `json`
   logFormat: process.env.LOG_FORMAT || 'simple',
+  debug: process.env.DEBUG || '*',
 };

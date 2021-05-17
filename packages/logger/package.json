@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/logger",
-  "version": "2.3.0-rc.1",
+  "version": "2.3.0-rc.2",
   "description": "Simple and fast JSON logging library for node.js services.",
   "keywords": [
     "NodeJS",
@@ -39,8 +39,8 @@
     }
   },
   "dependencies": {
-    "debug": "4.3.2",
     "json-stringify-safe": "5.0.1",
+    "minimatch": "^3.0.4",
     "winston": "3.3.3"
   },
   "devDependencies": {

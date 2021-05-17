@@ -1,5 +1,5 @@
-import debug from 'debug';
 import { format, Logger, createLogger, transports } from 'winston';
+import minimatch from 'minimatch';
 
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
@@ -25,17 +25,6 @@ const instance: Logger = createLogger({
   ],
 });
 
-const namespaceRegistry = {};
-const getDebugger = (namespace: string = ''): debug.IDebugger => {
-  if (!namespace) {
-    return debug('');
-  }
-  if (!namespaceRegistry[namespace]) {
-    namespaceRegistry[namespace] = debug(namespace);
-  }
-  return namespaceRegistry[namespace];
-};
-
 export const logger: ILogger = {
   info: instance.info.bind(instance),
   warn: instance.warn.bind(instance),
@@ -56,19 +45,27 @@ const getNamespace = (namespace: string): string => {
   return namespace;
 };
 
+/**
+ * Returns `true` if the namespace matched `process.env.DEBUG` glob.
+ * @param namespace Namespace used in debug logs.
+ */
+const shouldLogDebug = (namespace): Boolean => {
+  return minimatch(namespace, ENV.debug);
+};
+
 // tslint:disable-next-line: variable-name
 export const NSlogger = (namespace: string = ''): ILogger => {
-  const namespaceModified = getNamespace(namespace);
+  const newNamespace = getNamespace(namespace);
 
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
-    namespace: namespaceModified,
+    namespace: newNamespace,
   });
 
   return {
     info: instance.info.bind(instance),
     warn: instance.warn.bind(instance),
-    debug: ENV.logLevel === 'debug' ? getDebugger(namespaceModified) : () => {},
+    debug: shouldLogDebug(newNamespace) ? instance.debug.bind(instance) : () => {},
     error: instance.error.bind(instance),
   };
 };
