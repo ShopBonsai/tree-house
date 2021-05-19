@@ -4,7 +4,7 @@ import minimatch from 'minimatch';
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
 
-const instance: Logger = createLogger({
+const createLoggerInstance = (defaultMeta: { [key: string]: string; } = {}) => createLogger({
   level: ENV.logLevel,
   format: format.combine(
     format.timestamp({ alias: 'timestamp' }),
@@ -15,6 +15,7 @@ const instance: Logger = createLogger({
     serviceContext: {
       service: ENV.serviceName,
       version: `${ENV.serviceVersion}-${ENV.nodeEnv}`,
+      ...defaultMeta,
     },
   },
   transports: [
@@ -24,6 +25,8 @@ const instance: Logger = createLogger({
     }),
   ],
 });
+
+const instance: Logger = createLoggerInstance();
 
 export const logger: ILogger = {
   info: instance.info.bind(instance),
@@ -57,16 +60,16 @@ const shouldLogDebug = (namespace): Boolean => {
 export const NSlogger = (namespace: string = ''): ILogger => {
   const newNamespace = getNamespace(namespace);
 
-  Object.assign(instance.defaultMeta, {
+  const loggerInstance = createLoggerInstance({
     ...instance.defaultMeta,
     namespace: newNamespace,
   });
 
   return {
-    info: instance.info.bind(instance),
-    warn: instance.warn.bind(instance),
-    debug: shouldLogDebug(newNamespace) ? instance.debug.bind(instance) : () => {},
-    error: instance.error.bind(instance),
+    info: loggerInstance.info.bind(loggerInstance),
+    warn: loggerInstance.warn.bind(loggerInstance),
+    debug: shouldLogDebug(newNamespace) ? loggerInstance.debug.bind(loggerInstance) : () => {},
+    error: loggerInstance.error.bind(loggerInstance),
   };
 };
 
