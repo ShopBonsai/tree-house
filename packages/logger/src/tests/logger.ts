@@ -1,4 +1,5 @@
 import { lorem } from 'faker';
+import { ILogger } from '../index';
 
 const mockDate = new Date(0);
 jest.spyOn(global, 'Date').mockImplementation(() => mockDate as any); // TypeScript workaround
@@ -68,12 +69,12 @@ describe('Basic logger test', () => {
   });
 
   describe('LOG_FORMAT = json', () => {
-    const getLogger = () => {
+    const getLogger = (namespace = 'test'): ILogger => {
       process.env.LOG_FORMAT = 'json';
       const { NSlogger, setup } = require('..');
       setup({ name: '@tree-house/logger', version: '1.2.3' });
 
-      return NSlogger('test');
+      return NSlogger(namespace);
     };
 
     it('Should output a JSON format', () => {
@@ -110,6 +111,26 @@ describe('Basic logger test', () => {
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(new RegExp('^{.*\\"namespace\\":\\"@tree-house/logger:test\\".*}\n$')),
       );
+    });
+
+    it('Should output 2 different namespaces', () => {
+      const logger1 = getLogger();
+      const logger2 = getLogger('namespace');
+
+      const testNamespace = ({ logger, namespace }: { logger: ILogger, namespace: string }) => {
+        logger.error(message);
+
+        expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+          expect.stringMatching(new RegExp(`^{.*\\"namespace\\":\\"@tree-house/logger:${namespace}\\".*}\n$`)),
+        );
+      };
+
+      const loggers = [
+        { logger: logger1, namespace: 'test' },
+        { logger: logger2, namespace: 'namespace' },
+      ];
+
+      loggers.forEach(testNamespace);
     });
 
     it('Should output Error stack as message', () => {
