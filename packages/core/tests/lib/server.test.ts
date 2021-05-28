@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Application } from 'express';
 import request from 'supertest';
 import { startServer } from '../../src';
 
@@ -14,54 +14,59 @@ const CONFIGURATION = {
 
 describe('Initialise things before running application', () => {
   describe('#startServer', () => {
-    let app;
+    let app: Application;
 
     beforeEach(() => {
       app = express();
     });
 
-    it('should start http server', async (done) => {
+    it('should start http server', async () => {
       startServer(app, CONFIGURATION);
 
       app.use('/', (_req, res) => res.json('welcome'));
       const response = await request(app).get('/');
       expect(response.status).toEqual(200);
-
-      done();
     });
 
-    it('should start http server with provided pre-hook', async (done) => {
+    it('should start http server with provided pre-hook', async () => {
       const mockFn = jest.fn();
       await startServer(app, { port: 5003, pre: mockFn });
       expect(mockFn).toHaveBeenCalledTimes(1);
-
-      done();
     });
 
-    it('should throw an error when error occurs in the provided pre-hook', async (done) => {
+    it('should throw an error when error occurs in the provided pre-hook', async () => {
       const mockFn = jest.fn(() => {
         throw new Error('myPreHookError');
       });
+
       expect.assertions(2);
+
       try {
         await startServer(app, { port: 6001, pre: mockFn });
       } catch (error) {
         expect(mockFn).toHaveBeenCalledTimes(1);
         expect(error.message).toEqual('myPreHookError');
       }
-
-      done();
     });
 
-    it('should start http server with provided post-hook', async (done) => {
+    it('should start http server with provided post-hook', async () => {
       const mockFn = jest.fn();
       await startServer(app, { port: 5004, post: mockFn });
       expect(mockFn).toHaveBeenCalledTimes(1);
-
-      done();
     });
 
-    it('should throw an error when error occurs in the provided post-hook', async (done) => {
+    it('Should start http server with version check', async () => {
+      await startServer(app, { port: 5006, version: { enabled: true, value: '0.1' } });
+
+      const response = await request(app).get('/version');
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({
+        status: 'ok',
+        info: '0.1',
+      });
+    });
+
+    it('should throw an error when error occurs in the provided post-hook', async () => {
       const mockFn = jest.fn(() => {
         throw new Error('myPostHookError');
       });
@@ -72,11 +77,9 @@ describe('Initialise things before running application', () => {
         expect(mockFn).toHaveBeenCalledTimes(1);
         expect(error.message).toEqual('myPostHookError');
       }
-
-      done();
     });
 
-    it('start http server should throw error on invalid https configuration', async (done) => {
+    it('start http server should throw error on invalid https configuration', async () => {
       const WRONG_CONFIGURATION = Object.assign({}, CONFIGURATION, {
         title: 'Tree House',
         port: 5000,
@@ -94,8 +97,6 @@ describe('Initialise things before running application', () => {
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toContain('Something went wrong while fetching keys');
       }
-
-      done();
     });
   });
 });

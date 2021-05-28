@@ -1,6 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 const redisMock = require('redis-mock');
+
 import { setBasicSecurity, setBodyParser, getRateLimiter } from '../../src';
 
 describe('Express', () => {
@@ -11,7 +12,7 @@ describe('Express', () => {
       app = express();
     });
 
-    it('app should have security headers', async (done) => {
+    it('app should have security headers', async () => {
       setBasicSecurity(app, '*');
       app.use('/', (_req, res) => res.status(200).send('Welcome'));
 
@@ -29,8 +30,6 @@ describe('Express', () => {
 
       // cors
       expect(headers).toHaveProperty('access-control-allow-origin');
-
-      done();
     });
   });
 
@@ -89,14 +88,14 @@ describe('Express', () => {
       app = express();
     });
 
-    it('set default rateLimiter', async (done) => {
+    it('set default rateLimiter', async () => {
       const rateLimiter = getRateLimiter();
       app.use('/', rateLimiter, (_req, res) => res.status(200).send('Welcome'));
 
-      done();
+      expect(1).toEqual(1)
     });
 
-    it('rateLimiter should return 429 on too many tries', async (done) => {
+    it('rateLimiter should return 429 on too many tries', async () => {
       const rateLimiter = getRateLimiter({ max: 2 });
       app.use('/', rateLimiter, (_req, res) => res.status(200).send('Welcome'));
 
@@ -108,11 +107,9 @@ describe('Express', () => {
 
       const { status: status3 } = await request(app).get('/');
       expect(status3).toEqual(429);
-
-      done();
     });
 
-    it('rateLimiter with custom redisStore', async (done) => {
+    it('rateLimiter with custom redisStore', async () => {
       const redisClient = redisMock.createClient();
 
       const rateLimiter = getRateLimiter({ redis: { client: redisClient } });
@@ -120,8 +117,6 @@ describe('Express', () => {
 
       const { status } = await request(app).get('/');
       expect(status).toEqual(200);
-
-      done();
     });
   });
 });

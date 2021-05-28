@@ -127,6 +127,14 @@ treehouse.startServer(app, {
     port: 3001,
     privateKey: 'assets/ssl.key',
     certificate: 'assets/ssl.cert',
+  },
+  healthCheck: {    // Adds graceful shutdown and Kubernetes readiness / liveness checks for any HTTP applications. (optional) 
+    enabled: true,
+    uri: '/health'  // Defaults to `/healthcheck`
+  },
+  version: {        // Adds version endpoint to see which version is running
+    enabled: true,
+    value: 'v0.1',  // Defaults to process.env.npm_package_version
   }
 })
 ```
