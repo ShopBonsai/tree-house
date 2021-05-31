@@ -14,6 +14,11 @@ export async function startServer(app: Application, options: ServerOptions): Pro
   try {
     if (options.pre) await preHook(options.pre, logger);
 
+    // Optional version check
+    if (version?.enabled) {
+      enableVersionCheck(app, version.value);
+    }
+
     const httpServer = http.createServer(app);
     httpServer.listen(options.port);
     logger.info(`${options.title || 'TreeHouse'} HTTP NodeJS Server listening on port ${options.port}`);
@@ -26,11 +31,6 @@ export async function startServer(app: Application, options: ServerOptions): Pro
       );
       httpsServer.listen(options.https.port);
       logger.info(`${options.title || 'TreeHouse'} HTTPS NodeJS Server listening on port ${options.https.port}`);
-    }
-
-    // Optional version check
-    if (version?.enabled) {
-      enableVersionCheck(app, version.value);
     }
 
     // Optional Kubernetes health checks
