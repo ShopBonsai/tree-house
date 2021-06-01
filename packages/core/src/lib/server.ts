@@ -9,7 +9,7 @@ import fs from 'fs';
  * Start an http/https server from the given Express instance
  */
 export async function startServer(app: Application, options: ServerOptions): Promise<void> {
-  const { logger = console, version, healthCheck } = options;
+  const { logger = console, version, healthCheck, catchAll } = options;
 
   try {
     if (options.pre) await preHook(options.pre, logger);
@@ -36,6 +36,11 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     // Optional Kubernetes health checks
     if (healthCheck?.enabled) {
       enableHealthCheck(app, httpServer, { ...healthCheck, logger });
+    }
+
+    // Optional catch all route if no match was found
+    if (catchAll) {
+      app.all('*', catchAll);
     }
 
     // Optional callback function
@@ -143,6 +148,7 @@ export interface ServerOptions {
   logger?: ILogger;
   version?: IVersionOptions;
   healthCheck?: IHealthCheckOptions;
+  catchAll?: (req: Request, res: Response) => any; // Catches all unmatched routes.
 }
 
 export interface IVersionOptions {
