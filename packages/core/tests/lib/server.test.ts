@@ -55,8 +55,15 @@ describe('Initialise things before running application', () => {
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
-    it('Should start http server with version check', async () => {
-      await startServer(app, { port: 5006, version: { enabled: true, value: '0.1' } });
+    it('Should start http server with version check & catch all', async () => {
+      await startServer(app, {
+        port: 5006,
+        version: {
+          enabled: true,
+          value: '0.1',
+        },
+        catchAll: (_req, res) => res.sendStatus(404),
+      });
 
       const response = await request(app).get('/version');
       expect(response.status).toEqual(200);
@@ -64,6 +71,9 @@ describe('Initialise things before running application', () => {
         status: 'ok',
         info: '0.1',
       });
+
+      const catchAllResponse = await request(app).get('/unknown');
+      expect(catchAllResponse.status).toEqual(404);
     });
 
     it('should throw an error when error occurs in the provided post-hook', async () => {

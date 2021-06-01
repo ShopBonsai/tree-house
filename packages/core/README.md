@@ -132,10 +132,11 @@ treehouse.startServer(app, {
     enabled: true,
     uri: '/health'  // Defaults to `/healthcheck`
   },
-  version: {        // Adds version endpoint to see which version is running
+  version: {        // Adds version endpoint to see which version is running (optional)
     enabled: true,
     value: 'v0.1',  // Defaults to process.env.npm_package_version
-  }
+  },
+  catchAll: (_req, res) => res.sendStatus(404), // Catches all unmatched routes (optional)
 })
 ```
 
