@@ -3,6 +3,7 @@ import minimatch from 'minimatch';
 
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
+import { serviceContext } from './serviceContext';
 
 const createLoggerInstance = (defaultMeta: { [key: string]: string; } = {}) => createLogger({
   level: ENV.logLevel,
@@ -12,10 +13,10 @@ const createLoggerInstance = (defaultMeta: { [key: string]: string; } = {}) => c
     ...(ENV.logFormat === 'json' ? jsonFormat() : simpleFormat()),
   ),
   defaultMeta: {
+    ...defaultMeta,
     serviceContext: {
-      service: ENV.serviceName,
-      version: `${ENV.serviceVersion}-${ENV.nodeEnv}`,
-      ...defaultMeta,
+      service: serviceContext.getName(),
+      version: serviceContext.getVersion(),
     },
   },
   transports: [
@@ -92,11 +93,14 @@ export interface ISetupOptions {
  * @param param0 - Name & version of the service to associate with log entries.
  */
 export const setup = ({ name, version }: ISetupOptions) => {
+  serviceContext.setName(name);
+  serviceContext.setVersion(`${version}-${ENV.nodeEnv}`);
+
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
     serviceContext: {
-      service: name,
-      version: `${version}-${ENV.nodeEnv}`,
+      service: serviceContext.getName(),
+      version: serviceContext.getVersion(),
     },
   });
 };

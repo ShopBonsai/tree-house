@@ -106,6 +106,17 @@ describe('Basic logger test', () => {
       );
     });
 
+    it('Should output serviceContext only once', () => {
+      getLogger().error(message);
+      expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+        expect.stringMatching(
+          new RegExp(
+            '^(?:(?!serviceContext).)*serviceContext(?!.*serviceContext).*\n$',
+          ),
+        ),
+      );
+    });
+
     it('Should output namespace', () => {
       getLogger().error(message);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
