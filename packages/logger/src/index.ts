@@ -1,5 +1,4 @@
 import { format, Logger, createLogger, transports } from 'winston';
-import minimatch from 'minimatch';
 
 import { ENV } from './constants';
 import { paramsFormat, jsonFormat, simpleFormat } from './format';
@@ -54,7 +53,28 @@ const getNamespace = (namespace: string): string => {
  * @param namespace Namespace used in debug logs.
  */
 const shouldLogDebug = (namespace): Boolean => {
-  return minimatch(namespace, ENV.debug);
+  // `ENV.debug` could contain multiple namespaces separated by commas, so split them up.
+  const debugGlobs = ENV.debug.split(/[\s,]+/);
+
+  // Convert stars into regex.
+  const debugRegexPatterns = debugGlobs.map(ns => ns.replace(/\*/g, '.*?'));
+
+  // Generate a list of regex patterns to be skipped & to be logged.
+  const { skips, names } = debugRegexPatterns.reduce((prev, pattern) => {
+    const shouldSkip = pattern[0] === '-';
+    return {
+      skips: [...prev.skips, ...(shouldSkip ? [new RegExp(`^${pattern.substr(1)}$`)] : [])],
+      names: [...prev.names, ...(!shouldSkip ? [new RegExp(`^${pattern}$`)] : [])],
+    };
+  }, { skips: [], names: [] } as Record<string, RegExp[]>);
+
+  const shouldSkip = skips.some(skipRegex => skipRegex.test(namespace));
+  if (shouldSkip) {
+    return false;
+  }
+
+  const shouldLog = names.some(nameRegex => nameRegex.test(namespace));
+  return shouldLog;
 };
 
 // tslint:disable-next-line: variable-name

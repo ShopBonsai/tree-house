@@ -25,7 +25,7 @@ Service name & version (required for GCP Error Reporting) are determined by:
 1. Environment variables `npm_package_name` and `npm_package_version`.
 2. The options passed into the `setup` function.
 
-The options passed into the `setup` function will override the values provided by the envionrment
+The options passed into the `setup` function will override the values provided by the environment
 variables (if they were populated to begin with).
 
 To use the `setup` function to populate name & version of your service, add the following to your
@@ -49,6 +49,16 @@ import { NSLogger, logger } from '@tree-house/logger';
 NSLogger('my-namespace').info('tree house logger');
 logger.info('tree house logger');
 ```
+
+### Debug
+
+You can enable/disable all/some debug logs based on `LOG_LEVEL` and `DEBUG` environment variables.
+If you set `LOG_LEVEL` to `debug` (the default), you can use the `DEBUG` environment variable to
+enable these based on comma-delimited names.
+
+To skip a specific namespace: `DEBUG=*,-not_this`
+To log a specific namespace: `DEBUG=this:*`
+To log multiple namespaces: `DEBUG=this:*,that:*`
 
 ### Errors
 

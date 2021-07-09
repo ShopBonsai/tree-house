@@ -156,31 +156,69 @@ describe('Basic logger test', () => {
   });
 
   describe('Testing DEBUG', () => {
-    const getDebugLogger = (namespace: string, logLevel: string = 'debug') => {
+    const getDebugLogger = (debugNamespace: string, logLevel: string = 'debug') => {
       process.env.LOG_LEVEL = logLevel;
-      process.env.DEBUG = namespace;
+      process.env.DEBUG = debugNamespace;
       const { NSlogger, setup } = require('..');
       setup({ name: '@tree-house/logger', version: '1.2.3' });
-      return NSlogger('test');
+
+      return (loggerNamespace = 'test') => NSlogger(loggerNamespace);
     };
 
     it('Should not output debug message to console when log level is `info`', () => {
-      getDebugLogger('@tree-house/logger:test', 'info').debug(message, ...params);
+      getDebugLogger('@tree-house/logger:test', 'info')().debug(message, ...params);
       expect(consoleSpy).not.toBeCalled();
     });
 
     it('Should not output debug message to console when namespaces don\'t match', () => {
-      getDebugLogger('fail').debug(message, ...params);
+      getDebugLogger('fail')().debug(message, ...params);
       expect(consoleSpy).not.toBeCalled();
     });
 
     it('Should output formatted debug message to console when full namespace matches', () => {
-      getDebugLogger('@tree-house/logger:test').debug(message, ...params);
+      getDebugLogger('@tree-house/logger:test')().debug(message, ...params);
       expect(consoleSpy).toBeCalledTimes(1);
     });
 
     it('Should output formatted debug message to console when glob namespace matches', () => {
-      getDebugLogger('@tree-house/*').debug(message, ...params);
+      getDebugLogger('@tree-house/*')().debug(message, ...params);
+      expect(consoleSpy).toBeCalledTimes(1);
+    });
+
+    it('Should output formatted debug message to console when logger namespace has `/`', () => {
+      getDebugLogger('@tree-house/logger:*', 'debug')('logger/test').debug(message, ...params);
+      expect(consoleSpy).toBeCalledTimes(1);
+    });
+
+    it('Should not output formatted debug message to console when using `-` to skip logs', () => {
+      getDebugLogger('-@tree-house/logger:*')().debug(message, ...params);
+      expect(consoleSpy).toBeCalledTimes(0);
+    });
+
+    it('Should output formatted debug message to console when using multiple skips with a star', () => {
+      const logger = getDebugLogger('*,-@tree-house/logger:test,-@tree-house/logger:log');
+      logger().debug(message, ...params);
+      logger('log').debug(message, ...params);
+      logger(lorem.word()).debug(message, ...params);
+
+      expect(consoleSpy).toBeCalledTimes(1);
+    });
+
+    it('Should output formatted debug messages to console when using multiple filters', () => {
+      const logger = getDebugLogger('@tree-house/logger:test,@tree-house/logger:log');
+      logger().debug(message, ...params);
+      logger('log').debug(message, ...params);
+      logger(lorem.word()).debug(message, ...params);
+
+      expect(consoleSpy).toBeCalledTimes(2);
+    });
+
+    it('Should output formatted debug messages to console when using multiple filters & skip logs', () => {
+      const logger = getDebugLogger('-@tree-house/logger:test,@tree-house/logger:log');
+      logger().debug(message, ...params);
+      logger('log').debug(message, ...params);
+      logger(lorem.word()).debug(message, ...params);
+
       expect(consoleSpy).toBeCalledTimes(1);
     });
   });
