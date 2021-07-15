@@ -2,6 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as joi from 'joi';
+import { validateJoiSchema } from './utils/validator';
 
 type ArrayType<T> = T extends (infer U)[] ? U : never;
 
@@ -460,3 +461,5 @@ declare module 'joi' {
          */
         extractOne<T>;
 }
+
+export { validateJoiSchema };
