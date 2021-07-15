@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/joi",
-  "version": "1.4.0",
+  "version": "2.0.0-rc.1",
   "description": "Provides extra Joi functionality for Typescript",
   "keywords": [
     "NodeJS",
@@ -29,8 +29,7 @@
     "test": "tsc --build ./tsconfig.json"
   },
   "dependencies": {
-    "@hapi/joi": "~15",
-    "@types/hapi__joi": "~15"
+    "joi": "~17"
   },
   "devDependencies": {
     "rimraf": "~3.0.2",
@@ -39,6 +38,6 @@
     "typescript": "3.9.7"
   },
   "peerDependencies": {
-    "@hapi/joi": "~15"
+    "joi": "~17"
   }
 }
