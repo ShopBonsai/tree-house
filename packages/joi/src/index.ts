@@ -7,6 +7,7 @@ type ArrayType<T> = T extends (infer U)[] ? U : never;
 
 declare module 'joi' {
   interface Root {
+    // tslint:disable-next-line: prefer-array-literal
     extend(...extensions: Array<joi.Extension | joi.ExtensionFactory>): this;
 
     any<T extends any>(): BoxAnySchema<Box<T, false>>;
@@ -433,6 +434,7 @@ declare module 'joi' {
      *                            ^ cycle
      * ```
      */
+    // tslint:disable-next-line: prefer-array-literal
     T extends Array<infer O>
       ? O extends joi.SchemaLike
         ? extractOne<O>
