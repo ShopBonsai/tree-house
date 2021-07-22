@@ -2085,6 +2085,7 @@ __metadata:
     "@types/cors": 2.8.6
     "@types/express": 4.17.7
     "@types/express-rate-limit": 5.0.0
+    "@types/express-serve-static-core": 4.17.24
     "@types/helmet": 4.0.0
     "@types/jest": 26.0.23
     "@types/js-yaml": ~3.12.5
@@ -2351,6 +2352,17 @@ __metadata:
     "@types/qs": "*"
     "@types/range-parser": "*"
   checksum: efb5f5b662b00643cf266937ffd676e80dd89fbb6d70a85a8ce646444435a100b0fbb5bd7231f5c9872855aa56769b71b83afb1542c640d56e64d3de5917b64d
+  languageName: node
+  linkType: hard
+
+"@types/express-serve-static-core@npm:4.17.24":
+  version: 4.17.24
+  resolution: "@types/express-serve-static-core@npm:4.17.24"
+  dependencies:
+    "@types/node": "*"
+    "@types/qs": "*"
+    "@types/range-parser": "*"
+  checksum: 30fc9b62a7cc52fa320fbdf11510b20d91c1aa55d99d90ecb51708b9178aa670f2aaa94eed01f68a96a1a80b3575f1143c0cb23b0e69d60070d6d6d42e40b62a
   languageName: node
   linkType: hard
 

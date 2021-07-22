@@ -1,9 +1,10 @@
-import { Application, RequestHandler, PathParams } from 'express';
+import { Application, RequestHandler } from 'express';
 import { ClientOpts, RedisClient } from 'redis';
 import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import rateLimit from 'express-rate-limit';
+import { PathParams } from 'express-serve-static-core';
 
 import * as defaults from '../config/app.config';
 const redisStore = require('rate-limit-redis');
