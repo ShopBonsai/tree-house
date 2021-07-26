@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import rateLimit from 'express-rate-limit';
+import { PathParams } from 'express-serve-static-core';
 
 import * as defaults from '../config/app.config';
 const redisStore = require('rate-limit-redis');
@@ -13,7 +14,7 @@ const redisStore = require('rate-limit-redis');
  */
 export function setBasicSecurity(
   app: Application,
-  route: string,
+  route: PathParams,
   options: SecurityOptions = {},
 ): void {
   app.use(route, helmet(Object.assign({}, defaults.helmetOptions, options.helmet)));
@@ -30,7 +31,7 @@ export function setBasicSecurity(
  */
 export function setBodyParser(
   app: Application,
-  route: string,
+  route: PathParams,
   options: BodyParserOptions = {},
 ): void {
   const allOptions = Object.assign({}, defaults.bodyParserOptions, options);
