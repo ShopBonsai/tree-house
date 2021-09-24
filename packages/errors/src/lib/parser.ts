@@ -37,7 +37,7 @@ export const isApiError = (err: ApiError | any, type?: ErrorType): err is ApiErr
  */
 export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptions): ParsedError {
   const metaData: any = {};
-  let parsedError = new ApiError(errorDefaults.DEFAULT_HTTP_CODE, errorDefaults.DEFAULT_ERROR); // Default error
+  let parsedError = new ApiError(errorDefaults.DEFAULT_HTTP_CODE, errorDefaults.DEFAULT_ERROR, error); // Default error
 
   // Other errors
   if (error instanceof Error) {
