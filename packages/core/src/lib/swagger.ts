@@ -26,12 +26,12 @@ export function setSwagger(app: Application, route: string, filePath: string, op
       }
       if (stats.isDirectory()) {
         const swaggerContent = buildSwaggerDocumentFromFiles(filePath);
-        swaggerDocument = yaml.safeLoad(swaggerContent);
+        swaggerDocument = yaml.load(swaggerContent);
       }
     } else {
       if (stats.isFile()) {
         // Load yaml document
-        swaggerDocument = yaml.safeLoad(fs.readFileSync(filePath, 'utf8'));
+        swaggerDocument = yaml.load(fs.readFileSync(filePath, 'utf8'));
       }
       if (stats.isDirectory()) {
         throw new Error(
