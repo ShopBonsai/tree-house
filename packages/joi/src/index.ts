@@ -396,8 +396,9 @@ declare module 'joi' {
       : never]: true;
   };
 
-  type extractMap<T extends mappedSchemaMap> = { [K in keyof Optional<T>]?: extractType<T[K]> } &
-    { [K in keyof Required<T>]: extractType<T[K]> };
+  type extractMap<T extends mappedSchemaMap> = { [K in keyof Optional<T>]?: extractType<T[K]> } & {
+    [K in keyof Required<T>]: extractType<T[K]>;
+  };
 
   type extractOne<T extends mappedSchema> =
     /** Primitive types */
