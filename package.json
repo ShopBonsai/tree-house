@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "lerna": "4.0.0",
-    "typescript": "3.9.7"
+    "typescript": "4.4.3"
   },
   "workspaces": {
     "packages": [
@@ -36,5 +36,6 @@
   "bugs": {
     "url": "https://github.com/knor-el-snor/tree-house/issues"
   },
-  "homepage": "https://github.com/knor-el-snor/tree-house#readme"
+  "homepage": "https://github.com/knor-el-snor/tree-house#readme",
+  "packageManager": "yarn@3.1.0-rc.8"
 }
