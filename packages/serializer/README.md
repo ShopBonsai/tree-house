@@ -393,13 +393,13 @@ const errorResponse = ErrorSerializer.serialize(ex);
 
 When you find issues, please report them:
 
-- web: [https://github.com/knor-el-snor/tree-house/issues](https://github.com/knor-el-snor/tree-house/issues)
+- web: [https://github.com/ShopBonsai/tree-house/issues](https://github.com/ShopBonsai/tree-house/issues)
 
 Be sure to include all of the output from the npm command that didn't work as expected. The npm-debug.log file is also helpful to provide.
 
 ## Authors
 
-See the list of [contributors](https://github.com/knor-el-snor/tree-house/contributors) who participated in this project.
+See the list of [contributors](https://github.com/ShopBonsai/tree-house/contributors) who participated in this project.
 
 ## License
 

@@ -1,7 +1,7 @@
 # Tree House
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
-![API Continuous Integration](https://github.com/knor-el-snor/tree-house/workflows/API%20Continuous%20Integration/badge.svg?branch=master)
+![API Continuous Integration](https://github.com/ShopBonsai/tree-house/workflows/API%20Continuous%20Integration/badge.svg?branch=master)
 
 Monorepository containing multiple Tree House packages. These packages provide utilities for all kind of Node.js projects from authentication to starting an http server.
 
@@ -15,7 +15,7 @@ Providing core utilities.
 import { ... } from '@tree-house/core'
 ```
 
-[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/core)
+[Go to package](https://github.com/ShopBonsai/tree-house/tree/master/packages/core)
 
 ### Authentication
 
@@ -25,7 +25,7 @@ Providing authentication utilities.
 import { ... } from '@tree-house/authentication'
 ```
 
-[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/authentication)
+[Go to package](https://github.com/ShopBonsai/tree-house/tree/master/packages/authentication)
 
 ### Errors
 
@@ -35,7 +35,7 @@ Providing error utilities.
 import { ... } from '@tree-house/errors'
 ```
 
-[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/errors)
+[Go to package](https://github.com/ShopBonsai/tree-house/tree/master/packages/errors)
 
 ### Serializer
 
@@ -45,7 +45,7 @@ Providing serialization utilities.
 import { ... } from '@tree-house/serializer'
 ```
 
-[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/serializer)
+[Go to package](https://github.com/ShopBonsai/tree-house/tree/master/packages/serializer)
 
 ### Logger
 
@@ -55,7 +55,7 @@ Providing logger utilities.
 import { ... } from '@tree-house/logger'
 ```
 
-[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/logger)
+[Go to package](https://github.com/ShopBonsai/tree-house/tree/master/packages/logger)
 
 ### Joi
 
@@ -65,7 +65,7 @@ Providing Joi utilities.
 import { ... } from '@tree-house/joi'
 ```
 
-[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/joi)
+[Go to package](https://github.com/ShopBonsai/tree-house/tree/master/packages/joi)
 
 ### Translations
 
@@ -75,19 +75,19 @@ Providing i18n utilities.
 import { ... } from '@tree-house/translations'
 ```
 
-[Go to package](https://github.com/knor-el-snor/tree-house/tree/master/packages/translations)
+[Go to package](https://github.com/ShopBonsai/tree-house/tree/master/packages/translations)
 
 ## Bugs
 
 When you find issues, please report them:
 
-- web: [https://github.com/knor-el-snor/tree-house/issues](https://github.com/knor-el-snor/tree-house/issues)
+- web: [https://github.com/ShopBonsai/tree-house/issues](https://github.com/ShopBonsai/tree-house/issues)
 
 Be sure to include all of the output from the npm command that didn't work as expected. The npm-debug.log file is also helpful to provide.
 
 ## Authors
 
-See the list of [contributors](https://github.com/knor-el-snor/tree-house/contributors) who participated in this project.
+See the list of [contributors](https://github.com/ShopBonsai/tree-house/contributors) who participated in this project.
 
 ## License
 

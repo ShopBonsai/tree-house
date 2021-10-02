@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/knor-el-snor/tree-house.git"
+    "url": "git+https://github.com/ShopBonsai/tree-house.git"
   },
   "keywords": [
     "NodeJS",
@@ -34,8 +34,8 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/knor-el-snor/tree-house/issues"
+    "url": "https://github.com/ShopBonsai/tree-house/issues"
   },
-  "homepage": "https://github.com/knor-el-snor/tree-house#readme",
+  "homepage": "https://github.com/ShopBonsai/tree-house#readme",
   "packageManager": "yarn@3.1.0-rc.8"
 }
