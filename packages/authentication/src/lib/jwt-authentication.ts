@@ -31,7 +31,9 @@ export const decodeJwt = (
 const signJwt = (payload: Object, secretOrKey: Secret, jwtSettings: SignOptions): Promise<string> =>
   new Promise((resolve, reject) => {
     jwtSign(payload, secretOrKey, jwtSettings, (error, jwtToken) => {
-      if (error) reject(`Something went wrong trying to create a json webtoken. Actual error: ${error}`);
+      if (error || !jwtToken) {
+        return reject(`Something went wrong trying to create a json webtoken. Actual error: ${error}`);
+      }
       resolve(jwtToken);
     });
   });
@@ -47,7 +49,9 @@ export const verifyJwt = (
     if (token === '') return reject(new Error('JWT token is empty.'));
     const { secretOrKey, ...otherSettings } = jwtSettings;
     jwtVerify(token, secretOrKey, otherSettings, (error, decoded) => {
-      if (error) reject(`Something went wrong trying to verify the json webtoken. Actual error: ${error}`);
+      if (error || !decoded) {
+        return reject(`Something went wrong trying to verify the json webtoken. Actual error: ${error}`);
+      }
       resolve(decoded);
     });
   });
