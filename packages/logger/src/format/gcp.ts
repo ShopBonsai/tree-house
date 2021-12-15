@@ -2,6 +2,7 @@ import { format } from 'winston';
 import { getWinstonParams, isTraceSampled } from './helpers';
 import { TransformableInfo } from 'logform';
 import { ERROR_PARAM_POSITION } from './constants';
+import { serviceContext } from '../serviceContext';
 
 /**
  * Creates a format function that formats the log entry in a GCP friendly format - either for error or regular log entries.
@@ -14,7 +15,7 @@ const commonFieldsFormat = format(
       ...rest,
       level,
       severity: level,
-      'logging.googleapis.com/trace': trace_id,
+      'logging.googleapis.com/trace': `${serviceContext.getTraceIdPrefix()}${trace_id}`,
       'logging.googleapis.com/spanId': span_id,
       'logging.googleapis.com/trace_sampled': isTraceSampled(trace_flags),
     };

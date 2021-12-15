@@ -36,4 +36,21 @@ describe('serviceContext', () => {
       expect(result).toBe(version);
     });
   });
+
+  describe('getTraceIdPrefix', () => {
+
+    it('Should output default service trace ID prefix', () => {
+      const result = serviceContext.getTraceIdPrefix();
+
+      expect(result).toBe('');
+    });
+
+    it('Should output updated service trace ID prefix', () => {
+      const prefix = random.alphaNumeric();
+      serviceContext.setTraceIdPrefix(prefix);
+      const result = serviceContext.getTraceIdPrefix();
+
+      expect(result).toBe(prefix);
+    });
+  });
 });

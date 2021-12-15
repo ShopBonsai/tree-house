@@ -105,15 +105,18 @@ export interface ISetupOptions {
   name: string;
   // Version of the service
   version: string;
+  // Trace ID prefix
+  traceIdPrefix?: string;
 }
 
 /**
  * Assigns service name & version to log entries.
  * @param param0 - Name & version of the service to associate with log entries.
  */
-export const setup = ({ name, version }: ISetupOptions) => {
+export const setup = ({ name, version, traceIdPrefix }: ISetupOptions) => {
   serviceContext.setName(name);
   serviceContext.setVersion(`${version}-${ENV.nodeEnv}`);
+  serviceContext.setTraceIdPrefix(traceIdPrefix);
 
   Object.assign(instance.defaultMeta, {
     ...instance.defaultMeta,
