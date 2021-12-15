@@ -47,3 +47,10 @@ export const stringifyParams = (
       return params.map((v: any) => `${EOL}${stringifyParam(v)}`);
   }
 };
+
+/**
+ * Checks if the given trace is sampled based on W3C docs - https://www.w3.org/TR/trace-context/#sampled-flag.
+ * @param {string|undefined} traceFlags - trace flags.
+ * @returns {boolean} - true if trace is sampled.
+ */
+export const isTraceSampled = (traceFlags: string | undefined) => traceFlags === '01';
