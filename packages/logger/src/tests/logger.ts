@@ -1,4 +1,4 @@
-import { lorem } from 'faker';
+import { lorem, random } from 'faker';
 import { ILogger } from '../index';
 
 const mockDate = new Date(0);
@@ -151,6 +151,38 @@ describe('Basic logger test', () => {
       getLogger().error(message, error);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${error.stack}\\".*}\n$`)),
+      );
+    });
+
+    it('Should output trace info', () => {
+      const traceId = random.alphaNumeric(10);
+      const spanId = random.alphaNumeric(10);
+      const traceFlags = '01';
+
+      getLogger().info(message, {
+        trace_id: traceId,
+        span_id: spanId,
+        trace_flags: traceFlags,
+      });
+
+      expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+        expect.stringMatching(new RegExp(`^{.*\\"trace\\":\\"${traceId}\\".*}\n$`)),
+      );
+      expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+        expect.stringMatching(new RegExp(`^{.*\\"spanId\\":\\"${spanId}\\".*}\n$`)),
+      );
+      expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+        expect.stringMatching(new RegExp('^{.*\\"traceSampled\\":true.*}\n$')),
+      );
+    });
+
+    it('Should mark traceSampled as false', () => {
+      const traceFlags = '00';
+
+      getLogger().info(message, { trace_flags: traceFlags });
+
+      expect(consoleSpy).toHaveBeenCalledWith<[string]>(
+        expect.stringMatching(new RegExp('^{.*\\"traceSampled\\":false.*}\n$')),
       );
     });
   });

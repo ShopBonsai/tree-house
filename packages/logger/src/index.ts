@@ -1,14 +1,13 @@
 import { format, Logger, createLogger, transports } from 'winston';
 
 import { ENV } from './constants';
-import { paramsFormat, jsonFormat, simpleFormat } from './format';
+import { commonFormat, jsonFormat, simpleFormat } from './format';
 import { serviceContext } from './serviceContext';
 
 const createLoggerInstance = (defaultMeta: { [key: string]: string; } = {}) => createLogger({
   level: ENV.logLevel,
   format: format.combine(
-    format.timestamp({ alias: 'timestamp' }),
-    paramsFormat({ logFormat: ENV.logFormat }),
+    ...commonFormat(),
     ...(ENV.logFormat === 'json' ? jsonFormat() : simpleFormat()),
   ),
   defaultMeta: {
