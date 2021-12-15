@@ -14,9 +14,9 @@ const commonFieldsFormat = format(
       ...rest,
       level,
       severity: level,
-      trace: trace_id,
-      spanId: span_id,
-      traceSampled: isTraceSampled(trace_flags),
+      'logging.googleapis.com/trace': trace_id,
+      'logging.googleapis.com/spanId': span_id,
+      'logging.googleapis.com/trace_sampled': isTraceSampled(trace_flags),
     };
   },
 );

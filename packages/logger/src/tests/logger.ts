@@ -166,13 +166,13 @@ describe('Basic logger test', () => {
       });
 
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(new RegExp(`^{.*\\"trace\\":\\"${traceId}\\".*}\n$`)),
+        expect.stringMatching(new RegExp(`^{.*\\"logging\.googleapis\.com\/trace\\":\\"${traceId}\\".*}\n$`)),
       );
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(new RegExp(`^{.*\\"spanId\\":\\"${spanId}\\".*}\n$`)),
+        expect.stringMatching(new RegExp(`^{.*\\"logging\.googleapis\.com\/spanId\\":\\"${spanId}\\".*}\n$`)),
       );
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(new RegExp('^{.*\\"traceSampled\\":true.*}\n$')),
+        expect.stringMatching(new RegExp('^{.*\\"logging\.googleapis\.com\/trace_sampled\\":true.*}\n$')),
       );
     });
 
@@ -182,7 +182,7 @@ describe('Basic logger test', () => {
       getLogger().info(message, { trace_flags: traceFlags });
 
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
-        expect.stringMatching(new RegExp('^{.*\\"traceSampled\\":false.*}\n$')),
+        expect.stringMatching(new RegExp('^{.*\\"logging\.googleapis\.com\/trace_sampled\\":false.*}\n$')),
       );
     });
   });
