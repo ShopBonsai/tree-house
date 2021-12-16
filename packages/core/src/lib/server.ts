@@ -152,6 +152,7 @@ export interface ServerOptions {
   version?: IVersionOptions;
   healthCheck?: IHealthCheckOptions;
   catchAll?: (req: Request, res: Response) => any; // Catches all unmatched routes.
+  enableRequestLogs?: boolean;
 }
 
 export interface IVersionOptions {
