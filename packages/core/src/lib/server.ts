@@ -4,6 +4,7 @@ import { createTerminus } from '@godaddy/terminus';
 
 import https from 'https';
 import fs from 'fs';
+import { enableRequestLogs } from './enableRequestLogs';
 
 /**
  * Start an http/https server from the given Express instance
@@ -18,6 +19,8 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     if (version?.enabled) {
       enableVersionCheck(app, version.value);
     }
+
+    enableRequestLogs(app, options);
 
     const httpServer = http.createServer(app);
     httpServer.listen(options.port);

@@ -1862,6 +1862,7 @@ __metadata:
     "@types/helmet": 4.0.0
     "@types/jest": 27.0.2
     "@types/js-yaml": ~4.0.3
+    "@types/on-finished": ^2.3.1
     "@types/redis": ~2.8.32
     "@types/supertest": 2.0.11
     body-parser: ~1.19.0
@@ -1872,6 +1873,7 @@ __metadata:
     husky: 7.0.2
     jest: 27.2.4
     js-yaml: ~4.1.0
+    on-finished: ^2.3.0
     rate-limit-redis: 2.1.0
     redis-mock: 0.56.3
     supertest: ^6.1.6
@@ -2311,6 +2313,15 @@ __metadata:
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
   checksum: e87bccbf11f95035c89a132b52b79ce69a1e3652fe55962363063c9c0dae0fe2477ebc585e03a9652adc6f381d24ba5589cc5e51849df4ced3d3e004a7d40ed5
+  languageName: node
+  linkType: hard
+
+"@types/on-finished@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "@types/on-finished@npm:2.3.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 2cb10af2585657cd6d14d91e4319b62482c1485237f4923f24ba14737fcd2320c363c51f2271339cb5b6c17b4332c89779cdc11296de57763953f8ad18958a95
   languageName: node
   linkType: hard
 
@@ -7741,7 +7752,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"on-finished@npm:~2.3.0":
+"on-finished@npm:^2.3.0, on-finished@npm:~2.3.0":
   version: 2.3.0
   resolution: "on-finished@npm:2.3.0"
   dependencies:
