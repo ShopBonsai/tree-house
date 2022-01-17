@@ -16,7 +16,7 @@ jest.genMockFromModule('jwks-rsa');
 jest.mock('jwks-rsa');
 
 const mockJwksClient = {
-  getSigningKey: jest.fn((_token, callbackFn) => callbackFn(null, null)),
+  getSigningKey: jest.fn((_token) => Promise.resolve({ getPublicKey: () =>'publicKey' })),
   getKeys: jest.fn(),
   getSigningKeys: jest.fn(),
 };
@@ -31,14 +31,13 @@ describe('#SSO authentication', () => {
   });
 
   describe('getKey', () => {
-    it('Should return the siging key of the token', async () => {
-      mockJwksClient.getSigningKey.mockImplementation((_token, callBackFn) => callBackFn(null, { rsaPublicKey: 'secret' }));
-      const secret = await getKey(validJwtConfiguration.issuer, token);
-      expect(secret).toEqual('secret');
+    it('Should return the signing key of the token', async () => {
+      const signedPublicKey = await getKey(validJwtConfiguration.issuer, token);
+      expect(signedPublicKey).toEqual('publicKey');
     });
 
     it('Should throw an error', async () => {
-      mockJwksClient.getSigningKey.mockImplementation((_token, callBackFn) => callBackFn(new Error('Something went wrong')));
+      mockJwksClient.getSigningKey.mockImplementation((_token) => Promise.reject(new Error('Something went wrong')));
       try {
         await getKey(validJwtConfiguration.issuer, token);
       } catch (error) {
