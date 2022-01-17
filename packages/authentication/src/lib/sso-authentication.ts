@@ -39,14 +39,10 @@ export async function getKey(jwksUri: string, token: string): Promise<string> {
     jwksUri,
   });
 
-  return new Promise((resolve, reject) => {
-    client.getSigningKey(token, (error, key: any) => {
-      if (error) return reject(error);
+  const key = await client.getSigningKey(token);
+  const signingKey = key.getPublicKey();
 
-      const signingKey = key.rsaPublicKey || key.publicKey;
-      return resolve(signingKey);
-    });
-  });
+  return signingKey;
 }
 
 interface ICompleteJWTToken {
