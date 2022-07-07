@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/translations",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Import and use translations through json files",
   "keywords": [
     "NodeJS",
