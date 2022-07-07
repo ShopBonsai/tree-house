@@ -1,5 +1,7 @@
 import { ErrorType } from '../lib/errors';
 
+const asType = <T extends { [key: string]: ErrorType }>(argument: T): T => argument;
+
 export const errors = {
   GENERIC_ERROR: { code: 'GENERIC_ERROR', i18n: 'internal_error', message: 'An unkown error occurred' },
   INTERNAL_ERROR: { code: 'INTERNAL_ERROR', i18n: 'internal_error', message: 'An unkown error occurred' },
@@ -16,7 +18,7 @@ export const errors = {
   RESOURCE_NOT_FOUND: { code: 'RESOURCE_NOT_FOUND', i18n: 'resource_not_found', message: 'Resource not found' },
 };
 
-export const getErrors = (customErrors: { [key: string]: ErrorType }) => ({
+export const getErrors = (customErrors: { [key: string]: ErrorType }) => asType({
   ...errors,
   ...customErrors,
 });
