@@ -14,6 +14,7 @@ import {
   ForbiddenError,
 } from '../src';
 import { errorDefaults } from '../src/config/defaults.config';
+import safeJsonStringify from 'safe-json-stringify';
 
 describe('errorParser', () => {
   const defaultError = new ApiError(errorDefaults.DEFAULT_HTTP_CODE, errorDefaults.DEFAULT_ERROR);
@@ -66,7 +67,7 @@ describe('errorParser', () => {
   });
 
   describe('Predefined Api errors', () => {
-    it('Should succesfully parse default ApiError with i18n', () => {
+    it('Should successfully parse default ApiError with i18n', () => {
       const errorTranslation = 'English translation';
       translateMock.mockReturnValue(errorTranslation);
 
@@ -86,7 +87,7 @@ describe('errorParser', () => {
       expect(translateMock).toHaveBeenCalledTimes(1);
     });
 
-    it('Should succesfully parse default ApiError without an i18n key', () => {
+    it('Should successfully parse default ApiError without an i18n key', () => {
       expect.assertions(1);
       try {
         throw new ApiError(httpStatus.BAD_REQUEST, errors.INVALID_INPUT);
@@ -102,7 +103,7 @@ describe('errorParser', () => {
       }
     });
 
-    it('Should succesfully parse default ApiError with default message when language is not available', () => {
+    it('Should successfully parse default ApiError with default message when language is not available', () => {
       expect.assertions(1);
       try {
         throw new BadRequestError(errors.INVALID_INPUT);
@@ -118,7 +119,7 @@ describe('errorParser', () => {
       }
     });
 
-    it('Should succesfully parse default ApiError for Dutch translation', () => {
+    it('Should successfully parse default ApiError for Dutch translation', () => {
       const errorTranslation = 'Nederlands vertaling';
       translateMock.mockReturnValue(errorTranslation);
 
@@ -148,6 +149,35 @@ describe('errorParser', () => {
         path: '',
         language: 'du',
       });
+      expect(parsedError).toMatchObject({
+        id: expect.any(String),
+        status: httpStatus.BAD_REQUEST,
+        code: errors.INVALID_INPUT.code,
+        title: errors.INVALID_INPUT.message,
+        detail: errors.INVALID_INPUT.message,
+      });
+    });
+
+    it('Should have `meta` field with the error stack', () => {
+      const error = new BadRequestError(errors.INVALID_INPUT);
+      const parsedError = parseErrors(error);
+
+      expect(parsedError).toMatchObject({
+        id: expect.any(String),
+        status: httpStatus.BAD_REQUEST,
+        code: errors.INVALID_INPUT.code,
+        title: errors.INVALID_INPUT.message,
+        detail: errors.INVALID_INPUT.message,
+        meta: {
+          stack: safeJsonStringify(error.stack as any),
+        }
+      });
+    });
+
+    it('Should not have `meta` field with the error stack when `hideMeta: true`', () => {
+      const error = new BadRequestError(errors.INVALID_INPUT);
+      const parsedError = parseErrors(error, { hideMeta: true });
+
       expect(parsedError).toMatchObject({
         id: expect.any(String),
         status: httpStatus.BAD_REQUEST,
@@ -259,7 +289,7 @@ describe('errorParser', () => {
   });
 
   describe('parseJsonErrors', () => {
-    it('Should succesfully return parsed errors', () => {
+    it('Should successfully return parsed errors', () => {
       const result = parseJsonErrors({
         errors: [
           {
@@ -289,7 +319,7 @@ describe('errorParser', () => {
       });
     });
 
-    it('Should succesfully return parsed errors with empty meta', () => {
+    it('Should successfully return parsed errors with empty meta', () => {
       const result = parseJsonErrors({
         errors: [
           {
@@ -316,7 +346,7 @@ describe('errorParser', () => {
       });
     });
 
-    it('Should succesfully return parsed errors without meta', () => {
+    it('Should successfully return parsed errors without meta', () => {
       const result = parseJsonErrors({
         errors: [
           {
