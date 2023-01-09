@@ -158,9 +158,14 @@ describe('errorParser', () => {
       });
     });
 
-    it('Should have `meta` field with the error stack', () => {
+    it.each([
+      [undefined, false],
+      [{ hideMeta: undefined }, false],
+      [{ hideMeta: true }, true],
+      [{ hideMeta: false }, false],
+    ])('Should correctly generate `meta` field with options `%o`', (options, shouldRemove) => {
       const error = new BadRequestError(errors.INVALID_INPUT);
-      const parsedError = parseErrors(error);
+      const parsedError = parseErrors(error, options);
 
       expect(parsedError).toMatchObject({
         id: expect.any(String),
@@ -168,22 +173,11 @@ describe('errorParser', () => {
         code: errors.INVALID_INPUT.code,
         title: errors.INVALID_INPUT.message,
         detail: errors.INVALID_INPUT.message,
-        meta: {
-          stack: safeJsonStringify(error.stack as any),
-        }
-      });
-    });
-
-    it('Should not have `meta` field with the error stack when `hideMeta: true`', () => {
-      const error = new BadRequestError(errors.INVALID_INPUT);
-      const parsedError = parseErrors(error, { hideMeta: true });
-
-      expect(parsedError).toMatchObject({
-        id: expect.any(String),
-        status: httpStatus.BAD_REQUEST,
-        code: errors.INVALID_INPUT.code,
-        title: errors.INVALID_INPUT.message,
-        detail: errors.INVALID_INPUT.message,
+        ...(shouldRemove ? undefined : {
+          meta: {
+            stack: safeJsonStringify(error.stack as any),
+          },
+        })
       });
     });
 
