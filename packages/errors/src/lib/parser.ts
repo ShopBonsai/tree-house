@@ -66,7 +66,7 @@ export function parseErrors(error: any = {}, options: ParserOptions = {}): Parse
 
     const { path: languagePath, defaultLocale, language } = options;
 
-    if (languagePath != undefined && error.i18n) {
+    if (languagePath != null && error.i18n) {
       const translator = getTranslator(languagePath, defaultLocale);
       try {
         translatedMessage = translator.translate(error.i18n, language) || error.message;
@@ -85,7 +85,7 @@ export function parseErrors(error: any = {}, options: ParserOptions = {}): Parse
     parsedError = Object.assign({}, error, { message: translatedMessage });
   }
 
-  const { hideMeta } = options
+  const { hideMeta } = options;
 
   // Return object easy to use for serialisation
   return {
@@ -94,7 +94,7 @@ export function parseErrors(error: any = {}, options: ParserOptions = {}): Parse
     code: parsedError.code,
     title: parsedError.message,
     detail: parsedError.detail || parsedError.message,
-    meta: Boolean(hideMeta) === false && Object.keys(metaData).length !== 0 ? metaData : undefined,
+    meta: !Boolean(hideMeta) && Object.keys(metaData).length !== 0 ? metaData : undefined,
   };
 }
 
