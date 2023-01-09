@@ -32,10 +32,10 @@ export const isApiError = (err: ApiError | any, type?: ErrorType): err is ApiErr
 
 /**
  * Parse errors
- * @param {String} error
- * @param {Object} translatorOptions
+ * @param {String} error - Error to parse.
+ * @param {Object} options - Options for parsing.
  */
-export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptions): ParsedError {
+export function parseErrors(error: any = {}, options: ParserOptions = {}): ParsedError {
   const metaData: any = {};
   let parsedError = new ApiError(errorDefaults.DEFAULT_HTTP_CODE, errorDefaults.DEFAULT_ERROR); // Default error
 
@@ -64,10 +64,12 @@ export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptio
   if (isApiError(error)) {
     let translatedMessage = error.message;
 
-    if (translatorOptions && error.i18n) {
-      const translator = getTranslator(translatorOptions.path, translatorOptions.defaultLocale);
+    const { path: languagePath, defaultLocale, language } = options;
+
+    if (languagePath != null && error.i18n) {
+      const translator = getTranslator(languagePath, defaultLocale);
       try {
-        translatedMessage = translator.translate(error.i18n, translatorOptions.language) || error.message;
+        translatedMessage = translator.translate(error.i18n, language) || error.message;
       } catch (_error) {
         // If language file was not found set text to default message
         translatedMessage = error.message;
@@ -83,6 +85,8 @@ export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptio
     parsedError = Object.assign({}, error, { message: translatedMessage });
   }
 
+  const { hideMeta } = options;
+
   // Return object easy to use for serialisation
   return {
     id: parsedError.id,
@@ -90,7 +94,7 @@ export function parseErrors(error: any = {}, translatorOptions?: TranslatorOptio
     code: parsedError.code,
     title: parsedError.message,
     detail: parsedError.detail || parsedError.message,
-    meta: Object.keys(metaData).length !== 0 ? metaData : undefined,
+    meta: !Boolean(hideMeta) && Object.keys(metaData).length !== 0 ? metaData : undefined,
   };
 }
 
@@ -119,9 +123,13 @@ export function parseJsonErrors(response: any): ApiError[] {
 
 // Interfaces
 export interface TranslatorOptions {
-  path: string;
+  path?: string;
   defaultLocale?: string;
   language?: string;
+}
+
+export interface ParserOptions extends TranslatorOptions {
+  hideMeta?: boolean;
 }
 
 export interface ParsedError {
