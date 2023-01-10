@@ -169,9 +169,10 @@ Will return boolean indicating whether object has all required properties to be 
 
 > Will automatically cast to ParsedError if succeeds and using Typescript
 
-### parseErrors(error, i18nOptions (optional))
+### parseErrors(error, configuration (optional))
 
-Parse any data into an error object with all properties needed for jsonade parser. Also parses [`celebrate`](https://github.com/arb/celebrate) errors.
+Parse any data into an error object with all properties needed for jsonade parser. Also parses
+[`celebrate`](https://github.com/arb/celebrate) errors.
 
 ```javascript
 const error = new BadRequestError(...);
@@ -179,6 +180,15 @@ const parsedError = parseErrors(error);
 
 // jsonade serializer afterwards (optional)
 serializer.serialize([parsedError]);
+```
+
+Omit stack trace from parsed error:
+
+```javascript
+const error = new BadRequestError(...);
+
+// Will not include stack trace in parsed error
+const parsedError = parseErrors(error, { hideMeta: true });
 ```
 
 With i18n support (optional):
