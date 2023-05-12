@@ -1,9 +1,11 @@
-import { lorem, random } from 'faker';
+import { faker } from '@faker-js/faker';
 import { ILogger } from '../index';
 
 const mockDate = new Date(0);
 jest.spyOn(global, 'Date').mockImplementation(() => mockDate as any); // TypeScript workaround
 const consoleSpy = jest.spyOn((console as any)._stderr, 'write').mockImplementation();
+
+const { lorem, random } =faker;
 
 const message = lorem.sentence();
 const params: Record<string, unknown>[] = [
