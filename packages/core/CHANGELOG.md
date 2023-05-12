@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2023-12-15
+
+### Changed
+
+- Updated `@godaddy/terminus` dependency
+- Updated `body-parser` dependency
+- Updated `express` dependency
+- Updated `swagger-ui-express` dependency
+- Updated `express-rate-limit` dependency
+- Updated `helmet` dependency
+
+### Breaking
+
+- Removed official support for Node 12 & 14
+- [Potentially breaking] Upgraded Typescript from 4.4 to 5.x
+
 ## [3.0.0] - 2021-10-02
 
 ### Breaking

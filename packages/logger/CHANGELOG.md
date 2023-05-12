@@ -9,11 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Update `winston` dependency
+- Updated `winston` dependency
 
 ### Breaking
 
-- Remove official support for Node 12 & 14
+- Removed official support for Node 12 & 14
 - [Potentially breaking] Upgrades Typescript from 4.4 to 5.x
 
 ## [3.1.1] - 2021-12-15

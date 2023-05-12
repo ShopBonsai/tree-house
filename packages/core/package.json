@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/core",
-  "version": "3.3.0",
+  "version": "4.0.0",
   "description": "NodeJS utilities and handy helpers extending ExpressJS functionalities",
   "keywords": [
     "NodeJS",
