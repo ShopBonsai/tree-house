@@ -64,7 +64,7 @@ treehouse.setBodyParser(app, '*', {
 ### getRateLimiter(options)
 
 Get a rate limiter instance to prevent brute force attacks. This can be used as a middleware in Express.
-At the moment there is support for a built in-memorystore or Redis. Both use the `express-rate-limit` module.
+At the moment there is support for a built in-memorystore using the `express-rate-limit` module.
 
 ```javascript
 const app = express();
@@ -79,17 +79,9 @@ const globalRateLimiter = treehouse.getRateLimiter({
 });
 
 app.use('/login', globalRateLimiter, ...);
-
-// Using existing Redis client
-treehouse.getRateLimiter({
-  redis: {
-    client: existingClient, // All Redis options or 'client' to use an existing client (see rate-limit-redis)
-  },
-});
 ```
 
 - [All available Express-rate-limit options](https://github.com/nfriedly/express-rate-limit)
-- [All available Redis options](https://github.com/NodeRedis/node_redis)
 
 ## Responder
 

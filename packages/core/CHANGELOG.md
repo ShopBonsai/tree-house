@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed official support for Node 12 & 14
 - [Potentially breaking] Upgraded Typescript from 4.4 to 5.x
+- Removed built-in Redis rate limiting support due to outdated packages
 
 ## [3.0.0] - 2021-10-02
 

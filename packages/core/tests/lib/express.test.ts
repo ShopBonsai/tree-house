@@ -1,6 +1,5 @@
 import request from 'supertest';
 import express from 'express';
-const redisMock = require('redis-mock');
 
 import { setBasicSecurity, setBodyParser, getRateLimiter } from '../../src';
 
@@ -107,16 +106,6 @@ describe('Express', () => {
 
       const { status: status3 } = await request(app).get('/');
       expect(status3).toEqual(429);
-    });
-
-    it('rateLimiter with custom redisStore', async () => {
-      const redisClient = redisMock.createClient();
-
-      const rateLimiter = getRateLimiter({ redis: { client: redisClient } });
-      app.use('/', rateLimiter, (_req, res) => res.status(200).send('Welcome'));
-
-      const { status } = await request(app).get('/');
-      expect(status).toEqual(200);
     });
   });
 });
