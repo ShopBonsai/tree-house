@@ -2,8 +2,6 @@ import { faker } from '@faker-js/faker';
 import { ENV } from '../constants';
 import { serviceContext } from '../serviceContext';
 
-const { string } = faker;
-
 describe('serviceContext', () => {
   describe('getName', () => {
 
@@ -14,7 +12,7 @@ describe('serviceContext', () => {
     });
 
     it('Should output updated service name', () => {
-      const name = string.alpha();
+      const name = faker.string.alpha();
       serviceContext.setName(name);
       const result = serviceContext.getName();
 
@@ -31,7 +29,7 @@ describe('serviceContext', () => {
     });
 
     it('Should output updated service version', () => {
-      const version = string.alphanumeric();
+      const version = faker.string.alphanumeric();
       serviceContext.setVersion(version);
       const result = serviceContext.getVersion();
 
