@@ -20,7 +20,7 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     }
 
     const httpServer = http.createServer(app);
-    httpServer.listen(options.port);
+    httpServer.listen(Number(options.port));
     logger.info(`${options.title || 'TreeHouse'} HTTP NodeJS Server listening on port ${options.port}`);
 
     // HTTPS - Optional
@@ -136,7 +136,7 @@ const getHttpsCredentials = (certificate: string, privateKey: string): { key: st
 };
 
 export interface ServerOptions {
-  port: number;
+  port: number | string;
   title?: string;
   https?: {
     port: number;

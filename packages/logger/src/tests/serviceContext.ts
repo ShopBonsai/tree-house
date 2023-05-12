@@ -1,4 +1,4 @@
-import { random } from 'faker';
+import { faker } from '@faker-js/faker';
 import { ENV } from '../constants';
 import { serviceContext } from '../serviceContext';
 
@@ -12,7 +12,7 @@ describe('serviceContext', () => {
     });
 
     it('Should output updated service name', () => {
-      const name = random.alpha();
+      const name = faker.string.alpha();
       serviceContext.setName(name);
       const result = serviceContext.getName();
 
@@ -29,7 +29,7 @@ describe('serviceContext', () => {
     });
 
     it('Should output updated service version', () => {
-      const version = random.alphaNumeric();
+      const version = faker.string.alphanumeric();
       serviceContext.setVersion(version);
       const result = serviceContext.getVersion();
 

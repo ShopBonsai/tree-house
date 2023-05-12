@@ -1,13 +1,11 @@
 import { Application, RequestHandler } from 'express';
-import { ClientOpts, RedisClient } from 'redis';
 import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
-import rateLimit from 'express-rate-limit';
+import rateLimit, { Options } from 'express-rate-limit';
 import { PathParams } from 'express-serve-static-core';
 
 import * as defaults from '../config/app.config';
-const redisStore = require('rate-limit-redis');
 
 /**
  * Set some basic security measurements
@@ -47,24 +45,13 @@ export function setBodyParser(
  * Current support for: built-in memory and Redis
  */
 export function getRateLimiter(options: RateLimiterOptions = {}): RequestHandler {
-  let store: rateLimit.Store | undefined;
   const allOptions: any = Object.assign({}, defaults.rateLimiterOptions, options);
 
-  // Automatically assign new redis store instance
-  if (allOptions.redis) {
-    store = new redisStore(allOptions.redis);
-  }
-
-  const { redis, ...rateOptions } = allOptions; // Filter out unneeded properties
-  return rateLimit({
-    ...rateOptions,
-    store,
-  });
+  return rateLimit(allOptions);
 }
 
 // Interfaces
-export interface RateLimiterOptions extends rateLimit.Options {
-  redis?: RedisOptions;
+export interface RateLimiterOptions extends Partial<Options> {
 }
 
 export interface SecurityOptions {
@@ -77,8 +64,4 @@ export interface BodyParserOptions {
   raw?: bodyParser.Options;
   text?: bodyParser.OptionsText;
   urlEncoded?: bodyParser.OptionsUrlencoded;
-}
-
-export interface RedisOptions extends ClientOpts {
-  client?: RedisClient;
 }

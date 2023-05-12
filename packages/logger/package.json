@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/logger",
-  "version": "3.4.0",
+  "version": "4.0.0",
   "description": "Simple and fast JSON logging library for node.js services.",
   "keywords": [
     "NodeJS",
@@ -40,23 +40,22 @@
   },
   "dependencies": {
     "json-stringify-safe": "5.0.1",
-    "winston": "3.3.3"
+    "winston": "3.8.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "8.0.0",
     "@types/debug": "4.1.7",
-    "@types/faker": "5.5.8",
-    "@types/jest": "27.0.2",
+    "@types/jest": "29.5.1",
     "@types/json-stringify-safe": "5.0.0",
-    "faker": "5.5.3",
-    "husky": "7.0.2",
-    "jest": "27.2.4",
-    "rimraf": "3.0.2",
-    "ts-jest": "27.0.5",
+    "husky": "8.0.3",
+    "jest": "29.5.0",
+    "rimraf": "~5.0.0",
+    "ts-jest": "29.1.0",
     "tslint": "6.1.3",
     "tslint-config-airbnb": "~5.11.2",
-    "typescript": "4.4.3"
+    "typescript": "5.0.4"
   },
   "engines": {
-    "node": ">=12.x"
+    "node": ">=16.x"
   }
 }
