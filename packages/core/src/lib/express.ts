@@ -1,5 +1,5 @@
 import { Application, RequestHandler } from 'express';
-import { ClientOpts, RedisClient } from 'redis';
+import { RedisClientOptions, RedisClientType } from 'redis';
 import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
@@ -79,6 +79,6 @@ export interface BodyParserOptions {
   urlEncoded?: bodyParser.OptionsUrlencoded;
 }
 
-export interface RedisOptions extends ClientOpts {
-  client?: RedisClient;
+export interface RedisOptions extends RedisClientOptions {
+  client?: RedisClientType;
 }
