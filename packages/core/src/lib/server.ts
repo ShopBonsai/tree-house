@@ -40,7 +40,6 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     app.listen = (...args: any) => httpServer.listen.apply(httpServer, args);
     createTerminus(httpServer, { ...defaultTerminusOptions, ...terminusOptions });
 
-
     // Optional catch all route if no match was found
     if (catchAll) {
       app.all('*', catchAll);
