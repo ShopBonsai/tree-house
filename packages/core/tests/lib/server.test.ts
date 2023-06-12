@@ -104,9 +104,53 @@ describe('Initialise things before running application', () => {
       try {
         await startServer(app, WRONG_CONFIGURATION);
       } catch (err) {
+        console.log(err);
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toContain('Something went wrong while fetching keys');
       }
+    });
+
+    describe('Healthchecks', () => {
+      it('should start http server with provided healthcheck config', async () => {
+        await startServer(app, {
+          port: 5007,
+          healthCheck: {
+            enabled: true,
+            checkHealth: () => Promise.resolve(true),
+          }
+        });
+
+        const response = await request(app).get('/healthcheck');
+
+        expect(response.status).toEqual(200);
+      });
+
+      it('should start http server with provided healthcheck config', async () => {
+        await startServer(app, {
+          port: 5008, otherServerOptions: {
+            healthChecks: {
+              '/healthz': () => Promise.resolve(true),
+            }
+          }
+        });
+
+        const response = await request(app).get('/healthz');
+
+        expect(response.status).toEqual(200);
+      });
+
+      it('should start http server without healthcheck', async () => {
+        await startServer(app, {
+          port: 5008,
+          otherServerOptions: {
+            healthChecks: undefined
+          }
+        });
+
+        const response = await request(app).get('/healthcheck');
+
+        expect(response.status).toEqual(404);
+      });
     });
   });
 });
