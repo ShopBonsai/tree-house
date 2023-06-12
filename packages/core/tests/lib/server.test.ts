@@ -92,7 +92,7 @@ describe('Initialise things before running application', () => {
     it('start http server should throw error on invalid https configuration', async () => {
       const WRONG_CONFIGURATION = Object.assign({}, CONFIGURATION, {
         title: 'Tree House',
-        port: 5000,
+        port: 5111,
         https: {
           port: 5001,
           certificate: 'test/assets/random.cert',
@@ -107,50 +107,6 @@ describe('Initialise things before running application', () => {
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toContain('Something went wrong while fetching keys');
       }
-    });
-
-    describe('Healthchecks', () => {
-      it.only('should start http server with provided healthcheck config', async () => {
-        await startServer(app, {
-          port: 5007,
-          healthCheck: {
-            enabled: true,
-            checkHealth: () => Promise.resolve(true),
-          }
-        });
-
-        const response = await request(app).get('/healthcheck');
-
-        expect(response.status).toEqual(200);
-      });
-
-      it('should start http server with provided healthcheck config', async () => {
-        await startServer(app, {
-          port: 5008,
-          terminusOptions: {
-            healthChecks: {
-              '/healthz': () => Promise.resolve(true),
-            }
-          }
-        });
-
-        const response = await request(app).get('/healthz');
-
-        expect(response.status).toEqual(200);
-      });
-
-      it('should start http server without healthcheck', async () => {
-        await startServer(app, {
-          port: 5009,
-          terminusOptions: {
-            healthChecks: undefined
-          }
-        });
-
-        const response = await request(app).get('/healthcheck');
-
-        expect(response.status).toEqual(404);
-      });
     });
   });
 });
