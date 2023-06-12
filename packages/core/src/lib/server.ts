@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express';
 import http from 'http';
-import { createTerminus } from '@godaddy/terminus';
+import { TerminusOptions, createTerminus } from '@godaddy/terminus';
 
 import https from 'https';
 import fs from 'fs';
@@ -9,7 +9,7 @@ import fs from 'fs';
  * Start an http/https server from the given Express instance
  */
 export async function startServer(app: Application, options: ServerOptions): Promise<void> {
-  const { logger = console, version, healthCheck, catchAll } = options;
+  const { logger = console, version, healthCheck = { enabled: false }, catchAll, otherServerOptions } = options;
 
   try {
     if (options.pre) await preHook(options.pre, logger);
@@ -33,9 +33,12 @@ export async function startServer(app: Application, options: ServerOptions): Pro
       logger.info(`${options.title || 'TreeHouse'} HTTPS NodeJS Server listening on port ${options.https.port}`);
     }
 
-    // Optional Kubernetes health checks
-    if (healthCheck?.enabled) {
-      enableHealthCheck(app, httpServer, { ...healthCheck, logger });
+    // Optional Options for Kubernetes
+    const terminusOptions = getTerminusOptions({ healthCheck, logger, otherServerOptions });
+
+    if (terminusOptions) {
+      app.listen = (...args: any) => httpServer.listen.apply(httpServer, args);
+      createTerminus(httpServer, terminusOptions);
     }
 
     // Optional catch all route if no match was found
@@ -81,12 +84,18 @@ export const postHook = async (fn: Function, httpServer: http.Server, logger: IL
  * @param {pbject} server - HTTP server
  * @param {object} options - Health check options.
  */
-export const enableHealthCheck = (
-  app: Application,
-  server: http.Server,
-  { checkHealth = async () => true, uri = '/healthcheck', logger }: IHealthCheckOptions & { logger: ILogger },
-) => {
-  const terminusOptions = {
+export const getTerminusOptions = ({
+  healthCheck: { enabled, checkHealth = async () => true, uri = '/healthcheck' } = { enabled: false },
+  logger,
+  otherServerOptions = {},
+}: {
+  healthCheck: IHealthCheckOptions;
+  logger: ILogger;
+  otherServerOptions?: TerminusOptions;
+},
+): TerminusOptions | undefined => {
+
+  const healthcheckOptions = enabled ? {
     healthChecks: {
       [uri]: async (): Promise<void> => {
         const isHealthy = await checkHealth();
@@ -101,10 +110,18 @@ export const enableHealthCheck = (
     logger: (message: string, error: Error): void => {
       logger.error(`HEALTH CHECK ERROR ${message}`, error, error.stack);
     },
+  } : {};
+
+  const terminusOptions = {
+    ...healthcheckOptions,
+    ...otherServerOptions,
   };
 
-  app.listen = (...args: any) => server.listen.apply(server, args);
-  createTerminus(server, terminusOptions);
+  if (Object.keys(terminusOptions).length === 0) {
+    return undefined;
+  }
+
+  return terminusOptions;
 };
 
 /**
@@ -125,7 +142,7 @@ export const enableVersionCheck = (app: Application, version: string | undefined
  * Get HTTPS credentials
  * Read out the private key and certificate
  */
-const getHttpsCredentials = (certificate: string, privateKey: string): { key: string; cert: string } => {
+const getHttpsCredentials = (certificate: string, privateKey: string): { key: string; cert: string; } => {
   try {
     const key = fs.readFileSync(privateKey, 'utf8');
     const cert = fs.readFileSync(certificate, 'utf8');
@@ -148,6 +165,7 @@ export interface ServerOptions {
   logger?: ILogger;
   version?: IVersionOptions;
   healthCheck?: IHealthCheckOptions;
+  otherServerOptions?: TerminusOptions;
   catchAll?: (req: Request, res: Response) => any; // Catches all unmatched routes.
 }
 
