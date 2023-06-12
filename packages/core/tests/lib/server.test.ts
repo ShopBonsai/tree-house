@@ -104,14 +104,13 @@ describe('Initialise things before running application', () => {
       try {
         await startServer(app, WRONG_CONFIGURATION);
       } catch (err) {
-        console.log(err);
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toContain('Something went wrong while fetching keys');
       }
     });
 
     describe('Healthchecks', () => {
-      it('should start http server with provided healthcheck config', async () => {
+      it.only('should start http server with provided healthcheck config', async () => {
         await startServer(app, {
           port: 5007,
           healthCheck: {
@@ -142,7 +141,7 @@ describe('Initialise things before running application', () => {
 
       it('should start http server without healthcheck', async () => {
         await startServer(app, {
-          port: 5008,
+          port: 5009,
           terminusOptions: {
             healthChecks: undefined
           }

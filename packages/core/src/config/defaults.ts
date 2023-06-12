@@ -13,7 +13,7 @@ export const defaultHealthCheck = (isProduction: boolean) => ({
   }) as HealthCheck,
 });
 
-export const defaultTerminusOptions = (): TerminusOptions => ({
+export const defaultTerminusOptions: TerminusOptions = ({
   // We have ~20 seconds before receiving SIGKILL
   timeout: 20 * second,
   signal: 'SIGTERM',

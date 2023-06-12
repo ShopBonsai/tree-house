@@ -22,6 +22,7 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     }
 
     const httpServer = http.createServer(app);
+    console.log(options.port)
     httpServer.listen(Number(options.port));
     logger.info(`${options.title || 'TreeHouse'} HTTP NodeJS Server listening on port ${options.port}`);
 
@@ -37,10 +38,7 @@ export async function startServer(app: Application, options: ServerOptions): Pro
 
     // Optional Options for Kubernetes
     app.listen = (...args: any) => httpServer.listen.apply(httpServer, args);
-    createTerminus(httpServer, {
-      ...defaultTerminusOptions,
-      ...getTerminusOptions({ healthCheck, terminusOptions }),
-    });
+    createTerminus(httpServer, getTerminusOptions({ healthCheck, terminusOptions }));
 
     // Optional catch all route if no match was found
     if (catchAll) {
@@ -108,7 +106,14 @@ export const getTerminusOptions = ({
     },
   } : {};
 
+  console.log({
+    defaultTerminusOptions,
+    terminusOptions,
+    healthcheckOptions,
+  })
+
   return {
+    ...defaultTerminusOptions,
     ...terminusOptions,
     ...healthcheckOptions,
   };
