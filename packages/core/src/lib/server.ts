@@ -22,7 +22,6 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     }
 
     const httpServer = http.createServer(app);
-    console.log(options.port)
     httpServer.listen(Number(options.port));
     logger.info(`${options.title || 'TreeHouse'} HTTP NodeJS Server listening on port ${options.port}`);
 
@@ -105,12 +104,6 @@ export const getTerminusOptions = ({
       },
     },
   } : {};
-
-  console.log({
-    defaultTerminusOptions,
-    terminusOptions,
-    healthcheckOptions,
-  })
 
   return {
     ...defaultTerminusOptions,
