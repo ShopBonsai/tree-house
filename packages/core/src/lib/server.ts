@@ -36,7 +36,7 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     }
 
     // Optional Options for Kubernetes
-    const terminusOptions = getTerminusOptions({ healthCheck, logger, otherServerOptions });
+    const terminusOptions = getTerminusOptions({ healthCheck, otherServerOptions });
     app.listen = (...args: any) => httpServer.listen.apply(httpServer, args);
     createTerminus(httpServer, { ...defaultTerminusOptions, ...terminusOptions });
 
@@ -85,11 +85,9 @@ export const postHook = async (fn: Function, httpServer: http.Server, logger: IL
  */
 export const getTerminusOptions = ({
   healthCheck: { enabled, checkHealth = async () => true, uri = '/healthcheck' } = { enabled: false },
-  logger,
   otherServerOptions = {},
 }: {
   healthCheck: IHealthCheckOptions;
-  logger: ILogger;
   otherServerOptions?: TerminusOptions;
 },
 ): TerminusOptions | undefined => {
@@ -106,21 +104,12 @@ export const getTerminusOptions = ({
         return Promise.resolve();
       },
     },
-    logger: (message: string, error: Error): void => {
-      logger.error(`HEALTH CHECK ERROR ${message}`, error, error.stack);
-    },
   } : {};
 
-  const terminusOptions = {
-    ...healthcheckOptions,
+  return {
     ...otherServerOptions,
+    ...healthcheckOptions,
   };
-
-  if (Object.keys(terminusOptions).length === 0) {
-    return undefined;
-  }
-
-  return terminusOptions;
 };
 
 /**
