@@ -2,7 +2,7 @@ import { HealthCheck, TerminusOptions } from '@godaddy/terminus';
 
 const second = 1000;
 
-export const defaultHealthCheck = (isProduction: boolean) => ({
+export const defaultHealthCheck = (isProduction: boolean, healthcheckOptions?: Partial<TerminusOptions['healthChecks']>) => ({
   verbatim: !isProduction,
   __unsafeExposeStackTraces: !isProduction,
   '/healthcheck': ((input) => {
@@ -11,6 +11,7 @@ export const defaultHealthCheck = (isProduction: boolean) => ({
       throw new Error('Server is shutting down. See ya!');
     }
   }) as HealthCheck,
+  ...healthcheckOptions,
 });
 
 export const defaultTerminusOptions: TerminusOptions = ({
