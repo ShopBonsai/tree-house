@@ -2,6 +2,8 @@ import { Application, Request, Response } from 'express';
 import http from 'http';
 import { TerminusOptions, createTerminus } from '@godaddy/terminus';
 
+import { defaultTerminusOptions } from '../config/defaults';
+
 import https from 'https';
 import fs from 'fs';
 
@@ -35,11 +37,9 @@ export async function startServer(app: Application, options: ServerOptions): Pro
 
     // Optional Options for Kubernetes
     const terminusOptions = getTerminusOptions({ healthCheck, logger, otherServerOptions });
+    app.listen = (...args: any) => httpServer.listen.apply(httpServer, args);
+    createTerminus(httpServer, { ...defaultTerminusOptions, ...terminusOptions });
 
-    if (terminusOptions) {
-      app.listen = (...args: any) => httpServer.listen.apply(httpServer, args);
-      createTerminus(httpServer, terminusOptions);
-    }
 
     // Optional catch all route if no match was found
     if (catchAll) {
