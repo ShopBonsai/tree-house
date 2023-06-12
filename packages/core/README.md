@@ -120,7 +120,7 @@ treehouse.startServer(app, {
     privateKey: 'assets/ssl.key',
     certificate: 'assets/ssl.cert',
   },
-  healthCheck: {    // Adds graceful shutdown and Kubernetes readiness / liveness checks for any HTTP applications. (optional) 
+  healthCheck: {    // Adds graceful shutdown and Kubernetes readiness / liveness checks for any HTTP applications. (optional)
     enabled: true,
     uri: '/health'  // Defaults to `/healthcheck`
   },
@@ -129,8 +129,11 @@ treehouse.startServer(app, {
     value: 'v0.1',  // Defaults to process.env.npm_package_version
   },
   catchAll: (_req, res) => res.sendStatus(404), // Catches all unmatched routes (optional)
+  terminusOptions: {...} // Any special options you want to pass (TerminusOptions from @godaddy/terminus)
 })
 ```
+
+Please visit `src/examples` for setting up healthcheks.
 
 ## Jest
 
