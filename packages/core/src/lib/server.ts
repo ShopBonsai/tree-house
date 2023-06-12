@@ -90,7 +90,7 @@ export const getTerminusOptions = ({
   healthCheck: IHealthCheckOptions;
   otherServerOptions?: TerminusOptions;
 },
-): TerminusOptions | undefined => {
+): TerminusOptions => {
 
   const healthcheckOptions = enabled ? {
     healthChecks: {
