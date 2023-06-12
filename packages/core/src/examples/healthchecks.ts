@@ -1,16 +1,15 @@
-import express from "express";
-import { startServer } from "../lib/server";
-import { defaultHealthCheck } from "../config/defaults";
+import express from 'express';
+import { startServer } from '../lib/server';
+import { defaultHealthCheck } from '../config/defaults';
 
 const app = express();
-
 
 console.log('Server with a basic enabled health check');
 startServer(app, {
   port: 4999,
   healthCheck: {
     enabled: true,
-  }
+  },
 });
 // {"status":"ok"}
 
@@ -19,7 +18,7 @@ startServer(app, {
   port: 4998,
   healthCheck: {
     enabled: false,
-  }
+  },
 });
 // 404
 
@@ -28,9 +27,9 @@ startServer(app, {
   port: 4997,
   terminusOptions: {
     healthChecks: defaultHealthCheck(false, {
-      '/healthz': () => Promise.resolve()
-    })
-  }
+      '/healthz': () => Promise.resolve(),
+    }),
+  },
 });
 // {"status":"ok"}
 
@@ -39,9 +38,9 @@ startServer(app, {
   port: 4996,
   terminusOptions: {
     healthChecks: defaultHealthCheck(false, {
-      '/healthz': () => Promise.resolve({ health: "check" })
-    })
-  }
+      '/healthz': () => Promise.resolve({ health: 'check' }),
+    }),
+  },
 });
 // {"status":"ok","info":{"health":"check"},"details":{"health":"check"}}
 
@@ -50,10 +49,8 @@ startServer(app, {
   port: 4995,
   terminusOptions: {
     healthChecks: defaultHealthCheck(true, {
-      '/healthz': () => Promise.resolve({ health: "check" })
-    })
-  }
+      '/healthz': () => Promise.resolve({ health: 'check' }),
+    }),
+  },
 });
 // {"status":"ok","health":"check"}
-
-

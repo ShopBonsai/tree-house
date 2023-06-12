@@ -92,7 +92,7 @@ describe('Initialise things before running application', () => {
     it('start http server should throw error on invalid https configuration', async () => {
       const WRONG_CONFIGURATION = Object.assign({}, CONFIGURATION, {
         title: 'Tree House',
-        port: 5111,
+        port: 5000,
         https: {
           port: 5001,
           certificate: 'test/assets/random.cert',
