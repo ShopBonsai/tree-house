@@ -127,7 +127,8 @@ describe('Initialise things before running application', () => {
 
       it('should start http server with provided healthcheck config', async () => {
         await startServer(app, {
-          port: 5008, otherServerOptions: {
+          port: 5008,
+          terminusOptions: {
             healthChecks: {
               '/healthz': () => Promise.resolve(true),
             }
@@ -142,7 +143,7 @@ describe('Initialise things before running application', () => {
       it('should start http server without healthcheck', async () => {
         await startServer(app, {
           port: 5008,
-          otherServerOptions: {
+          terminusOptions: {
             healthChecks: undefined
           }
         });

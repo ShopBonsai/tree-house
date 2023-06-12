@@ -11,7 +11,7 @@ import fs from 'fs';
  * Start an http/https server from the given Express instance
  */
 export async function startServer(app: Application, options: ServerOptions): Promise<void> {
-  const { logger = console, version, healthCheck = { enabled: false }, catchAll, otherServerOptions } = options;
+  const { logger = console, version, healthCheck = { enabled: false }, catchAll, terminusOptions } = options;
 
   try {
     if (options.pre) await preHook(options.pre, logger);
@@ -36,9 +36,11 @@ export async function startServer(app: Application, options: ServerOptions): Pro
     }
 
     // Optional Options for Kubernetes
-    const terminusOptions = getTerminusOptions({ healthCheck, otherServerOptions });
     app.listen = (...args: any) => httpServer.listen.apply(httpServer, args);
-    createTerminus(httpServer, { ...defaultTerminusOptions, ...terminusOptions });
+    createTerminus(httpServer, {
+      ...defaultTerminusOptions,
+      ...getTerminusOptions({ healthCheck, terminusOptions }),
+    });
 
     // Optional catch all route if no match was found
     if (catchAll) {
@@ -85,10 +87,10 @@ export const postHook = async (fn: Function, httpServer: http.Server, logger: IL
  */
 export const getTerminusOptions = ({
   healthCheck: { enabled, checkHealth = async () => true, uri = '/healthcheck' } = { enabled: false },
-  otherServerOptions = {},
+  terminusOptions = {},
 }: {
   healthCheck: IHealthCheckOptions;
-  otherServerOptions?: TerminusOptions;
+  terminusOptions?: TerminusOptions;
 },
 ): TerminusOptions => {
 
@@ -107,7 +109,7 @@ export const getTerminusOptions = ({
   } : {};
 
   return {
-    ...otherServerOptions,
+    ...terminusOptions,
     ...healthcheckOptions,
   };
 };
@@ -153,7 +155,7 @@ export interface ServerOptions {
   logger?: ILogger;
   version?: IVersionOptions;
   healthCheck?: IHealthCheckOptions;
-  otherServerOptions?: TerminusOptions;
+  terminusOptions?: TerminusOptions;
   catchAll?: (req: Request, res: Response) => any; // Catches all unmatched routes.
 }
 
