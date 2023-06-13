@@ -1,9 +1,9 @@
 import { HealthCheckMap, TerminusOptions } from '@godaddy/terminus';
 
-const second_to_millisecond = 1000;
+const SECOND_TO_MILLISECOND = 1000;
 
 export const defaultHealthCheck = (
-  { isProduction, ...rest }: HealthCheckMap & { isProduction?: boolean; }
+  { isProduction, ...rest }: HealthCheckMap & { isProduction?: boolean; },
 ) => ({
   verbatim: !isProduction,
   __unsafeExposeStackTraces: !isProduction,
@@ -12,7 +12,7 @@ export const defaultHealthCheck = (
 
 export const defaultTerminusOptions: TerminusOptions = ({
   // We have ~20 seconds before receiving SIGKILL
-  timeout: 20 * second_to_millisecond,
+  timeout: 20 * SECOND_TO_MILLISECOND,
   signal: 'SIGTERM',
   useExit0: true,
 });

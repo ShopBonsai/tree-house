@@ -39,7 +39,7 @@ startServer(app, {
   terminusOptions: {
     healthChecks: defaultHealthCheck({
       '/healthz': () => Promise.resolve({ health: 'check' }),
-      isProduction: false
+      isProduction: false,
     }),
   },
 });
@@ -51,7 +51,7 @@ startServer(app, {
   terminusOptions: {
     healthChecks: defaultHealthCheck({
       '/healthz': () => Promise.resolve({ health: 'check' }),
-      isProduction: true
+      isProduction: true,
     }),
   },
 });
@@ -66,7 +66,7 @@ startServer(app, {
   terminusOptions: {
     healthChecks: defaultHealthCheck({
       '/healthz': () => Promise.resolve({ health: 'check' }),
-      isProduction: true
+      isProduction: true,
     }),
   },
 });
