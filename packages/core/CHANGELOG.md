@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added ability to pass `termimnusOptions` to `startServer`
+- Added ability to pass `terminusOptions` to `startServer`
 
 ## [4.0.0] - 2023-12-15
 

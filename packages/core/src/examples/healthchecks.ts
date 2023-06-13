@@ -26,7 +26,7 @@ console.log('Server with a custom enabled health check with a custom path `healt
 startServer(app, {
   port: 4997,
   terminusOptions: {
-    healthChecks: defaultHealthCheck(false, {
+    healthChecks: defaultHealthCheck({
       '/healthz': () => Promise.resolve(),
     }),
   },
@@ -37,8 +37,9 @@ console.log('Server with a custom enabled health check with a custom path `healt
 startServer(app, {
   port: 4996,
   terminusOptions: {
-    healthChecks: defaultHealthCheck(false, {
+    healthChecks: defaultHealthCheck({
       '/healthz': () => Promise.resolve({ health: 'check' }),
+      isProduction: false
     }),
   },
 });
@@ -48,9 +49,26 @@ console.log('Server with a custom enabled health check with a custom path `healt
 startServer(app, {
   port: 4995,
   terminusOptions: {
-    healthChecks: defaultHealthCheck(true, {
+    healthChecks: defaultHealthCheck({
       '/healthz': () => Promise.resolve({ health: 'check' }),
+      isProduction: true
     }),
   },
 });
 // {"status":"ok","health":"check"}
+
+console.log('Server with enabled healthcheck & with a custom terminus `healthz` healthcheck in production mode with details');
+startServer(app, {
+  port: 4994,
+  healthCheck: {
+    enabled: true,
+  },
+  terminusOptions: {
+    healthChecks: defaultHealthCheck({
+      '/healthz': () => Promise.resolve({ health: 'check' }),
+      isProduction: true
+    }),
+  },
+});
+// /healthcheck > {"status":"ok","health":"check"}
+// /healthz > 404
