@@ -121,6 +121,7 @@ treehouse.startServer(app, {
     certificate: 'assets/ssl.cert',
   },
   healthCheck: {    // Adds graceful shutdown and Kubernetes readiness / liveness checks for any HTTP applications. (optional)
+    // Once healthcheck is enabled, it takes precedence over terminus options
     enabled: true,
     uri: '/health'  // Defaults to `/healthcheck`
   },
