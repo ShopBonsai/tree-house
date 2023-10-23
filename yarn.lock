@@ -1805,7 +1805,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tree-house/errors@workspace:packages/errors"
   dependencies:
-    "@tree-house/translations": ^2.3.0
+    "@tree-house/translations": ^2.3.1
     "@types/i18n": ~0.13.6
     "@types/jest": 29.5.1
     "@types/safe-json-stringify": 1.1.2
@@ -1879,7 +1879,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tree-house/translations@^2.3.0, @tree-house/translations@workspace:packages/translations":
+"@tree-house/translations@^2.3.1, @tree-house/translations@workspace:packages/translations":
   version: 0.0.0-use.local
   resolution: "@tree-house/translations@workspace:packages/translations"
   dependencies:
