@@ -91,14 +91,14 @@ describe('Basic logger test', () => {
       error.stack = lorem.sentence();
       jest.spyOn(global, 'Error').mockImplementation(() => error);
 
-      getLogger().error(message);
+      getLogger().error(error);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${error.stack}\\".*}\n$`)),
       );
     });
 
     it('Should output serviceContext', () => {
-      getLogger().error(message);
+      getLogger().error(new Error(message));
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(
           new RegExp(
@@ -109,7 +109,8 @@ describe('Basic logger test', () => {
     });
 
     it('Should output serviceContext only once', () => {
-      getLogger().error(message);
+      const error = new Error(message)
+      getLogger().error(error);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(
           new RegExp(
@@ -120,7 +121,8 @@ describe('Basic logger test', () => {
     });
 
     it('Should output namespace', () => {
-      getLogger().error(message);
+      const error = new Error(message)
+      getLogger().error(error);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(new RegExp('^{.*\\"namespace\\":\\"@tree-house/logger:test\\".*}\n$')),
       );
@@ -131,7 +133,8 @@ describe('Basic logger test', () => {
       const logger2 = getLogger('namespace');
 
       const testNamespace = ({ logger, namespace }: { logger: ILogger, namespace: string }) => {
-        logger.error(message);
+        const error = new Error(message)
+        logger.error(error);
 
         expect(consoleSpy).toHaveBeenCalledWith<[string]>(
           expect.stringMatching(new RegExp(`^{.*\\"namespace\\":\\"@tree-house/logger:${namespace}\\".*}\n$`)),
@@ -150,7 +153,7 @@ describe('Basic logger test', () => {
       const error = new Error(message);
       // Set a custom error stack, otherwise using regex to match an error stack is a nightmare
       error.stack = lorem.sentence();
-      getLogger().error(message, error);
+      getLogger().error(error);
       expect(consoleSpy).toHaveBeenCalledWith<[string]>(
         expect.stringMatching(new RegExp(`^{.*\\"message\\":\\"${error.stack}\\".*}\n$`)),
       );
