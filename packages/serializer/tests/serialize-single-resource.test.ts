@@ -77,12 +77,16 @@ describe('Serializer single resource', () => {
     // serializer definition
     const userSerializer = new Serializer('user', {
       attributes: ['firstName', 'lastName', 'hobbies'],
+      fields: {
+        hobbies,
+
+      },
       hobbies: {
         attributes: ['name'],
       },
     });
 
-    const result = await userSerializer.serialize(rawData);
+    const result = await userSerializer.serialize(rawData);®
     const { meta, data } = result;
 
     expect(meta.type).toEqual('user');

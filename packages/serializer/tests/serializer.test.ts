@@ -47,8 +47,11 @@ describe('Serializer multiple resource', () => {
       { firstName: 'Jane', lastName: 'Doe' },
     ];
 
-    const userSerializer = new Serializer('user', {
-      attributes: ['firstName', 'lastName'],
+    const userSerializer = new Serializer<User>('user', {
+      attributes: ['firstName', 'lastName', 'lastName'],
+      firstName,
+      lastName,
+      address,
     });
 
     const result = await userSerializer.serialize(rawData, {
@@ -64,3 +67,12 @@ describe('Serializer multiple resource', () => {
     expect(meta.planet).toEqual('earth');
   });
 });
+
+type User = {
+  firstName: string;
+  lastName:string;
+  address: {
+    firstName: string | null;
+    lastName: string | null;
+  }
+}

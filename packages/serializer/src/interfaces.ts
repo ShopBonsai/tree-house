@@ -1,8 +1,20 @@
 import { Serializer } from './serializer';
 
-export interface ISerializerConfig {
-  attributes: string[];
-  [key: string]: Serializer | Function | string[] | ISerializerConfig;
+type Attribute<K> = {
+  attributes: [keyof K][];
+}
+
+// type SerializedInfo<T, K> = keyof T;
+
+type KeyOfSerializer<T> = T;
+
+export type ISerializerConfig <T, K extends keyof T> = Attribute<K> & {
+  // attributes: K[];
+  // fields : [key:K]: string[],
+  // [Object.keys as <T>(obj: T) => Array<keyof T>  ]: any; // Serializer<K> | Function | string[] | ISerializerConfig<K>;
+  // [key: string]: Serializer<keyof T> | Function | string[] | ISerializerConfig<keyof T>;
+
+  [key in KeyOfSerializer<K>]: any;
 }
 
 export interface ISerializerOptions {

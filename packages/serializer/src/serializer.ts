@@ -5,16 +5,16 @@ import { ISerializerOptions, ISerializerConfig, ISerializedResponse, IMeta } fro
 import { constructData } from './utils/data-construction.util';
 import { constructMeta } from './utils/meta-construction.util';
 
-const defaultConfig: ISerializerConfig = {
+const defaultConfig: ISerializerConfig<any, any> = {
   attributes: [],
 };
 
-export class Serializer {
+export class Serializer <T>{
   public resource: string;
-  public config: ISerializerConfig;
+  public config: ISerializerConfig<T, keyof T>;
   public options: ISerializerOptions;
 
-  constructor(resource: string, config: ISerializerConfig, options: ISerializerOptions = {}) {
+  constructor(resource: string, config: ISerializerConfig<T, keyof T>, options: ISerializerOptions = {}) {
     // guards
     if (!resource || isNil(resource)) {
       throw new errors.UndefinedResourceError();
