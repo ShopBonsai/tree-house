@@ -14,8 +14,8 @@
     "git:clean-remote": "git remote prune origin"
   },
   "devDependencies": {
-    "lerna": "6.6.2",
-    "typescript": "5.0.4"
+    "lerna": "7.4.2",
+    "typescript": "5.2.2"
   },
   "workspaces": {
     "packages": [
@@ -38,5 +38,5 @@
     "url": "https://github.com/ShopBonsai/tree-house/issues"
   },
   "homepage": "https://github.com/ShopBonsai/tree-house#readme",
-  "packageManager": "yarn@3.5.1"
+  "packageManager": "yarn@4.0.1"
 }

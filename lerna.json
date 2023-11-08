@@ -4,9 +4,9 @@
   ],
   "version": "independent",
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
     "access": "public"
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
