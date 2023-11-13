@@ -63,4 +63,28 @@ describe('Serializer multiple resource', () => {
     expect(meta.totalCount).toEqual(99);
     expect(meta.planet).toEqual('earth');
   });
+
+  test('Should skip serialization entirely if skipSerialization is true', async () => {
+    const rawData = [
+      { firstName: 'John', lastName: 'Doe' },
+      { firstName: 'Jane', lastName: 'Doe' },
+    ];
+
+    const userSerializer = new Serializer('user', {
+      attributes: [],
+    }, { skip: true });
+
+    const result = await userSerializer.serialize(rawData, {
+      totalCount: 99,
+      type: 'definitely_lizards',
+      planet: 'earth',
+    });
+
+    const { data, meta } = result;
+    expect(data).toEqual(rawData);
+    expect(meta.count).toEqual(2);
+    expect(meta.type).toEqual('unchanged');
+    expect(meta.totalCount).toEqual(99);
+    expect(meta.planet).toEqual('earth');
+  })
 });

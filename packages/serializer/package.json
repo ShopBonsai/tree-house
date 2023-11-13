@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/serializer",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Json de/serialization made for consistency",
   "keywords": [
     "NodeJS",
@@ -54,6 +54,6 @@
     "typescript": "5.0.4"
   },
   "engines": {
-    "node": ">=16.x"
+    "node": ">=18.x"
   }
 }
