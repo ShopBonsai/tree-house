@@ -72,7 +72,7 @@ describe('Serializer multiple resource', () => {
 
     const userSerializer = new Serializer('user', {
       attributes: [],
-    }, { skipSerialization: true });
+    }, { skip: true });
 
     const result = await userSerializer.serialize(rawData, {
       totalCount: 99,
@@ -83,7 +83,7 @@ describe('Serializer multiple resource', () => {
     const { data, meta } = result;
     expect(data).toEqual(rawData);
     expect(meta.count).toEqual(2);
-    expect(meta.type).toEqual('user');
+    expect(meta.type).toEqual('unchanged');
     expect(meta.totalCount).toEqual(99);
     expect(meta.planet).toEqual('earth');
   })
