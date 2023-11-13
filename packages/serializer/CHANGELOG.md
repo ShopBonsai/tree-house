@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2023-11- 13
+
+### Breaking
+
+- Dropped support for Node 16!
+
+### Changes
+
+- Add ability to pass `skip` as an option to allow raw data being returned without serialization. Can be useful during migration when not all serializers are set up.
+
+## [2.4.0] - 2021-10-02
+
+### Breaking
+
+- Dropped support for Node 10!
+
 ## [2.0.0] - 2021-10-02
 
 ### Breaking
