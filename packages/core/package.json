@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/core",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "NodeJS utilities and handy helpers extending ExpressJS functionalities",
   "keywords": [
     "NodeJS",
@@ -66,6 +66,6 @@
     "typescript": "5.0.4"
   },
   "engines": {
-    "node": ">=16.x"
+    "node": ">=18.x"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/logger",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Simple and fast JSON logging library for node.js services.",
   "keywords": [
     "NodeJS",
@@ -56,6 +56,6 @@
     "typescript": "5.0.4"
   },
   "engines": {
-    "node": ">=16.x"
+    "node": ">=18.x"
   }
 }

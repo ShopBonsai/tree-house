@@ -1,6 +1,6 @@
 {
   "name": "@tree-house/errors",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "NodeJS default error definitions with an error parser utility function",
   "keywords": [
     "NodeJS",
@@ -40,7 +40,7 @@
     }
   },
   "dependencies": {
-    "@tree-house/translations": "^2.3.0",
+    "@tree-house/translations": "^3.0.0",
     "http-status": "~1.6.2",
     "i18n": "0.15.1",
     "safe-json-stringify": "~1.2.0",
@@ -62,6 +62,6 @@
     "typescript": "5.0.4"
   },
   "engines": {
-    "node": ">=16.x"
+    "node": ">=18.x"
   }
 }
