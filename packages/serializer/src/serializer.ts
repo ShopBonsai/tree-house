@@ -27,7 +27,7 @@ export class Serializer {
 
   async serialize(data: any, dataSetConfig: IMeta = {}): Promise<ISerializedResponse> {
     // Set resource to unchanged if `skip` is true
-    const resource = this.options.skip ? 'unchanged': this.resource;
+    const resource = this.options.skip ? 'unchanged' : this.resource;
 
     // Skip data serialization if `skip` is true
     const serializedData = this.options.skip ? data : await constructData(data, this.config, this.options);
