@@ -74,6 +74,15 @@ export const constructData = async (data: any, customConfig: ISerializerConfig =
 
   const config = { ...defaultConfig, ...customConfig };
 
+  // Allows serialization to be skipped
+  // Should only be used during development or pre-migration to a serializer
+  if(options.skipSerialization) {
+    if(config.attributes.length > 0) {
+      console.debug('Skipping serialization of attributes although defined (uses skipSerialization option)', config.attributes);
+    }
+    return data;
+  }
+
   // if the dataset is an array
   if (isArray(data)) {
     return await Promise.all(data.map(async item => await constructData(item, config, options)));

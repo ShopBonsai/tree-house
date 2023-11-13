@@ -49,6 +49,7 @@ Options:
 - `camelCase`: Converts keys to camelCase
 - `snake_case`: Converts keys to snake_case
 - `kebab-case`: Converts keys to kebab-case
+- `skipSerialization`: Allows serialization to be skipped. Should only be used during development or pre-migration to a serializer
 
 #### Returns
 

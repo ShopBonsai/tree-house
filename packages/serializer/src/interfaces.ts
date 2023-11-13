@@ -7,6 +7,7 @@ export interface ISerializerConfig {
 
 export interface ISerializerOptions {
   case?: ICasing;
+  skipSerialization?: boolean;
 }
 
 export interface ISerializedResponse {
