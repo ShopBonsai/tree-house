@@ -36,5 +36,8 @@ node_modules
 !.yarn/versions
 .yarnclean
 yarn-error.log
+.yarn/cache/@nx-nx-darwin-arm64-**/**
+.yarn/cache/@nx-nx-linux-arm64-**/**
+.yarn/cache/fsevents-patch-**/**
 
 .DS_Store
