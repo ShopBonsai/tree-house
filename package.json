@@ -8,7 +8,7 @@
     "build": "lerna run build --stream",
     "test": "lerna run test --stream",
     "clear": "find . -name node_modules | xargs rm -rf",
-    "versions:publish": "npx lerna publish from-package --yes --dist-tag latest",
+    "versions:publish": "npx lerna publish from-git --yes --dist-tag latest",
     "versions:bump": "lerna version --no-git-tag-version --include-merged-tags",
     "git:clean": "git branch --merged | egrep -v \"(^\\*|master|staging|develop)\" | xargs git branch -d",
     "git:clean-remote": "git remote prune origin"
